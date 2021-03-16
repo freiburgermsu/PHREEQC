@@ -30,24 +30,18 @@ The make_equilibrium_phases function generates the EQUILIBRIUM_PHASES block. The
 
 #### make_reactive_transport
 
-The make_reactive_transport function of the input file notebook parameterizes both code blocks. The function parameterizes either the Dow-DuPont FILMTEC BW30-400 RO module, which was selected as an archetypical industrial standard, or a customized module with guided prompts through the notebook interface. The input parameters are then calculated into module characteristics that govern the transport properties of the code. 
-
-The REACTION blocks critically define the permeate fluxes of H¬2O from each module cell. The TRANSPORT block defines the spatiotemporal simulation variables like module distance and simulation timesteps, which are either directly or indirectly parameterized by user inputs. Simulations between seconds and a month in Figures S21-S22 were conducted through permutations of the TRANSPORT block. The removal of the TRANSPORT block while retaining the REACTION blocks simulates evaporation, where mineral precipitation occurs in the absence of feed flow or transport phenomena. Evaporation of Figure S7 was a crucial internal validation of transport scaling in Figure S8 at an equivalent CF.
-
-The reactive transport of desalination can be modeled in either the single domain or the dual domain. A single-domain model considers the CP and bulk solution as a single blended solution while the dual-domain model differentiates the CP and the bulk solutions through parameterizing one set of cells [1,n],n∈W for the bulk solution and a second set of cells [n+2,m],m∈W>n+2 for the CP. The dual domain model contains additional parameters of the volume fractions between the bulk and CP solutions and of the rate of solvent exchange, termed the exchange  factor ε_F, between the bulk and CP solutions. 
+The make_reactive_transport function generates both REACTION code blocks and the TRANSPORT code block. The function enables users to either simulate desalination through a  Dow-DuPont FILMTEC BW30-400 RO module, which is an archetype, or customize a module parameters through prompts in the notebook interface. The function contains a multitude of backend calculations that interpret permeate flux properties from the module parameters. The function currently only parameterizes single-domain model reactive transport.
 
 
 
+#### make_selected_output
+
+The make_selected_output function defines the data and the name of the output SELECTED_OUTPUT file. The SELECTED_OUTPUT file contains simulation data in a tab-delimited text file that is imported in the "Output processing" file and interpreted for simulation results. 
 
 
-	SELECTED_OUTPUT block
+#### export
 
-The SELECTED_OUTPUT block prints simulation data in a tab-delimited text file. The block importantly differentiates simulations that examine scaling throughout the module distance versus simulations that examine effluent brine. The make_selected_output function of the input file notebook importantly prompts whether brine or scaling will be simulated and to name the output file. 
-
-
-	Export
-
-The export function of the input file notebook exports the PHREEQC input file. The function both prints the complete input PHREEQC code in the notebook interface and exports the input code with a predefined naming structure of the day’s date, the simulated water body selection, brine or scaling simulation perspective, and a whole number that increases incrementally for each exported file of the otherwise same name. The input file is saved as PQI file which denotes an iPHREEQC input file.
+The export function exports the generated PHREEQC input file. The function simultaneously prints the complete input PHREEQC code in the notebook interface for the user's review and exports the input file with a predefined naming structure of the day’s date, the simulated water body selection, brine or scaling simulation perspective, and a whole number that increases incrementally until a unique name is achieved. The input file is saved as PQI file which denotes an iPHREEQC input file, although, the file extension is also aceptable for batch software versions of PHREEQC.
 
 
 
