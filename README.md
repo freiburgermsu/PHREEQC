@@ -14,32 +14,29 @@ The use of PHREEQC is facilitated by two Jupyter Notebooks. The Notebooks utiliz
 
 ### Input file generation
 
-
-The make_general_conditions function of the input file notebook defines initial details. The function defines the database that the simulation will use and establishes the directory path on the user’s computer. The backend Python code ensures that the entered path actually exists in the user’s system and that the database is defined by the code. The function finally creates a title for the simulation.
-
-
-	SOLUTION blocks
+The "Input file generation" Notebook is organized into functions that each parameterize a different PHREEQC code block. The make_general_conditions function of the input file notebook defines initial details of the simulation and creates a title for the simulation. The other functions are more elaborate and are separately discussed in the following sections.
 
 
-The SOLUTION blocks of PHREEQC parameterize geochemical solution characteristics. These block parameterize geochemical qualities like elemental concentrations, alkalinity, and pH that are accepted by the selected database. Charge imbalances can occur in the solution from either incompatible geochemical data sets32 or from neglected ionic species in the geochemical solution data. The charge imbalances can be automatically balanced by adjusting the pH, although, our sensitivity analysis revealed that maintaining a charge imbalance was no different than automatically correcting a charge imbalance in Tables S3-S4. Manual correction of the charge imbalance, however, through increasing the concentration of (-)  ions for (+) %-error or through increasing the concentration of (+)  ions for (-)%-error, augmented the charge imbalance and disrupted scaling results in Figures S37-S41.
-
-The make_solutions function of the input file notebook generates SOLUTION blocks. The function populates the feed geochemistry from one of the predefined water bodies, or the user can elect to customize feed geochemistry through a series of command-line prompts. The predefined options reflect experimental geochemistry literature for the Mediterranean and Red Seas, which are archetypes of highly populated inland seas, and for groundwaters around the continential U.S.A. that represent produced fracking waters34,35,36,37, which are unutilized38 and hazardous39 waters of oil wells40–46 that are intriguing as a water resource. The initial solution within the RO module is parameterized as pure H2O, since the initial solution is arbitrary and is rapidly flushed from the RO module during the simulation.
+#### make_solutions
 
 
-	EQUILIBRIUM_PHASES blocks
-
-The EQUILIBRIUM_PHASES block defines scaling equilibrium for RO simulations. This block parameterizes the minerals that will be examined for scaling in the simulation. The code block substantially influences the reactive transport geochemistry and changes the brine and scaling formation with different mineral parameters in Figures S42-S53.  The removal of the block entirely permits elemental oversaturation and can thereby emulate the addition of anti-scalants to a feed solution, which is demonstrated in Figures S9-S11.
-
-The make_equilibrium_phases function of the input file notebook creates the code block. The notebook interface displays the alphabetized list of minerals and their chemical formulas that are defined by the selected database, from which list the user selects the minerals, and their preexisting quantities, that will be simulated. 
+The make_solutions function generates the SOLUTION blocks of the PHREEQC simulation. The SOLUTION blocks of PHREEQC parameterize geochemical solution characteristics like elemental concentrations, alkalinity, and pH. The make_solutions function allows the user to define the feed geochemistry from one of the predefined water bodies, or to customize feed geochemistry through a series of command-line prompts. The predefined options for water bodies reflect experimental literature for the Mediterranean and Red Seas, which are archetypes of highly populated inland seas, and for groundwaters around the continential U.S.A. that represent the produced waters from fracking and are an intriguing water resource. The initial solution of the RO module is parameterized as pure H2O since the solution is rapidly flushed from the RO module during the simulation.
 
 
-	REACTION and TRANSPORT blocks
+#### make_equilibrium_phases
+
+The make_equilibrium_phases function generates the EQUILIBRIUM_PHASES block. The EQUILIBRIUM_PHASES block of PHREEQC defines the mineral scaling equilibrium during RO simulations. The function displays the alphabetized list of minerals and their chemical formulas that are defined by the user selected database, from which the user selects the minerals, and their preexisting quantities, that will be simulated. 
+
+
+#### make_reactive_transport
+
+The make_reactive_transport function of the input file notebook parameterizes both code blocks. The function parameterizes either the Dow-DuPont FILMTEC BW30-400 RO module, which was selected as an archetypical industrial standard, or a customized module with guided prompts through the notebook interface. The input parameters are then calculated into module characteristics that govern the transport properties of the code. 
 
 The REACTION blocks critically define the permeate fluxes of H¬2O from each module cell. The TRANSPORT block defines the spatiotemporal simulation variables like module distance and simulation timesteps, which are either directly or indirectly parameterized by user inputs. Simulations between seconds and a month in Figures S21-S22 were conducted through permutations of the TRANSPORT block. The removal of the TRANSPORT block while retaining the REACTION blocks simulates evaporation, where mineral precipitation occurs in the absence of feed flow or transport phenomena. Evaporation of Figure S7 was a crucial internal validation of transport scaling in Figure S8 at an equivalent CF.
 
 The reactive transport of desalination can be modeled in either the single domain or the dual domain. A single-domain model considers the CP and bulk solution as a single blended solution while the dual-domain model differentiates the CP and the bulk solutions through parameterizing one set of cells [1,n],n∈W for the bulk solution and a second set of cells [n+2,m],m∈W>n+2 for the CP. The dual domain model contains additional parameters of the volume fractions between the bulk and CP solutions and of the rate of solvent exchange, termed the exchange  factor ε_F, between the bulk and CP solutions. 
 
-The make_reactive_transport function of the input file notebook parameterizes both code blocks. The function parameterizes either the Dow-DuPont FILMTEC BW30-400 RO module, which was selected as an archetypical industrial standard, or a customized module with guided prompts through the notebook interface. The input parameters are then calculated into module characteristics that govern the transport properties of the code. 
+
 
 
 
