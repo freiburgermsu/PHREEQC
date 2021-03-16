@@ -2,10 +2,12 @@
 
 Desalination is an increasingly critical technology for human sustainability. The geochemical phenomena within reverse osmosis (RO) desalination modules like brine formation and mineral scaling are researched mitigate fouling of the RO modules. The geochemical software PHREEQC is an established tool for evaluating gechemical phenonema, however, the software has been applied to depict scaling over the distance of an arbitrarily defined RO module. This work couples PHREEQC software with interactive Jupyter Notebooks that create PHREEQC input files and that process the PHREEQC output data into figures and data tables. The following sections stepwise detail the procedures from downloading PHREEQC software through processing simulation outputs.
 
-## PHREEQC software installation
+## PHREEQC installation and execution
 
-PHREEQC is freely downloaded from the US Geological Survey (https://www.usgs.gov/software/phreeqc-version-3). The file "PHREEQC installation instructions" provides explicitly directions for users on both Windows and Macintosh operating systems.
+ The "PHREEQC execution instructions" PDF file provides explicit directions for installing and the executing PHREEQC on both Windows and Macintosh operating systems.
 
+
+## Notebook usage
 
 The two Jupyter notebooks are command-line interfaces. The "2021-03-09_APF_PHREEQC RO input file generation_01" notebook guides the user through creating an input file for PHREEQC  that will simulate RO desalination. The "2021-03-06_APF_excel output calculations_06" notebook guides the user through processing the PHREEQC SELECTED_OUTPUT data file into graphs and data tables.
 
