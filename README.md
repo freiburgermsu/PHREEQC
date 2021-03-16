@@ -45,15 +45,26 @@ The export function exports the generated PHREEQC input file. The function simul
 
 
 
+### Output processing
+
+The "Output processing" Notebook is likewise organized into discrete functions. The functions each provide complementary ability to interpret the imported SELECTED_OUTPUT file of simulation output data through a few command-line requests and interactions. The SELECTED_OUTPUT file is imported through providing the Notebook with the file name of the output file in the current working directory. The tab-delimited output data is then imported into a Pandas DataFrame for subsequent data manipulations. The following functions of the Notebook generate figure(s) and\or a data table from the DataFrame data, and optionally exports the figure(s).  
 
 
+#### process_selected_output
+
+The process_selected_output function automatically directs the user to the appropriate function for processing the data. The file name of the SELECTED_OUTPUT data file is scanned for the words “brine”, “scaling”, “pitzer”, and “phreeqc” that will specify the nature of the simulation as either brine or scaling and that will specify the database that was used in the simulation. The function then automatically executes the appropriate function for processing the data depending upon the identified words in the output file name or the user parameterizations where the aforementioned words are absent from the SELECTED_OUTPUT file name.
 
 
+#### make_brine_plot
+
+The make_brine_plot function generates a figure for all simulated elements over time. The function first scans the DataFrame elemental data, which data is then plotted via the matplotlib Python library. The time domain for the plot is selected to be all times after the initial solution is flushed from the module, which is represented by the concentration of the most concentrated ion, chloride, first becoming non-zero. The function differentiates between simulations of scaling or brine perspectives and differentially processes the data to match the different data structures. The brine plots of both simulation perspectives, however, ultimately yield a figure, a title and a caption in the notebook interface, and are exported at the user selection. The function additionally yields a data table of the average elemental concentrations, over the same timeframe as the figure, for the brine simulation perspective, which facilitates identifying and quantifying the elemental concentrations that may be difficult to interpret from the generated figure.
 
 
+#### make_scaling_plot
+
+The make_scaling_plot function generates a figure(s) of scaling over module distance. The function commences by quantifying the number of minerals that precipitated during the simulation. The user then selects, based upon the quantity of minerals, whether all of the minerals should be displayed on a single figure, or whether the each mineral should be separately expressed on a separate plots. The figure legends depict both the mineral names and their corresponding chemical formulas to remove barriers of geochemical knowledge from interpreting the figures. Each time series of a mineral is a separate plot, which conveys the accumulation of the mineral over time. The function concludes by displaying the figure(s) and by inquiring whether the figure(s) should be exported, which will direct the user to the export_plot function for the affirmative. 
 
 
+#### export_plot
 
-The input file notebook presumes that the user has installed iPHREEQC software. The path directory of the iPHREEQC software must be known for the input file code to successfully function. The default path for a Windows 10 operating system is suggested in the code, however, the path directories for Macintosh and Linux systems must be identified by the user.     
-
-The generated input file from the "Input file generation" notebook must be imported and executed in iPHREEQC. The resultant SELECTED_OUTPUT output file from the iPHREEQC simulation must be placed within the same directory as the "Output processing" notebook for the output data to be processed through the code. The data processing notebook requests the title of the SELECTED_OUTPUT file and scans the file name for "brine" or "scaling" and "pitzer" or "phreeqc", which are used to classify the nature of the iPHREEQC simulation data. File names that lack the simulation details prompt user entries of the information, which directs the code to correctly process the data. The user will finally have the option to export the graph to the same directory as the code in a picture format.    
+The export_plot function exports the brine and scaling figure(s) to the working directory. The user is prompted to name the export figures, which are defaulted to the SELECTED_OUTPUT name. The user further defines the image format as either PNG, JPG, and SVG, which is defaulted to JPG. The file name finally consists of a whole number that incrementally increases until a unique file name + extension is determined for the current working directory. 
