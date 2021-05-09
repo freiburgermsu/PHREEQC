@@ -5,6 +5,7 @@ from itertools import chain
 import datetime
 import pandas
 import math
+import time
 import os
 import re
 
@@ -1427,8 +1428,10 @@ def view_input_file():
     View the PHREEQC input file
     """
     global complete_lines
+    
     complete_lines = chain(general_conditions, solution_block, equilibrium_phases_block,
                            reaction_block, selected_output_block, transport_block) 
+    
     printing_block = input('''Would you like to view your input file?
     < y > or < n >\t''')
     if printing_block == 'y':
@@ -1445,41 +1448,106 @@ def export():
     global input_file_name
     
     file_number = 0
-    if not os.path.exists('%s _PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
-                                                                    time_or_distance, file_number)):
-        input_file_name = '%s _PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
+    proposed_file_name = '%s_PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
                                                                     time_or_distance, file_number)
-        input_file = open(input_file_name,'w')
-        for line in complete_lines:
-            input_file.write(line + '\n')
-        input_file.close()
-    elif os.path.exists('%s _PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
-                                                                    time_or_distance, file_number)):
-        while os.path.exists('%s _PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
+    if not os.path.exists(proposed_file_name):
+        input_file_name = proposed_file_name
+        
+    elif os.path.exists(proposed_file_name):
+        while os.path.exists('%s_PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
                                                                     time_or_distance, file_number)):
             file_number += 1
-        input_file_name = '%s _PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
+            input_file_name = '%s_PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
                                                                     time_or_distance, file_number)
-        input_file = open(input_file_name,'w')
-        for line in complete_lines:
-            input_file.write(line + '\n')
-            
-        input_file.close()
+        
+        
+    input_file = open(input_file_name,'w')
+    for line in complete_lines:
+        input_file.write(line + '\n')
+
+    input_file.close()
     
     
 def execute():
     """
     Execute the input file through the command-line batch software of PHREEQC 
-    """
-
-    subprocess.call("start powershell", shell=True)
-    subprocess.call("cd %s\\bin\\Release" %(phreeqc_path), shell=True)
-    subprocess.call(".\phreeqc.exe", shell=True)
+    """    
+    #subprocess.call("start powershell", shell=True)
     working_directory = os.getcwd()
-    subprocess.call("%s\\%s" %(working_directory, input_file_name), shell=True)
+    #if (visualize_selection and input_selection) == 'n':
+    #    input_file_name = input('What is the input file name?')
+    input_file_name = input('What is the input file name?')
+    input_path = os.path.join(working_directory, input_file_name)
+    #print('input file path\n', input_path)
+    while not os.path.exists(input_path):
+        print('''ERROR: The input file path {} does not exist. Provide a valid input file path.'''.format(input_path))
+        input_file_name = input('What is the input file name?')
+        input_path = os.path.join(working_directory, input_file_name)
+    
+    phreeqc_path = 'C:\\Program Files\\USGS\\phreeqc-3.6.2-15100-x64'
+    if 'database_selection' not in globals():
+        database_selection = input('''What database do you select?
+        < pitzer > or < phreeqc >  __ ''')
+    
+    database_path = os.path.join(phreeqc_path, 'database\\%s.dat' %(database_selection))        
     output_file_name = re.sub('pqi', 'pqo', input_file_name)
-    subprocess.call("%s\\%s" %(working_directory, output_file_name), shell=True)
-    subprocess.call("%s" %(database_path), shell=True)
+    output_path = os.path.join(working_directory, output_file_name)
+    print('input file path\n', input_path)
+    
+    #subprocess.Popen('date', shell = True)
+    subprocess.Popen("cd %s\\bin\\Release&&.\phreeqc.exe" %(phreeqc_path), shell = True)
+    
+    sleep_time = 10
+    time.sleep(sleep_time)
+    print('wait 1')
+    while sleep_time > 0:
+        print(sleep_time, ' seconds', end = '\r')
+        sleep_time -= 1
+        time.sleep(1)
+        
+    '''subprocess.run(, shell = True)
+        
+    sleep_time = 10
+    time.sleep(sleep_time)
+    print('wait 2')
+    while sleep_time > 0:
+        print(sleep_time, ' seconds', end = '\r')
+        sleep_time -= 1
+        time.sleep(1)'''
+        
+    print(input_path)
+    subprocess.Popen(input_path, shell = True)
+    
+    sleep_time = 10
+    time.sleep(sleep_time)
+    print('wait 3')
+    while sleep_time > 0:
+        print(sleep_time, ' seconds', end = '\r')
+        sleep_time -= 1
+        time.sleep(1)
+        
+    print(output_path)
+    subprocess.Popen(output_path, shell = True)
+
+    sleep_time = 10
+    time.sleep(sleep_time)
+    print('wait 4')
+    while sleep_time > 0:
+        print(sleep_time, ' seconds', end = '\r')
+        sleep_time -= 1
+        time.sleep(1)
+    
+    
+    subprocess.run("{}".format(database_path), shell = True)
+    print('Execution is complete.')
+    
+    '''subprocess.call("" %, shell=True)
+    subprocess.call("", shell=True)
+
+    subprocess.call("" %(), shell=True)
+
+    subprocess.call("" %(), shell=True)
+    subprocess.call("" %(), shell=True)'''
     
     
     
@@ -2077,7 +2145,8 @@ def choose_your_path():
         execute_selection = input('''Will you visualize simulation results?
         < y > or < n > ___ ''')
     
-    if (visualize_selection and input_selection and execute_selection) == 'y':  
+    if visualize_selection == input_selection == execute_selection == 'y':  
+        print('Simulate and visualize a created input\n', '='*len('Simulate and visualize a created input'))
         make_general_conditions()
         make_reactive_transport()
         make_solutions()
@@ -2089,12 +2158,14 @@ def choose_your_path():
         output_processing()
         process_selected_output()
         
-    elif (execute_selection and visualize_selection) == 'y' and (input_selection) == 'n':
+    elif execute_selection == visualize_selection == 'y' and input_selection == 'n':
+        print('Simulation and visualization\n', '='*len('Simulation and visualization'))
         execute()
         output_processing()
         process_selected_output()
         
-    elif (input_selection and execute_selection) == 'y' and (visualize_selection) == 'n':
+    elif input_selection == execute_selection == 'y' and visualize_selection == 'n':
+        print('Simulate a created input\n', '='*len('Simulate a created input'))
         make_general_conditions()
         make_reactive_transport()
         make_solutions()
@@ -2105,10 +2176,12 @@ def choose_your_path():
         execute()
         output_processing()
         
-    elif (visualize_selection) == 'y' and (input_selection and execute_selection) == 'n':
+    elif visualize_selection == 'y' and input_selection == execute_selection == 'n':
+        print('Visualize\n', '='*len('Visualize'))
         process_selected_output()
         
-    elif (input_selection) == 'y' and (visualize_selection and execute_selection) == 'n':
+    elif input_selection == 'y' and visualize_selection == execute_selection == 'n':
+        print('Input creation\n', '='*len('Input creation'))
         make_general_conditions()
         make_reactive_transport()
         make_solutions()
@@ -2117,7 +2190,8 @@ def choose_your_path():
         view_input_file()
         export()
         
-    elif (execute_selection) == 'y' and (input_selection and visualize_selection) == 'n':
+    elif execute_selection == 'y' and input_selection == visualize_selection == 'n':
+        print('Simulation\n', '='*len('Simulation'))
         execute()
         
         
