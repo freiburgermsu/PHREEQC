@@ -358,10 +358,20 @@ def make_reactive_transport():
         if permeate_approach == 'Linear CF':
             module_iteration = 0
             initial_cf = 1
-            final_cf = float(input('''What is the final CF of your simulation? 
-            The CF is the concentration factor. The metric describes the relative concentration of the
-            effluent solution relative to the influent solution. Sensible CF values for RO desalination,
-            even after multiple in-series modules, are 1 < x < 5   __ '''))
+            while True:
+                try:
+                    final_cf = float(input('''What is the final CF of your simulation? 
+                    The CF is the concentration factor. The metric describes the relative concentration of the
+                    effluent solution relative to the influent solution. Sensible CF values for RO desalination,
+                    even after multiple in-series modules, are 1 < x < 5   __ '''))
+                    break
+                except:
+                    print('ERROR: The passed value is not an accepted float.')
+                    final_cf = float(input('''What is the final CF of your simulation? 
+                    The CF is the concentration factor. The metric describes the relative concentration of the
+                    effluent solution relative to the influent solution. Sensible CF values for RO desalination,
+                    even after multiple in-series modules, are 1 < x < 5   __ '''))
+                
             cf_slope = (final_cf - initial_cf) / cells_per_module
             for cell in range(1,cells_per_module+1):
                 cell_cf = cell * cf_slope + initial_cf
@@ -1472,23 +1482,23 @@ def execute():
     """
     Execute the input file through the command-line batch software of PHREEQC 
     """    
+    global database_selection
+    global input_file_name
     #subprocess.call("start powershell", shell=True)
     working_directory = os.getcwd()
-    #if (visualize_selection and input_selection) == 'n':
-    #    input_file_name = input('What is the input file name?')
-    input_file_name = input('What is the input file name?')
-    input_path = os.path.join(working_directory, input_file_name)
-    #print('input file path\n', input_path)
-    while not os.path.exists(input_path):
-        print('''ERROR: The input file path {} does not exist. Provide a valid input file path.'''.format(input_path))
-        input_file_name = input('What is the input file name?')
-        input_path = os.path.join(working_directory, input_file_name)
-    
     phreeqc_path = 'C:\\Program Files\\USGS\\phreeqc-3.6.2-15100-x64'
-    if 'database_selection' not in globals():
+    if input_selection == 'n':
         database_selection = input('''What database do you select?
         < pitzer > or < phreeqc >  __ ''')
-    
+        input_file_name = input('What is the input file name?')
+        input_path = os.path.join(working_directory, input_file_name)
+        #print('input file path\n', input_path)
+        while not os.path.exists(input_path):
+            print('''ERROR: The input file path {} does not exist. Provide a valid input file path.'''.format(input_path))
+            input_file_name = input('What is the input file name?')
+            input_path = os.path.join(working_directory, input_file_name)
+        
+    input_path = os.path.join(working_directory, input_file_name)
     database_path = os.path.join(phreeqc_path, 'database\\%s.dat' %(database_selection))        
     output_file_name = re.sub('pqi', 'pqo', input_file_name)
     output_path = os.path.join(working_directory, output_file_name)
@@ -1498,7 +1508,6 @@ def execute():
     subprocess.Popen("cd %s\\bin\\Release&&.\phreeqc.exe" %(phreeqc_path), shell = True)
     
     sleep_time = 10
-    time.sleep(sleep_time)
     print('wait 1')
     while sleep_time > 0:
         print(sleep_time, ' seconds', end = '\r')
@@ -1519,7 +1528,6 @@ def execute():
     subprocess.Popen(input_path, shell = True)
     
     sleep_time = 10
-    time.sleep(sleep_time)
     print('wait 3')
     while sleep_time > 0:
         print(sleep_time, ' seconds', end = '\r')
@@ -1530,7 +1538,6 @@ def execute():
     subprocess.Popen(output_path, shell = True)
 
     sleep_time = 10
-    time.sleep(sleep_time)
     print('wait 4')
     while sleep_time > 0:
         print(sleep_time, ' seconds', end = '\r')
@@ -2123,13 +2130,6 @@ def choose_your_path():
     global visualize_selection
     global input_selection
     global execute_selection
-    
-    visualize_selection = input('''Will you visualize simulation results?
-    < y > or < n > ___ ''')
-    while visualize_selection not in possible_answers:
-        print('ERROR: provide < y > or < n > as your answer.')
-        visualize_selection = input('''Will you visualize simulation results?
-        < y > or < n > ___ ''')
         
     input_selection = input('''Will you create an input file?
     < y > or < n > ___ ''')
@@ -2144,6 +2144,31 @@ def choose_your_path():
         print('ERROR: provide < y > or < n > as your answer.')
         execute_selection = input('''Will you visualize simulation results?
         < y > or < n > ___ ''')
+        
+    visualize_selection = input('''Will you visualize simulation results?
+    < y > or < n > ___ ''')
+    while visualize_selection not in possible_answers:
+        print('ERROR: provide < y > or < n > as your answer.')
+        visualize_selection = input('''Will you visualize simulation results?
+        < y > or < n > ___ ''')
+    
+    while input_selection == execute_selection == visualize_selection == 'n':
+        print('ERROR: one of the software options equate < y >.')
+        simulation_purpose = input('''Will you create an input file, execute a simulation, or visualize simulation results?
+        < input >, < execute >, or < visualize > __ ''')
+        while simulation_purpose not in ['input', 'execute', 'visualize']:
+            print('ERROR: provide the purpose of the simulation, or exit the software.')
+            simulation_purpose = input('''Will you create an input file, execute a simulation, or visualize simulation results?
+            < input >, < execute >, or < visualize > __ ''')
+        
+        if simulation_purpose == 'input':
+            input_selection = 'y'
+            
+        elif simulation_purpose == 'execute':
+            execute_selection = 'y'
+            
+        elif simulation_purpose == ' visualize':
+            visualize_selection = 'y'
     
     if visualize_selection == input_selection == execute_selection == 'y':  
         print('Simulate and visualize a created input\n', '='*len('Simulate and visualize a created input'))
