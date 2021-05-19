@@ -433,6 +433,26 @@ def make_reactive_transport():
     lengths_line = '-lengths\t\t%s' %(cell_length)
     timestep_line = '-time_step\t\t%s\t#the Courant condition is satisfied with the cell_length of %s m and the feed velocity of %s m/s' %(maximal_timestep, cell_length, feed_velocity)
     initial_time_line = '-initial_time\t\t0'    
+    boundary_conditions_line = '-boundary_conditions\tconstant\tconstant \t #Dirichlet boundary condition'
+    single_or_dual_domain = input('''Will the single or dual domain be simulated?
+    The single domain aggregates the concentration polarization and the bulk solution.
+    The dual domain individually models the concentration polarization and the bulk solution.
+    < single > or < dual > __ ''')
+    while single_or_dual_domain not in ['single', 'dual']:
+        print('''ERROR: The value is not one of the options.
+        Select one of the choices to proceed.''')  
+        single_or_dual_domain = input('''Will the single or dual domain be simulated?
+        The single domain aggregates the concentration polarization and the bulk solution.
+        The dual domain individually models the concentration polarization and the bulk solution.
+        < single > or < dual > __ ''')
+        
+    if single_or_dual_domain == 'single':
+        domain_line = '-stagnant\t\t0\t0\t0\t0 \t #single domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
+        
+    elif single_or_dual_domain == 'dual':
+        domain_line = '-stagnant\t\t1\t1\t0.1\t0.9 \t #dual domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
+        
+        
     time_or_distance = input('''Would you like to examine scaling over module distance,
     or would you like to examine effluent brine over time?
     < Scaling > or < Brine > __ ''')
@@ -1477,6 +1497,7 @@ def export():
 
     input_file.close()
     
+
     
 def execute():
     """
@@ -1492,19 +1513,57 @@ def execute():
         < pitzer > or < phreeqc >  __ ''')
         input_file_name = input('What is the input file name?')
         input_path = os.path.join(working_directory, input_file_name)
-        #print('input file path\n', input_path)
         while not os.path.exists(input_path):
             print('''ERROR: The input file path {} does not exist. Provide a valid input file path.'''.format(input_path))
             input_file_name = input('What is the input file name?')
             input_path = os.path.join(working_directory, input_file_name)
+            
+        output_file_name = re.sub('pqi', 'pqo', input_file_name)
+        output_path = os.path.join(working_directory, output_file_name)
+        #print('input file path\n', input_path)
         
-    input_path = os.path.join(working_directory, input_file_name)
+    else:
+        output_file_name = re.sub('pqi', 'pqo', input_file_name)
+        
+    
+    '''bat_path = os.path.join(phreeqc_path, 'bin\\phreeqc.bat')
     database_path = os.path.join(phreeqc_path, 'database\\%s.dat' %(database_selection))        
     output_file_name = re.sub('pqi', 'pqo', input_file_name)
-    output_path = os.path.join(working_directory, output_file_name)
+
     print('input file path\n', input_path)
     
-    #subprocess.Popen('date', shell = True)
+    proc = subprocess.Popen('cmd.exe', stdin=subprocess.PIPE)
+    
+    command = bat_path + " " + input_path + " " + output_path + "\n"
+    command = str.encode(command)
+    proc.stdin.write(command)'''
+    
+    
+    
+    
+    subprocess.Popen("cd %s\\bin\\Release&&.\phreeqc.exe" %(phreeqc_path), shell = True)
+    
+    database_path = os.path.join(phreeqc_path, 'database\\%s.dat' %(database_selection))        
+    print('input file path\n', input_path)
+    
+    proc = subprocess.Popen('cmd.exe', stdin=subprocess.PIPE)
+
+    command = input_path + " " + output_path + "\n"
+    command = str.encode(command)
+    proc.stdin.write(command)
+    
+    command = "" + database_path + "\n"
+    command = str.encode(command)
+    proc.stdin.write(command)
+    
+    proc.stdin.close()
+    proc.wait()
+    
+    print('Execution is complete.')
+    
+    
+    
+    '''#subprocess.Popen('date', shell = True)
     subprocess.Popen("cd %s\\bin\\Release&&.\phreeqc.exe" %(phreeqc_path), shell = True)
     
     sleep_time = 10
@@ -1514,7 +1573,7 @@ def execute():
         sleep_time -= 1
         time.sleep(1)
         
-    '''subprocess.run(, shell = True)
+    subprocess.run(, shell = True)
         
     sleep_time = 10
     time.sleep(sleep_time)
@@ -1522,7 +1581,7 @@ def execute():
     while sleep_time > 0:
         print(sleep_time, ' seconds', end = '\r')
         sleep_time -= 1
-        time.sleep(1)'''
+        time.sleep(1)
         
     print(input_path)
     subprocess.Popen(input_path, shell = True)
@@ -1545,8 +1604,8 @@ def execute():
         time.sleep(1)
     
     
-    subprocess.run("{}".format(database_path), shell = True)
-    print('Execution is complete.')
+    subprocess.run("{}".format(database_path), shell = True)'''
+    
     
     '''subprocess.call("" %, shell=True)
     subprocess.call("", shell=True)
