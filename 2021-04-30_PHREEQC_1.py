@@ -359,20 +359,20 @@ def make_reactive_transport():
     The HL represents the decrease in fluid pressure over the RO module distance. HL = -10 denotes a 10-log reduction in pressure at the end relative to the beginning of the module. HL = 0 denotes a homogeneous pressure throughout the module.''') 
             while True:
                 head_loss = input('''- What is the Head loss through this module? 
-                Default = 0.15  ;  ( -10 < HL < 0 )  __ ''')
+                Default = -0.15  ;  ( -10 < HL < 0 )  __ ''')
                 try:
-                    if head_loss > 0:
+                    if float(head_loss) > 0:
                         print('''ERROR: Head loss must remain less than 0.''')
                         continue
-                    head_loss = float(head_loss)
-                    break
+                    else:
+                        head_loss = float(head_loss)
+                        break
                 except:
                     if head_loss == '':
-                        head_loss = 0.15
+                        head_loss = -0.15
                         break
                     else:
                         print('''Provide a numerical parameter.''')  
-                        head_loss = input('''- What is the Head loss through this module?''')
 
             initial_moles_removed = permeate_removal_per_cell * 2 / (1 + math.exp(head_loss))
             final_moles_removed = initial_moles_removed * math.exp(head_loss)
@@ -453,12 +453,12 @@ def make_reactive_transport():
             reaction_block.append('#%s' %(permeate_approach))
             if permeate_approach == 'Linear permeate':
                 reaction_block.append('''
-                #Permeate efficiency parameter: %s
-                #Head loss parameter: %s''' %(permeate_efficiency, head_loss))
+    #Permeate efficiency parameter: %s
+    #Head loss parameter: %s''' %(permeate_efficiency, head_loss))
             reaction_block.append('''
-            #Effluent module %s:
-            #Estimated CF: %s
-            #Estimated solution mass: %s\n\n''' %(module + 1, cumulative_cf, final_solution_mass))
+    #Effluent module %s:
+    #Estimated CF: %s
+    #Estimated solution mass: %s\n\n''' %(module + 1, cumulative_cf, final_solution_mass))
         
     #============================================================
     # the TRANSPORT block is parameterized
@@ -469,7 +469,7 @@ def make_reactive_transport():
     lengths_line = '-lengths\t\t%s' %(cell_length)
     timestep_line = '-time_step\t\t%s\t#the Courant condition is satisfied with the cell_length of %s m and the feed velocity of %s m/s' %(maximal_timestep, cell_length, feed_velocity)
     initial_time_line = '-initial_time\t\t0'    
-    boundary_conditions_line = '-boundary_conditions\tconstant\tconstant \t #Dirichlet boundary condition'
+    boundary_conditions_line = '-boundary_conditions\tconstant\tconstant \t # Dirichlet boundary condition'
     print('The single domain aggregates the concentration polarization and the bulk solution into a single simulated solution. The dual domain separates the concentration polarization and the bulk solution into distinct simulated solutions.')
     single_or_dual_domain = input('''- Will the single or dual domain be simulated?
     Default = < dual >  ;  < single > or < dual > __ ''') or 'dual'
@@ -479,11 +479,11 @@ def make_reactive_transport():
         Default = < dual >  ;  < single > or < dual > __ ''') or 'dual'
         
     if single_or_dual_domain == 'single':
-        domain_line = '-stagnant\t\t0\t0\t0\t0 \t #single domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
+        domain_line = '-stagnant\t\t0\t0\t0\t0 \t # single domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
         
     elif single_or_dual_domain == 'dual':
-        domain_line = '-stagnant\t\t1\t1\t0.1\t0.9 \t #dual domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
-        
+        domain_line = '-stagnant\t\t1\t1\t0.1\t0.9 \t # dual domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
+    
     time_or_distance = input('''- Would you like to examine scaling over module distance,
     or would you like to examine effluent brine over time? < Scaling > or < Brine > __ ''')
     while time_or_distance != 'Scaling' and time_or_distance != 'Brine':
@@ -499,8 +499,7 @@ def make_reactive_transport():
         punch_cells_line = '-punch_cells\t\t%s' %(cells_per_module)
         punch_frequency_line = '-punch_frequency\t1'       
     
-    transport_block.extend((transport_line, cells_line, shifts_line, lengths_line, timestep_line, 
-                           initial_time_line, punch_cells_line, punch_frequency_line))
+    transport_block.extend((transport_line, cells_line, shifts_line, lengths_line, timestep_line, initial_time_line, boundary_conditions_line, domain_line, punch_cells_line, punch_frequency_line))
         
         
 def make_solutions():
@@ -527,7 +526,7 @@ def make_solutions():
     solution_block = []
     announcement = '\nParameterize the feed solution:'
     print(announcement, '\n', '='*len(announcement))
-    solution_description = input('''- What is a description of your feed solution?
+    solution_description = input('''- What is a description of your feed solution? __ 
     Default is none\t''')
     initial_solution_line = '\nSOLUTION 0\t%s' % (solution_description)
     solution_block.append(initial_solution_line)
@@ -537,9 +536,9 @@ def make_solutions():
     water_selections = ['Red Sea', 'Mediterranean Sea', 'German Basin', 'Marcellus Appalachian Basin', 'Bakken Formation', 'Michigan Basin', 'Palo Duro Basin', 'Western Pennsylvannia Basin', 'Custom']   
     for selection in water_selections:
         print('< %s >' %(selection))
-    water_selection = input('- Which water geochemistry would you like to simulate?  __ ')
         
     print('The elemental descriptions of the predefined water bodies are simplified to comform with the most restrictive PHREEQC database, which is the pitzer database. Elements beyond the pitzer database must be manually added to the SOLUTION blocks of the input file. __ ')
+    water_selection = input('- Which water geochemistry would you like to simulate?  __ ')
     while water_selection not in water_selections:
         print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
         water_selection = input('- Which water geochemistry would you like to simulate?')
@@ -604,7 +603,7 @@ def make_solutions():
                 
         #=========================================================================================  
         
-        elif water_selection == 'Marcellus Applachian Basin':
+        elif water_selection == 'Marcellus Appalachian Basin':
             elements = ['Mn', 'Fe', 'B', 'Cl', 'Na', 'S(6)', 'Ca', 'K', 'Mg', 'Sr', 'Ba', 'Li']
             concentrations = ['3000', '26.6', '20', '81900', '39630', '45', '8786', '350','841', '2415', '962', '95']
             units = []
@@ -644,7 +643,7 @@ def make_solutions():
     
         #=========================================================================================    
     
-        elif water_selection == 'Western Pennsylvania Basin':
+        elif water_selection == 'Western Pennsylvannia Basin':
             elements = ['Fe', 'Mn', 'B', 'Cl', 'Na', 'S(6)', 'Ca', 'K', 'Mg', 'Sr', 'Ba', 'Li']
             concentrations = ['90', '15.8', '3.934', '124144', '58500', '4', '19000', '193', '2520', '1470', '815', '45.5']
             units = []
@@ -683,7 +682,7 @@ def make_solutions():
             
         #=========================================================================================  
     
-        elif water_selection == 'Bakken formation':
+        elif water_selection == 'Bakken Formation':
             elements = ['Mn', 'B', 'Cl', 'Na', 'S(6)', 'Ca', 'K', 'Mg', 'Sr', 'Ba', 'Li']
             concentrations = ['9.780', '283', '185979', '84010', '274', '18000', '5570','1620', '1210', '17500', '52.7']
             units = []
@@ -943,7 +942,7 @@ def make_solutions():
 
     water_line = '-water \t %s' %(feed_mass_cell)
     solution_block.append(water_line)
-
+    
     
 def make_equilibrium_phases():
     """
@@ -954,25 +953,33 @@ def make_equilibrium_phases():
     global mineral_formulas
     global selected_minerals
     
-    
     if database_selection == 'pitzer':
         
-        minerals = ['Akermanite', 'Anhydrite', 'Anthophyllite', 'Antigorite', 'Aragonite', 'Arcanite', 'Artinite','Barite', 'Bischofite', 'Bloedite', 'Brucite', 'Burkeite', 'Calcite', 'Carnallite', 'Celestite', 'Chalcedony', 'Chrysotile', 'Diopside', 'Dolomite', 'Enstatite', 'Epsomite', 'Forsterite','Gaylussite', 'Glaserite', 'Glauberite', 'Goergeyite', 'Gypsum', 'Halite', 'Hexahydrite', 'Huntite', 'Kainite',       'Kalicinite', 'Kieserite', 'Labile_S', 'Leonhardite', 'Leonite', 'Magnesite', 'MgCl2_2H2O', 'MgCl2_4H2O', 'Mirabilite', 'Misenite', 'Nahcolite', 'Natron', 'Nesquehonite', 'Pentahydrite', 'Pirssonite', 'Polyhalite', 'Portlandite', 'Quartz', 'Schoenite', 'Sepiolite(d)', 'Sepiolite', 'SiO2(a)', 'Sylvite','Syngenite', 'Talc', 'Thenardite', 'Trona', 'Borax', 'Boric_acid,s', 'KB5O8:4H2O', 'K2B4O7:4H2O', 'NaBO2:4H2O', 'NaB5O8:5H2O', 'Teepleite']
-        
-        mineral_formulas = ['Ca2Mg[Si2O7]', 'CaSO4', '☐Mg2Mg5Si8O22(OH)2', 'Mg48Si34O85(OH)62', 'CaCO3', 'K2SO4', 'Mg2(CO3)(OH)2·3H2O','BaSO4', 'MgCl2·6H2O', 'Na2Mg(SO4)2·4H2O', 'Mg(OH)2', 'Na6(CO3)(SO4)2', 'CaCO3', 'KMgCl3•6(H2O)', 'SrSO4','SiO2', 'Mg3Si2O5(OH)4', 'CaMgSi2O6', 'CaMg(CO3)2', 'MgSiO3', 'MgSO4•7(H2O)', 'Mg2SiO4','Na2Ca(CO3)2•5(H2O)', 'NaK3(SO4)2', 'Na2Ca(SO4)2', 'K2Ca5(SO4)6•(H2O)', 'CaSO4•2(H2O)', 'NaCl', 'MgSO4•6(H2O)', 'CaMg3(CO3)4', 'MgSO4•KCl•3(H2O)','KHCO3', 'MgSO4•(H2O)', 'Na4Ca(SO4)3•2H2O', 'MgSO4•4(H2O)', 'K2Mg(SO4)2•4(H2O)', 'MgCO3', 'MgCl2:2H2O','MgCl2•4H2O', 'Na2SO4•10(H2O)', 'K8H6(SO4)7', 'NaHCO3', 'Na2CO3•10(H2O)', 'Mg(HCO3)(OH)•2(H2O)', 'MgSO4•5(H2O)', 'Na2Ca(CO3)2•2(H2O)', 'K2Ca2Mg(SO4)4•2(H2O)', 'Ca(OH)2', 'SiO2', 'K2Mg(SO4)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)','SiO2', 'KCl', 'K2Ca(SO4)2•(H2O)', 'Mg3Si4O10(OH)2', 'Na2SO4', 'Na3(CO3)(HCO3)•2(H2O)', 'Na2B4O5(OH)4•8(H2O)', 'B(OH)3','KB5O8•4H2O', 'K2B4O7•4H2O', 'NaBO2•4H2O', 'NaB5O8•5H2O', 'Na2B(OH)4Cl']     
+        minerals = ['Akermanite', 'Anhydrite', 'Anthophyllite', 'Antigorite', 'Aragonite', 'Arcanite', 'Artinite', 'Barite', 'Bischofite', 'Bloedite', 'Borax', 'Boric_acid,s', 'Brucite', 'Burkeite', 'Calcite', 'Carnallite', 'Celestite', 'Chalcedony', 'Chrysotile', 'Diopside', 'Dolomite', 'Enstatite', 'Epsomite', 'Forsterite', 'Gaylussite', 'Glaserite', 'Glauberite', 'Goergeyite', 'Gypsum', 'Halite', 'Hexahydrite', 'Huntite', 'K2B4O7:4H2O', 'KB5O8:4H2O', 'Kainite', 'Kalicinite', 'Kieserite', 'Labile_S', 'Leonhardite', 'Leonite', 'Magnesite', 'MgCl2_2H2O', 'MgCl2_4H2O', 'Mirabilite', 'Misenite', 'NaB5O8:5H2O', 'NaBO2:4H2O', 'Nahcolite', 'Natron', 'Nesquehonite', 'Pentahydrite', 'Pirssonite', 'Polyhalite', 'Portlandite', 'Quartz', 'Schoenite', 'Sepiolite', 'Sepiolite(d)', 'SiO2(a)', 'Sylvite', 'Syngenite', 'Talc', 'Teepleite', 'Thenardite', 'Trona']
+            
+        mineral_formulas = ['Ca2Mg[Si2O7]', 'CaSO4', '☐Mg2Mg5Si8O22(OH)2', 'Mg48Si34O85(OH)62', 'CaCO3', 'K2SO4', 'Mg2(CO3)(OH)2·3H2O', 'BaSO4', 'MgCl2·6H2O', 'Na2Mg(SO4)2·4H2O', 'Na2B4O5(OH)4•8(H2O)', 'B(OH)3', 'Mg(OH)2', 'Na6(CO3)(SO4)2', 'CaCO3', 'KMgCl3•6(H2O)', 'SrSO4', 'SiO2', 'Mg3Si2O5(OH)4', 'CaMgSi2O6', 'CaMg(CO3)2', 'MgSiO3', 'MgSO4•7(H2O)', 'Mg2SiO4', 'Na2Ca(CO3)2•5(H2O)', 'NaK3(SO4)2', 'Na2Ca(SO4)2', 'K2Ca5(SO4)6•(H2O)', 'CaSO4•2(H2O)', 'NaCl', 'MgSO4•6(H2O)', 'CaMg3(CO3)4', 'K2B4O7•4H2O', 'KB5O8•4H2O', 'MgSO4•KCl•3(H2O)', 'KHCO3', 'MgSO4•(H2O)', 'Na4Ca(SO4)3•2H2O', 'MgSO4•4(H2O)', 'K2Mg(SO4)2•4(H2O)', 'MgCO3', 'MgCl2:2H2O', 'MgCl2•4H2O', 'Na2SO4•10(H2O)', 'K8H6(SO4)7', 'NaB5O8•5H2O', 'NaBO2•4H2O', 'NaHCO3', 'Na2CO3•10(H2O)', 'Mg(HCO3)(OH)•2(H2O)', 'MgSO4•5(H2O)', 'Na2Ca(CO3)2•2(H2O)', 'K2Ca2Mg(SO4)4•2(H2O)', 'Ca(OH)2', 'SiO2', 'K2Mg(SO4)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'SiO2', 'KCl', 'K2Ca(SO4)2•(H2O)', 'Mg3Si4O10(OH)2', 'Na2B(OH)4Cl', 'Na2SO4', 'Na3(CO3)(HCO3)•2(H2O)']     
         
         
     elif database_selection == 'phreeqc':
         
-        minerals = ['Akermanite', 'Anhydrite', 'Anthophyllite', 'Antigorite', 'Aragonite', 'Arcanite', 'Artinite','Barite', 'Bischofite', 'Bloedite', 'Brucite', 'Burkeite', 'Calcite', 'Carnallite', 'Celestite','Chalcedony', 'Chrysotile', 'Diopside', 'Dolomite', 'Enstatite', 'Epsomite', 'Forsterite','Gaylussite', 'Glaserite', 'Glauberite', 'Goergeyite', 'Gypsum', 'Halite', 'Hexahydrite', 'Huntite', 'Kainite','Kalicinite', 'Kieserite', 'Labile_S', 'Leonhardite', 'Leonite', 'Magnesite', 'MgCl2_2H2O','MgCl2_4H2O', 'Mirabilite', 'Misenite', 'Nahcolite', 'Natron', 'Nesquehonite', 'Pentahydrite','Pirssonite', 'Polyhalite', 'Portlandite', 'Quartz', 'Schoenite', 'Sepiolite(d)', 'Sepiolite', 'SiO2(a)', 'Sylvite','Syngenite', 'Talc', 'Thenardite', 'Trona', 'Borax', 'Boric_acid,s','KB5O8:4H2O', 'K2B4O7:4H2O', 'NaBO2:4H2O', 'NaB5O8:5H2O', 'Teepleite', 'Siderite', 'Rhodochrosite','Strontianite', 'Witherite', 'Hydroxyapatite', 'Fluorite', 'Gibbsite', 'Kaolinite', 'Albite', 'Anorthite','K-feldspar', 'K-mica', 'Chlorite(14A)', 'Ca-Montmorillonite', 'Illite', 'Hematite', 'Goethite', 'Fe(OH)3(a)', 'Pyrite', 'Mackinawite', 'Sulfur', 'Vivianite', 'Pyrolusite', 'Hausmannite','Manganite', 'Pyrochroite'] 
-        
-        mineral_formulas = ['Ca2Mg[Si2O7]', 'CaSO4', '☐Mg2Mg5Si8O22(OH)2', 'Mg48Si34O85(OH)62', 'CaCO3', 'K2SO4', 'Mg2(CO3)(OH)2·3H2O','BaSO4', 'MgCl2·6H2O', 'Na2Mg(SO4)2·4H2O', 'Mg(OH)2', 'Na6(CO3)(SO4)2', 'CaCO3', 'KMgCl3•6(H2O)', 'SrSO4','SiO2', 'Mg3Si2O5(OH)4', 'CaMgSi2O6', 'CaMg(CO3)2', 'MgSiO3', 'MgSO4•7(H2O)', 'Mg2SiO4','Na2Ca(CO3)2•5(H2O)', 'NaK3(SO4)2', 'Na2Ca(SO4)2', 'K2Ca5(SO4)6•(H2O)', 'CaSO4•2(H2O)', 'NaCl', 'MgSO4•6(H2O)', 'CaMg3(CO3)4', 'MgSO4•KCl•3(H2O)','KHCO3', 'MgSO4•(H2O)', 'Na4Ca(SO4)3•2H2O', 'MgSO4•4(H2O)', 'K2Mg(SO4)2•4(H2O)', 'MgCO3', 'MgCl2:2H2O','MgCl2•4H2O', 'Na2SO4•10(H2O)', 'K8H6(SO4)7', 'NaHCO3', 'Na2CO3•10(H2O)', 'Mg(HCO3)(OH)•2(H2O)', 'MgSO4•5(H2O)','Na2Ca(CO3)2•2(H2O)', 'K2Ca2Mg(SO4)4•2(H2O)', 'Ca(OH)2', 'SiO2', 'K2Mg(SO4)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)','SiO2', 'KCl', 'K2Ca(SO4)2•(H2O)', 'Mg3Si4O10(OH)2', 'Na2SO4', 'Na3(CO3)(HCO3)•2(H2O)', 'Na2B4O5(OH)4•8(H2O)', 'B(OH)3','KB5O8•4H2O', 'K2B4O7•4H2O', 'NaBO2•4H2O', 'NaB5O8•5H2O', 'Na2B(OH)4Cl', 'FeCO3', 'MnCO3', 'SrCO3', 'BaCO3', 'Ca5(PO4)3(OH)', 'CaF2', 'Al(OH)3', 'Al2Si2O5(OH)4', 'NaAlSi3O8', 'CaAl2Si2O8','KAlSi3O8', 'KAl3Si3O10(OH)2', 'Mg5Al2Si3O10(OH)8', 'Ca0.165Al2.33Si3.67O10(OH)2', 'K0.6Mg0.25Al2.3Si3.5O10(OH)2','Fe2O3', 'FeO(OH)', 'Fe(OH)3(a)', 'FeS2', 'FeS', 'S', 'Fe3(PO4)2•8H2O', 'MnO2•H2O', 'Mn3O4','MnO(OH)', 'Mn(OH)2']     
+        minerals = ['Al(OH)3(a)', 'Albite', 'Anhydrite', 'Anorthite', 'Aragonite', 'Barite', 'Ca-Montmorillonite', 'Calcite', 'Celestite', 'Chalcedony', 'Chlorite(14A)', 'Chrysotile', 'Dolomite', 'Fe(OH)3(a)', 'FeS(ppt)', 'Fluorite', 'Gibbsite', 'Goethite', 'Gypsum', 'Halite', 'Hausmannite', 'Hematite', 'Hydroxyapatite', 'Illite', 'K-feldspar', 'K-mica', 'Kaolinite', 'Mackinawite', 'Manganite', 'Pyrite', 'Pyrochroite', 'Pyrolusite', 'Quartz', 'Rhodochrosite', 'Sepiolite', 'Sepiolite(d)', 'SiO2(a)', 'Siderite', 'Strontianite', 'Sulfur', 'Sylvite', 'Talc', 'Vivianite', 'Witherite']
+            
+        mineral_formulas = ['Al(OH)3', 'NaAlSi3O8', 'CaSO4', 'CaAl2Si2O8', 'CaCO3', 'BaSO4', 'Ca0.165Al2.33Si3.67O10(OH)2', 'CaCO3', 'SrSO4', 'SiO2', 'Mg5Al2Si3O10(OH)8', 'Mg3Si2O5(OH)4', 'CaMg(CO3)2', 'Fe(OH)3', 'FeS', 'CaF2', 'Al(OH)3', 'FeO(OH)', 'CaSO4•2(H2O)', 'NaCl', 'Mn(II)Mn(III)2O4', 'Fe2O3', 'Ca5(PO4)3(OH)', 'K0.6Mg0.25Al2.3Si3.5O10(OH)2', 'KAlSi3O8', 'KAl3Si3O10(OH)2', 'Al2Si2O5(OH)4', 'FeS', 'MnO(OH)', 'FeS2', 'Mn(OH)2', 'MnO2', 'SiO2', 'MnCO3', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'SiO2', 'FeCO3', 'SrCO3', 'S8', 'KCl', 'Mg3Si4O10(OH)2', 'Fe3(PO4)2•8(H2O)', 'BaCO3']    
         
 
     short_mineral_names = ['Barite', 'Gypsum','Halite', 'Natron', 'Quartz', 'Talc','Trona', 'Borax', 'Albite', 'K-mica','Illite', 'Pyrite', 'Sulfur',]
     
     long_mineral_names = ['Anthophyllite', 'Hexahydrite', 'Leonhardite', 'Nesquehonite', 'Pentahydrite', 'Portlandite','Sepiolite(d)', 'Boric_acid,s', 'K2B4O7:4H2O', 'NaB5O8:5H2O', 'Rhodochrosite', 'Strontianite','Hydroxyapatite', 'Chlorite(14A)', 'Mackinawite', 'Hausmannite', 'Pyrochroite']
     
+    '''cleaned_elements = []
+    for element in elements:
+        element = re.sub('(\(.\))', '', element)
+        element.strip()
+        cleaned_elements.append(element)
+        
+    for mineral in minerals:
+        mineral_index = minerals.index(mineral)
+        if mineral_formulas'''
         
     sorted_minerals = sorted(minerals)
     sorted_mineral_formulas = []
@@ -1014,7 +1021,7 @@ def make_equilibrium_phases():
         
     #=============================================================================
     # establish and edit all minerals for a simulation
-    if mineral_selection == ('All' or 'All but a few'):
+    if mineral_selection in ['All','All but a few']:
         if mineral_selection == 'All':
             mineral_saturation_states = []
             minerals_initial_moles = []
@@ -1175,7 +1182,7 @@ def make_equilibrium_phases():
         
     #=============================================================================
     # establish a simulation with user-defined minerals
-    if mineral_selection == 'Build from scratch':
+    elif mineral_selection == 'Build from scratch':
         mineral_saturation_states = []
         minerals_initial_moles = []
         selected_minerals = []
@@ -1226,7 +1233,7 @@ def make_equilibrium_phases():
             equilibrium_phases_block.append(equilibrium_phases_line)
             mineral = input('- What mineral will you simulate?   __ ')
 
-    if mineral_selection != ('All' or 'All but a few' or 'Build from scratch'):
+    else:
         print('ERROR: The passed EQUILIBRIUM_PHASES scope is beyond the alotted options.')
 
         
@@ -1281,15 +1288,8 @@ def export():
     global input_file_name
     
     complete_lines = chain(general_conditions, solution_block, equilibrium_phases_block, reaction_block, selected_output_block, transport_block) 
-
-    # print the input file
-    printing_block = input('''- Would you like to view your input file? < y > or < n > __ ''')
-    if printing_block == 'y':
-        print('\n\nInput file:\n')
-        for element in complete_lines:
-            print(element)
-            
-    # export the input file
+           
+    # create the export input file
     file_number = 0
     proposed_file_name = '%s_PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, 
                                                                     time_or_distance, file_number)
@@ -1301,8 +1301,15 @@ def export():
             file_number += 1
             input_file_name = '%s_PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, time_or_distance, file_number)
         
-    input_file = open(input_file_name,'w')
+    # printing and exporting the input file
+    printing_block = input('''- Would you like to view your input file? < y > or < n > __ ''')
+    if printing_block == 'y':
+        print('\n\nInput file:\n')
+    
+    input_file = open(input_file_name,'a')
     for line in complete_lines:
+        if printing_block == 'y':
+            print(line)
         input_file.write(line + '\n')
 
     input_file.close()
@@ -1314,9 +1321,12 @@ def execute():
     '''
     global database_selection
     global input_file_name
+    
+    announcement = '\nExecute the input file:'
+    print(announcement, '\n', '='*len(announcement))
     #subprocess.call("start powershell", shell=True)
     working_directory = os.getcwd()
-    phreeqc_path = 'C:\\\"Program Files\"\\USGS\\phreeqc-3.6.2-15100-x64'
+    phreeqc_path = 'C:\\Program Files\\USGS\\phreeqc-3.6.2-15100-x64'
     if input_selection == 'n':
         database_selection = input('''- What database do you select?
         < pitzer > or < phreeqc >  __ ''')
@@ -1327,35 +1337,8 @@ def execute():
             input_file_name = input('What is the input file name?')
             input_path = os.path.join(working_directory, input_file_name)
             
-        if re.search('pqi', input_file_name):
-            output_file_name = re.sub('pqi', 'pqo', input_file_name)
-            #print('input file path\n', input_path)
-            
-        elif re.search('phr', input_file_name):
-            output_file_name = re.sub('phr', 'pqo', input_file_name)
-        
-        else:
-            confirmation = input('Is the passed file a PHREEQC input file? < y > or < n > __ ')
-            while confirmation not in possible_answers:
-                print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
-                confirmation = input('Is the passed file a PHREEQC input file? < y > or < n > __ ')
-
-            if confirmation == 'y':
-                output_file_name = re.sub('(?<=\.)(.+)' , 'pqo', input_file_name)
-            
-            else:
-                while confirmation == 'n':
-                    input_file_name = input('What is the input file name?')
-                    input_path = os.path.join(working_directory, input_file_name)
-                    while not os.path.exists(input_path):
-                        print('''ERROR: The input file path {} does not exist. Provide a valid input file path.'''.format(input_path))
-                        input_file_name = input('What is the input file name?')
-                        input_path = os.path.join(working_directory, input_file_name)
-                    
-                    confirmation = input('Is the passed file a PHREEQC input file? < y > or < n > __ ')
-        
-                output_file_name = re.sub('(?<=\.)(.+)' , 'pqo', input_file_name)
-        
+        output_file_name = re.sub('(?<=\.)(.+)' , 'pqo', input_file_name)
+ 
     else:
         input_path = os.path.join(working_directory, input_file_name)
         output_file_name = re.sub('pqi', 'pqo', input_file_name)
@@ -1363,23 +1346,27 @@ def execute():
     output_path = os.path.join(working_directory, output_file_name)
     bat_path = os.path.join(phreeqc_path, 'bin\\phreeqc.bat')
     database_path = os.path.join(phreeqc_path, 'database\\%s.dat' %(database_selection))        
-    print('input file path\n', '='*len('input file path'), '\n', input_path)
+    print('\ninput file path: {}'.format(input_path))
        
     proc = subprocess.Popen('cmd.exe', stdin=subprocess.PIPE)
-    command = str.encode(bat_path + " \"" + input_path + "\" \"" + output_path + "\"  \"" + database_path + "\"\n") 
+    command = str.encode("\"" + bat_path + "\" \"" + input_path + "\" \"" + output_path + "\"  \"" + database_path + "\"\n") 
     proc.stdin.write(command)
     proc.stdin.close()  
     proc.wait()
 
     if os.path.exists(output_path):
-        if os.path.exists(selected_output_file_name):
-            print('Execution is complete.')
+        if input_selection == 'y':
+            if os.path.exists(selected_output_file_name):
+                print('The execution is complete.')
         
-        else:
-            print('ERROR: The SELECTED_OUTPUT file is missing. The simulation failed to simulate.')
+            else:
+                print('ERROR: The SELECTED_OUTPUT file is missing. The simulation failed to simulate.')
     
+        else:
+            print('The execution is complete.')
+            
     else:
-        print('ERROR: The simulation failed to execute.')
+        print('\nERROR: The simulation failed to execute.')
     
     
 def output_processing():
@@ -1390,11 +1377,20 @@ def output_processing():
     global simulation_cf
     global csv_data
     
-    if input_selection == 'n':
+    announcement = '\nProcess the selected_output file:'
+    print(announcement, '\n', '='*len(announcement))
+    
+    if input_selection == 'n' and execution_selection == 'y':
+        input_file = open(input_file_name, 'r')
+        for line in input_file:
+            if re.search('(-file\s+)', line):
+                selected_output_file_name = re.sub('(-file\s+)', '', line)
+    
+    elif input_selection == 'n' and execution_selection == 'n':
         # import the SELECTED_OUTPUT file   
         selected_output_file_name = input('''- What is the name and\or path of the SELECTED_OUTPUT file?
-        Include the extension, like < .txt >.''')
-        while not os.path.exists(file_name):
+        Include the extension, like < .txt > __ ''')
+        while not os.path.exists(selected_output_file_name):
             print('ERROR: The SELECTED_OUTPUT file is missing from the current directory.')  
             selected_output_file_name = input('What is the name and\or path of the SELECTED_OUTPUT file?')  
         
@@ -1531,7 +1527,7 @@ def make_brine_plot():
         dataframe_title = 'Average elemental molal concentrations of the feed water in the RO module over %s seconds of simulation:' %(total_time)
     
     print('\n\n\n',dataframe_title,'\n%s'%('='*len(dataframe_title)))
-    display(average_concentrations_table)
+    print(average_concentrations_table)
         
     # export the output graphic
     export_option = input('''- Would you like to export the figure? < y > or < n > __ ''')
@@ -1556,14 +1552,14 @@ def make_scaling_plot():
     
     if input_selection == 'n':
         if database == 'pitzer':
-            minerals = ['Akermanite', 'Anhydrite', 'Anthophyllite', 'Antigorite', 'Aragonite', 'Arcanite', 'Artinite','Barite', 'Bischofite', 'Bloedite', 'Brucite', 'Burkeite', 'Calcite', 'Carnallite', 'Celestite','Chalcedony', 'Chrysotile', 'Diopside', 'Dolomite', 'Enstatite', 'Epsomite', 'Forsterite','Gaylussite', 'Glaserite', 'Glauberite', 'Goergeyite', 'Gypsum', 'Halite', 'Hexahydrite', 'Huntite', 'Kainite','Kalicinite', 'Kieserite', 'Labile_S', 'Leonhardite', 'Leonite', 'Magnesite', 'MgCl2_2H2O','MgCl2_4H2O', 'Mirabilite', 'Misenite', 'Nahcolite', 'Natron', 'Nesquehonite', 'Pentahydrite','Pirssonite', 'Polyhalite', 'Portlandite', 'Quartz', 'Schoenite', 'Sepiolite(d)', 'Sepiolite', 'SiO2(a)', 'Sylvite','Syngenite', 'Talc', 'Thenardite', 'Trona', 'Borax', 'Boric_acid,s','KB5O8:4H2O', 'K2B4O7:4H2O', 'NaBO2:4H2O', 'NaB5O8:5H2O', 'Teepleite']
+            minerals = ['Akermanite', 'Anhydrite', 'Anthophyllite', 'Antigorite', 'Aragonite', 'Arcanite', 'Artinite', 'Barite', 'Bischofite', 'Bloedite', 'Borax', 'Boric_acid,s', 'Brucite', 'Burkeite', 'Calcite', 'Carnallite', 'Celestite', 'Chalcedony', 'Chrysotile', 'Diopside', 'Dolomite', 'Enstatite', 'Epsomite', 'Forsterite', 'Gaylussite', 'Glaserite', 'Glauberite', 'Goergeyite', 'Gypsum', 'Halite', 'Hexahydrite', 'Huntite', 'K2B4O7:4H2O', 'KB5O8:4H2O', 'Kainite', 'Kalicinite', 'Kieserite', 'Labile_S', 'Leonhardite', 'Leonite', 'Magnesite', 'MgCl2_2H2O', 'MgCl2_4H2O', 'Mirabilite', 'Misenite', 'NaB5O8:5H2O', 'NaBO2:4H2O', 'Nahcolite', 'Natron', 'Nesquehonite', 'Pentahydrite', 'Pirssonite', 'Polyhalite', 'Portlandite', 'Quartz', 'Schoenite', 'Sepiolite', 'Sepiolite(d)', 'SiO2(a)', 'Sylvite', 'Syngenite', 'Talc', 'Teepleite', 'Thenardite', 'Trona']
             
-            mineral_formulas = ['Ca2Mg[Si2O7]', 'CaSO4', '☐Mg2Mg5Si8O22(OH)2', 'Mg48Si34O85(OH)62', 'CaCO3', 'K2SO4', 'Mg2(CO3)(OH)2·3H2O','BaSO4', 'MgCl2·6H2O', 'Na2Mg(SO4)2·4H2O', 'Mg(OH)2', 'Na6(CO3)(SO4)2', 'CaCO3', 'KMgCl3•6(H2O)', 'SrSO4','SiO2', 'Mg3Si2O5(OH)4', 'CaMgSi2O6', 'CaMg(CO3)2', 'MgSiO3', 'MgSO4•7(H2O)', 'Mg2SiO4','Na2Ca(CO3)2•5(H2O)', 'NaK3(SO4)2', 'Na2Ca(SO4)2', 'K2Ca5(SO4)6•(H2O)', 'CaSO4•2(H2O)', 'NaCl', 'MgSO4•6(H2O)', 'CaMg3(CO3)4', 'MgSO4•KCl•3(H2O)','KHCO3', 'MgSO4•(H2O)', 'Na4Ca(SO4)3•2H2O', 'MgSO4•4(H2O)', 'K2Mg(SO4)2•4(H2O)', 'MgCO3', 'MgCl2:2H2O','MgCl2•4H2O', 'Na2SO4•10(H2O)', 'K8H6(SO4)7', 'NaHCO3', 'Na2CO3•10(H2O)', 'Mg(HCO3)(OH)•2(H2O)', 'MgSO4•5(H2O)','Na2Ca(CO3)2•2(H2O)', 'K2Ca2Mg(SO4)4•2(H2O)', 'Ca(OH)2', 'SiO2', 'K2Mg(SO4)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)','SiO2', 'KCl', 'K2Ca(SO4)2•(H2O)', 'Mg3Si4O10(OH)2', 'Na2SO4', 'Na3(CO3)(HCO3)•2(H2O)', 'Na2B4O5(OH)4•8(H2O)', 'B(OH)3','KB5O8•4H2O', 'K2B4O7•4H2O', 'NaBO2•4H2O', 'NaB5O8•5H2O', 'Na2B(OH)4Cl']     
+            mineral_formulas = ['Ca2Mg[Si2O7]', 'CaSO4', '☐Mg2Mg5Si8O22(OH)2', 'Mg48Si34O85(OH)62', 'CaCO3', 'K2SO4', 'Mg2(CO3)(OH)2·3H2O', 'BaSO4', 'MgCl2·6H2O', 'Na2Mg(SO4)2·4H2O', 'Na2B4O5(OH)4•8(H2O)', 'B(OH)3', 'Mg(OH)2', 'Na6(CO3)(SO4)2', 'CaCO3', 'KMgCl3•6(H2O)', 'SrSO4', 'SiO2', 'Mg3Si2O5(OH)4', 'CaMgSi2O6', 'CaMg(CO3)2', 'MgSiO3', 'MgSO4•7(H2O)', 'Mg2SiO4', 'Na2Ca(CO3)2•5(H2O)', 'NaK3(SO4)2', 'Na2Ca(SO4)2', 'K2Ca5(SO4)6•(H2O)', 'CaSO4•2(H2O)', 'NaCl', 'MgSO4•6(H2O)', 'CaMg3(CO3)4', 'K2B4O7•4H2O', 'KB5O8•4H2O', 'MgSO4•KCl•3(H2O)', 'KHCO3', 'MgSO4•(H2O)', 'Na4Ca(SO4)3•2H2O', 'MgSO4•4(H2O)', 'K2Mg(SO4)2•4(H2O)', 'MgCO3', 'MgCl2:2H2O', 'MgCl2•4H2O', 'Na2SO4•10(H2O)', 'K8H6(SO4)7', 'NaB5O8•5H2O', 'NaBO2•4H2O', 'NaHCO3', 'Na2CO3•10(H2O)', 'Mg(HCO3)(OH)•2(H2O)', 'MgSO4•5(H2O)', 'Na2Ca(CO3)2•2(H2O)', 'K2Ca2Mg(SO4)4•2(H2O)', 'Ca(OH)2', 'SiO2', 'K2Mg(SO4)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'SiO2', 'KCl', 'K2Ca(SO4)2•(H2O)', 'Mg3Si4O10(OH)2', 'Na2B(OH)4Cl', 'Na2SO4', 'Na3(CO3)(HCO3)•2(H2O)']     
 
         if database == 'phreeqc':
-            minerals = ['Akermanite', 'Anhydrite', 'Anthophyllite', 'Antigorite', 'Aragonite', 'Arcanite', 'Artinite','Barite', 'Bischofite', 'Bloedite', 'Brucite', 'Burkeite', 'Calcite', 'Carnallite', 'Celestite','Chalcedony', 'Chrysotile', 'Diopside', 'Dolomite', 'Enstatite', 'Epsomite', 'Forsterite','Gaylussite', 'Glaserite', 'Glauberite', 'Goergeyite', 'Gypsum', 'Halite', 'Hexahydrite', 'Huntite', 'Kainite','Kalicinite', 'Kieserite', 'Labile_S', 'Leonhardite', 'Leonite', 'Magnesite', 'MgCl2_2H2O','MgCl2_4H2O', 'Mirabilite', 'Misenite', 'Nahcolite', 'Natron', 'Nesquehonite', 'Pentahydrite','Pirssonite', 'Polyhalite', 'Portlandite', 'Quartz', 'Schoenite', 'Sepiolite(d)', 'Sepiolite', 'SiO2(a)', 'Sylvite','Syngenite', 'Talc', 'Thenardite', 'Trona', 'Borax', 'Boric_acid,s','KB5O8:4H2O', 'K2B4O7:4H2O', 'NaBO2:4H2O', 'NaB5O8:5H2O', 'Teepleite']
+            minerals = ['Al(OH)3(a)', 'Albite', 'Anhydrite', 'Anorthite', 'Aragonite', 'Barite', 'Ca-Montmorillonite', 'Calcite', 'Celestite', 'Chalcedony', 'Chlorite(14A)', 'Chrysotile', 'Dolomite', 'Fe(OH)3(a)', 'FeS(ppt)', 'Fluorite', 'Gibbsite', 'Goethite', 'Gypsum', 'Halite', 'Hausmannite', 'Hematite', 'Hydroxyapatite', 'Illite', 'K-feldspar', 'K-mica', 'Kaolinite', 'Mackinawite', 'Manganite', 'Pyrite', 'Pyrochroite', 'Pyrolusite', 'Quartz', 'Rhodochrosite', 'Sepiolite', 'Sepiolite(d)', 'SiO2(a)', 'Siderite', 'Strontianite', 'Sulfur', 'Sylvite', 'Talc', 'Vivianite', 'Witherite']
             
-            mineral_formulas = ['Ca2Mg[Si2O7]', 'CaSO4', '☐Mg2Mg5Si8O22(OH)2', 'Mg48Si34O85(OH)62', 'CaCO3', 'K2SO4', 'Mg2(CO3)(OH)2·3H2O','BaSO4', 'MgCl2·6H2O', 'Na2Mg(SO4)2·4H2O', 'Mg(OH)2', 'Na6(CO3)(SO4)2', 'CaCO3', 'KMgCl3•6(H2O)', 'SrSO4','SiO2', 'Mg3Si2O5(OH)4', 'CaMgSi2O6', 'CaMg(CO3)2', 'MgSiO3', 'MgSO4•7(H2O)', 'Mg2SiO4','Na2Ca(CO3)2•5(H2O)', 'NaK3(SO4)2', 'Na2Ca(SO4)2', 'K2Ca5(SO4)6•(H2O)', 'CaSO4•2(H2O)', 'NaCl', 'MgSO4•6(H2O)', 'CaMg3(CO3)4', 'MgSO4•KCl•3(H2O)','KHCO3', 'MgSO4•(H2O)', 'Na4Ca(SO4)3•2H2O', 'MgSO4•4(H2O)', 'K2Mg(SO4)2•4(H2O)', 'MgCO3', 'MgCl2:2H2O','MgCl2•4H2O', 'Na2SO4•10(H2O)', 'K8H6(SO4)7', 'NaHCO3', 'Na2CO3•10(H2O)', 'Mg(HCO3)(OH)•2(H2O)', 'MgSO4•5(H2O)','Na2Ca(CO3)2•2(H2O)', 'K2Ca2Mg(SO4)4•2(H2O)', 'Ca(OH)2', 'SiO2', 'K2Mg(SO4)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)','SiO2', 'KCl', 'K2Ca(SO4)2•(H2O)', 'Mg3Si4O10(OH)2', 'Na2SO4', 'Na3(CO3)(HCO3)•2(H2O)', 'Na2B4O5(OH)4•8(H2O)', 'B(OH)3','KB5O8•4H2O', 'K2B4O7•4H2O', 'NaBO2•4H2O', 'NaB5O8•5H2O', 'Na2B(OH)4Cl']     
+            mineral_formulas = ['Al(OH)3', 'NaAlSi3O8', 'CaSO4', 'CaAl2Si2O8', 'CaCO3', 'BaSO4', 'Ca0.165Al2.33Si3.67O10(OH)2', 'CaCO3', 'SrSO4', 'SiO2', 'Mg5Al2Si3O10(OH)8', 'Mg3Si2O5(OH)4', 'CaMg(CO3)2', 'Fe(OH)3', 'FeS', 'CaF2', 'Al(OH)3', 'FeO(OH)', 'CaSO4•2(H2O)', 'NaCl', 'Mn(II)Mn(III)2O4', 'Fe2O3', 'Ca5(PO4)3(OH)', 'K0.6Mg0.25Al2.3Si3.5O10(OH)2', 'KAlSi3O8', 'KAl3Si3O10(OH)2', 'Al2Si2O5(OH)4', 'FeS', 'MnO(OH)', 'FeS2', 'Mn(OH)2', 'MnO2', 'SiO2', 'MnCO3', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'SiO2', 'FeCO3', 'SrCO3', 'S8', 'KCl', 'Mg3Si4O10(OH)2', 'Fe3(PO4)2•8(H2O)', 'BaCO3']    
     
     # the complete list of all minerals is created
     csv_minerals = []
@@ -1804,7 +1800,7 @@ def export_plot():
     else:
         export_name = input('''- What is the name of your export figure?
         Omit < . > and < \ > in the name.
-        Default = %s, %s''' %(plot_title,mineral)) or '%s, %s' %(basic_file_name, mineral)
+        Default = %s, %s''' %(plot_title, mineral)) or '%s, %s' %(plot_title, mineral)
         while re.search('(\.|\\)',export_name):
             print('''ERROR: Remove < . > and < \ > from the figure name.''')  
             export_name = input('- What will be the name of your export figure?')
@@ -1868,8 +1864,8 @@ def process_selected_output():
         simulation_perspective = time_or_distance
         database = database_selection 
         
-    graphical_selection = input('''- Would you like to view the output brine or the module scaling?
-    < Brine > or < Scaling >''')
+    graphical_selection = input('''- Would you like to view the effluent brine or the module scaling from your {}simulation?
+    < Brine > or < Scaling >''').format(time_or_distance)
     while graphical_selection != 'Brine' and graphical_selection != 'Scaling':
         print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
         graphical_selection = input('''- Would you like to view brine over time in the module < Brine > , 
