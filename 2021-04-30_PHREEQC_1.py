@@ -49,12 +49,13 @@ def make_general_conditions():
     # parameterize the input file
     announcement = 'Parameterize your PHREEQC path:'
     print(announcement, '\n', '='*len(announcement))
+    operating_systems = ['Windows', 'Mac', 'Linux']
     windows_or_mac =  input('''- Is your computer operating system windows, mac, or linux?
-    < Windows >, < Mac >, or < Linux >   __ ''') 
-    while windows_or_mac not in ('Windows', 'Mac', 'Linux'):
+    < {} >, < {} >, or < {} >   __ '''.format(operating_systems[0], operating_systems[1], operating_systems[2])) 
+    while windows_or_mac not in operating_systems:
         print('''ERROR: The entered directory does not exist on your computer. Please reconstitute the PHREEQC directory.''')
         windows_or_mac =  input('''- Is your computer operating system windows, mac, or linux?
-        < Windows >, < Mac >, or < Linux >   __ ''') 
+        < {} >, < {} >, or < {} >   __ '''.format(operating_systems[0]. operating_systems[1], operating_systems[2])) 
     
     if windows_or_mac == 'Windows':
         described_databases = ['pitzer', 'phreeqc']
@@ -71,13 +72,12 @@ def make_general_conditions():
         
     databases = ['pitzer', 'phreeqc', 'Amm', 'ColdChem', 'core10', 'frezchem', 'iso', 'llnl', 'minteq', 'minteq.v4', 'sit', 'Tipping_Hurley', 'wateq4f']
 
-    for database in databases:
+    print('Databases\n', '-'*len('Databases'))
+    for database in described_databases:
         print('< %s >\t' %(database))
         
-    database_selection = input('- What database do you select?   __ ')
-    while database_selection not in databases:
-        print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
-        database_selection = input('- What database do you select?   __ ')
+    database_selection = input('''- What database do you select?
+    Default = < pitzer >  __ ''') or 'pitzer
         
     while database_selection not in described_databases:
         print('''The database is not current defined in this interface.
@@ -339,8 +339,8 @@ def make_reactive_transport():
             if iteration == 0:
                 initial_moles_cell = feed_moles_cell
             #print('\nInitial moles:\n', initial_moles_cell)
-            print('''Permeate efficiency (PE):
-    The PE represents compromised module flux from pre-existing fouling. PE = 0 denotes complete fouling of the module, and thus the absence of permeate flux. PE = 1 denotes the absence of fouling, and thus unabated permeate flux.\n''')
+            print('''\nPermeate efficiency (PE):
+    The PE represents compromised module flux from pre-existing fouling. PE = 0 denotes complete fouling of the module, and thus the absence of permeate flux. PE = 1 denotes the absence of fouling, and thus unabated permeate flux.''')
             while True:
                 permeate_efficiency = input('''- What is the PE for this module? 
                 Default = 1  ;  (0 < PE < 1)  __ ''')
@@ -355,7 +355,7 @@ def make_reactive_transport():
                         print('''Provide a numerical parameter.''')  
                         permeate_efficiency = input('''What is the PE for this module?''') 
                     
-            print('''Head loss (HL): 
+            print('''\nHead loss (HL): 
     The HL represents the decrease in fluid pressure over the RO module distance. HL = -10 denotes a 10-log reduction in pressure at the end relative to the beginning of the module. HL = 0 denotes a homogeneous pressure throughout the module.''') 
             while True:
                 head_loss = input('''- What is the Head loss through this module? 
@@ -455,8 +455,7 @@ def make_reactive_transport():
                 reaction_block.append('''
     #Permeate efficiency parameter: %s
     #Head loss parameter: %s''' %(permeate_efficiency, head_loss))
-            reaction_block.append('''
-    #Effluent module %s:
+            reaction_block.append('''    #Effluent module %s:
     #Estimated CF: %s
     #Estimated solution mass: %s\n\n''' %(module + 1, cumulative_cf, final_solution_mass))
         
@@ -467,7 +466,7 @@ def make_reactive_transport():
     cells_line = '-cells\t\t\t%s' %(cells_per_module)
     shifts_line = '-shifts\t\t\t%s' %(simulation_shifts)
     lengths_line = '-lengths\t\t%s' %(cell_length)
-    timestep_line = '-time_step\t\t%s\t#the Courant condition is satisfied with the cell_length of %s m and the feed velocity of %s m/s' %(maximal_timestep, cell_length, feed_velocity)
+    timestep_line = '-time_step\t\t%s\t# the Courant condition is satisfied with the cell_length of %s m and the feed velocity of %s m/s' %(maximal_timestep, cell_length, feed_velocity)
     initial_time_line = '-initial_time\t\t0'    
     boundary_conditions_line = '-boundary_conditions\tconstant\tconstant \t # Dirichlet boundary condition'
     print('The single domain aggregates the concentration polarization and the bulk solution into a single simulated solution. The dual domain separates the concentration polarization and the bulk solution into distinct simulated solutions.')
@@ -485,11 +484,12 @@ def make_reactive_transport():
         domain_line = '-stagnant\t\t1\t1\t0.1\t0.9 \t # dual domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
     
     time_or_distance = input('''- Would you like to examine scaling over module distance,
-    or would you like to examine effluent brine over time? < Scaling > or < Brine > __ ''')
+    or would you like to examine effluent brine over time?
+    Default = < Scaling >  ;  < Scaling > or < Brine > __ ''') or 'Scaling'
     while time_or_distance != 'Scaling' and time_or_distance != 'Brine':
         print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
         time_or_distance = input('''- Would you like to examine scaling or effluent brine?
-        < Scaling > or < Brine > __ ''')
+        Default = < Scaling >  ;  < Scaling > or < Brine > __ ''') or 'Scaling'
         
     if time_or_distance == 'Scaling':
         punch_cells_line = '-punch_cells\t\t1-%s' %(cells_per_module)
@@ -741,11 +741,12 @@ def make_solutions():
     
         # create the temperature line of the input file
         solution_temperature = input('''- What is the solution temperature? 
-        Default = 25 (K)\t''') or str(25)
+        Default = 25 (K) __  ''') or str(25)
         temperature_line = 'temp \t %s' %(solution_temperature)
 
         # create the pH line of the input file
-        solution_ph = input('- What is the solution pH?')
+        solution_ph = input('''- What is the solution pH?
+        Default = 7.0  __ ''') or str(7)
         error = 'yes'
         while error == 'yes':
             try:
@@ -754,10 +755,11 @@ def make_solutions():
             except:
                 print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
                 solution_ph = input('- What is the solution pH?')
-        ph_charge_balance = input('''Should the pH be charge balanced? < y > or < n > __ ''')
+        ph_charge_balance = input('''Should the pH be charge balanced? 
+        Default = < n >  ;  < y > or < n > __ ''') or 'n'
         if ph_charge_balance == 'y':
             solution_ph += '\tcharge'
-        while ph_charge_balance not in ('n', 'y'):
+        while ph_charge_balance not in possible_answers:
             print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
             ph_charge_balance = input('''- Should the pH be charge balanced? < y > or < n > __ ''')
             
@@ -765,32 +767,33 @@ def make_solutions():
 
         # create the pe line of the input file
         solution_pe = input('''- What is the solution pe (-log(electron activity))? 
-        Default = 4.0\t''') or str(4)
+        Default = 4.0  __  ''') or str(4)
         while not solution_pe.isnumeric():
             print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
             solution_pe = input('''- What is the solution pe (-log(electron activity))? 
-            Default = 4.0\t''') or str(4)
+            Default = 4.0 __  ''') or str(4)
             
         pe_charge_balance = input('''- Should the pe phase be balanced? 
-        Default = < n >
-        < y > or < n > __ ''') or 'n'
+        Default = < n >  ;  < y > or < n > __ ''') or 'n'
         pe_charge = ''
         if pe_charge_balance == 'y':
             pe_phase = input('- What is the balanced phase name?')
             pe_phase_index = input('''- What is the phase saturation index?
-            Default = 0\t''') or str(0)
+            Default = 0  __ ''') or str(0)
             pe_charge = ' %s %s' %(pe_phase, pe_phase_index)
             
         pe_line = 'pe \t ' + solution_pe + pe_charge
 
         # create the redox line of the input file      
         solution_redox = input('''- Is a special pe calculated via a redox reaction? 
-        Default = < n >
-        < y > or < n > __ ''') or 'n'
+        Default = < n >  ; < y > or < n > __ ''') or 'n'
         if solution_redox == 'y':
             redox_couple = input('''- What is the redox couple?
             e.g. O(-2)/O(0) for oxygen with (-2) and (0) oxidation states\t''')
             redox_line = 'redox \t\t ' + redox_couple
+            
+        else:
+            redox_line = ''
 
         # create the units line of the input file        
         unit_numerators = ['mg', 'ug', 'mmol', 'umol'] 
@@ -809,6 +812,8 @@ def make_solutions():
         Default = mmol/kgw\t''') or 'mmol/kgw'
         if re.search('(\/)', solution_units):
             numerator, denominator = solution_units.split('/')
+            numerator = numerator.strip()
+            denominator = denominator.strip()
             while numerator not in unit_numerators or denominator not in unit_denominators:
                 print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
                 solution_units = input('- What are the concentration units of your solution?   __ ')
@@ -816,12 +821,12 @@ def make_solutions():
 
         # create the units line of the input file        
         solution_density = input('''- What is the solution density? 
-        Default = 1 (kg/L)\t''') or str(1)
+        Default = 1 (kg/L)  __  ''') or str(1)
         while not solution_pe.isnumeric():
             print('''ERROR: The entry is beyond the accepted values. 
             Please provide an accepted value''')
             solution_density = input('''- What is the solution density? 
-            Default = 1 (kg/L)\t''') or str(1)
+            Default = 1 (kg/L)  __  ''') or str(1)
         density_line = 'density\t ' + solution_density
         
         # add the created lines to the SOLUTION block
@@ -840,11 +845,13 @@ def make_solutions():
                     print('< %s >' %(possible_element), '\t\t', database_species[database_elements.index(possible_element)])                 
             element = input('''- What element will you simulate?
             Type < done > when you have finished parameterizing elements.   __ ''')
-            if element == 'done':
-                elemental_addition = 'n'
-            while element not in database_elements:
+            while element not in database_elements and element != 'done':
                 print('''The element is not supported by the %s database. A Solution_Master must be defined for the %s element''' %(database_selection, element))  
-                element = input('- What element will you simulate?\t')
+                element = input('- What element will you simulate?  __ ')
+                
+            if element == 'done':
+                break
+                
             elements.append(element)
 
             element_concentration = input('- What is the elemental concentration?')
@@ -853,24 +860,24 @@ def make_solutions():
                 element_concentration = input('- What is the elemental concentration?   __ ')
                 
             special_element_unit = input('''- Are the units different than is previously defined?
-            Default = < n >
-            < y > or < n > __ ''') or 'n'
+            Default = < n >  ; < y > or < n > __ ''') or 'n'
             if special_element_unit == 'y':
                 element_unit = input('''- What is the element unit?
                 numerator = < mg >, < ug >, < mmol >, < umol > 
                 Denominator = < /L >, < /kgs> (kilograms), < /kgw > (kilograms of water) OR < ppt > (part per thousand), < ppm >, < ppb >
-                Default = mmol/kgw\t''')
+                Default = mmol/kgw  __  ''') or 'mmol/kgw'
             elif special_element_unit == 'n':
                 element_unit = ''
                 
             elemental_formula_selection = input('''- Is the formula different than the provided compound?
-            < y > or < n > ; Default = < n >\t''') or 'n'
+            < y > or < n > ; Default = < n >  __  ''') or 'n'
             if elemental_formula_selection == 'y':
-                elemental_formula = input('- What is the molecular formula of the compound?\t')
+                elemental_formula = input('- What is the molecular formula of the compound?  __ ')
             elif elemental_formula_selection == 'n':
                 elemental_formula = database_species[database_elements.index(element)]
                 
-            possible_elemental_comment = input('''- Does the elemental information have associated commentary or a reference? < y > or < n > __ ''')
+            possible_elemental_comment = input('''- Does the elemental information have associated commentary or a reference? 
+    < y > or < n > __ ''')
             element_comment = ''
             if possible_elemental_comment == 'y':
                 elemental_comment = input('- What is the comment or reference?   __ ')
@@ -880,7 +887,8 @@ def make_solutions():
             else:
                 while possible_elemental_comment not in ('y' or 'n'):
                     print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
-                    possible_elemental_comment = input('''- Does the elemental information have associated commentary or a reference? < y > or < n > __ ''')
+                    possible_elemental_comment = input('''- Does the elemental information have associated commentary or a reference? 
+    < y > or < n > __ ''')
                 
             if len(element_concentration) > 3 or element == 'Alkalinity':
                 if elemental_formula in long_element_species:
@@ -894,28 +902,26 @@ def make_solutions():
                     element_line = '%s\t%s %s\t\tas %s\t\t%s'  %(element, element_concentration, element_unit, elemental_formula, element_comment)   
                     
             solution_block.append(element_line)
-
     
     
         #creating the elemental lines of the input file   
-        solution_isotope = input('''- Are exceptional elemental isotopes used? 
-        Default = < n >
-        < y > or < n >  __''') or 'n'                      
+        solution_isotope = input('''- Are exceptional elemental isotopes used in the simulation? 
+        Default = < n >  ; < y > or < n >  __ ''') or 'n'                      
         if solution_isotope == 'y':
             isotope_mass = input('''- What is the isotopic mass? (amu)\t''')
             isotope_element = input('''- What is the elemental symbol of the isotope?
-            e.g. < C > or < Si >\t''')
+            e.g. < C > or < Si >  __  ''')
             isotope_line = '-isotope\t' + isotope_mass + isotope_element
             solution_block.append(isotope_line)
 
 
         #defining the mass of water
         water_mass = input('''- What is the mass of water in the simulation?
-        Default = 1 (kg)\t''') or str(1)  
+        Default = 1 (kg)  __  ''') or str(1)  
         while not water_mass.isnumeric():
             print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
             water_mass = input('''- What is the mass of water in the simulation?
-            Default = 1 (kg)\t''') or str(1)  
+            Default = 1 (kg)  __  ''') or str(1)  
 
         water_line = '-water \t ' + water_mass
         solution_block.append(water_line)
@@ -923,6 +929,9 @@ def make_solutions():
 
         #looping to the next element in the simulation
         elemental_addition = input('''- Will you parameterize another element? < y > or < n > __ ''')
+        while elemental_addition not in possible_answers:
+            print('ERROR: Provide one of the provided answers')
+            elemental_addition = input('''- Will you parameterize another element? < y > or < n > __ ''')
         
     else:
         print('''ERROR: The water selection exceeds the possible options. Examine the passed entry.''')
@@ -971,21 +980,36 @@ def make_equilibrium_phases():
     
     long_mineral_names = ['Anthophyllite', 'Hexahydrite', 'Leonhardite', 'Nesquehonite', 'Pentahydrite', 'Portlandite','Sepiolite(d)', 'Boric_acid,s', 'K2B4O7:4H2O', 'NaB5O8:5H2O', 'Rhodochrosite', 'Strontianite','Hydroxyapatite', 'Chlorite(14A)', 'Mackinawite', 'Hausmannite', 'Pyrochroite']
     
-    '''cleaned_elements = []
+    cleaned_elements = []
     for element in elements:
         element = re.sub('(\(.\))', '', element)
         element.strip()
         cleaned_elements.append(element)
-        
+
+    remaining_characters = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '(', ')', 'I', '•']
+    permitted_auxillary_reagents = ['OH', 'H2O','O']
+
+    undescribed_minerals = []
+    described_minerals = []
+    formulas = []
+    described_mineral_formulas = []
     for mineral in minerals:
         mineral_index = minerals.index(mineral)
-        if mineral_formulas'''
+        mineral_formula = mineral_formulas[mineral_index]
+        formulas.append(mineral_formula)
+
+        for element in cleaned_elements:
+            if re.search(element, mineral_formula):
+                mineral_formula = re.sub(element, '', mineral_formula)
+
+        for reagent in permitted_auxillary_reagents:
+            if re.search(reagent, mineral_formula):
+                mineral_formula = re.sub(reagent, '', mineral_formula)
+
+        if all(character in remaining_characters for character in mineral_formula):
+            described_minerals.append(mineral)
+            described_mineral_formulas.append(formulas[-1])
         
-    sorted_minerals = sorted(minerals)
-    sorted_mineral_formulas = []
-    for mineral in sorted_minerals:
-        sorted_formula = mineral_formulas[minerals.index(mineral)]
-        sorted_mineral_formulas.append(sorted_formula)
 
     #============================================================================
     # create the initial line of the equilibrium phases block
@@ -1002,19 +1026,21 @@ def make_equilibrium_phases():
 
     # determine which predefined set of minerals should be simulated
     mineral_selections = ['All', 'All but a few', 'Build from scratch']
-    print('''\nMineral options for the < %s > database: \nmineral\t\t\tcompound''' %(database_selection))  
+    print('''\nMineral options for the < %s > database and the parameters from < %s > elements:
+mineral\t\t\tcompound''' %(database_selection, water_selection))  
     print('--------------------------------------')
-    for possible_mineral in sorted_minerals:
+    for possible_mineral in described_minerals:
         if possible_mineral in short_mineral_names:
-            print('%s' %(possible_mineral), '\t\t\t', sorted_mineral_formulas[sorted_minerals.index(possible_mineral)])  
+            print('%s' %(possible_mineral), '\t\t\t', described_mineral_formulas[described_minerals.index(possible_mineral)])  
         elif possible_mineral == 'Ca-Montmorillonite':
-            print('%s' %(possible_mineral), '\t', sorted_mineral_formulas[sorted_minerals.index(possible_mineral)])  
+            print('%s' %(possible_mineral), '\t', described_mineral_formulas[described_minerals.index(possible_mineral)])  
         else:
-            print('%s' %(possible_mineral), '\t\t', sorted_mineral_formulas[sorted_minerals.index(possible_mineral)])
+            print('%s' %(possible_mineral), '\t\t', described_mineral_formulas[described_minerals.index(possible_mineral)])
     for selection in mineral_selections:
         print('\n< %s >' %(selection))
         
-    mineral_selection = input('- Which selection of minerals would you like to simulate?  __ ')
+    mineral_selection = input('''- Which selection of minerals would you like to simulate?
+    Default = 'All'  __ ''')
     while mineral_selection not in mineral_selections:
         print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
         mineral_selection = input('- Which selection of minerals would you like to simulate?   __ ')
@@ -1025,17 +1051,19 @@ def make_equilibrium_phases():
         if mineral_selection == 'All':
             mineral_saturation_states = []
             minerals_initial_moles = []
-            selected_minerals = sorted_minerals
+            selected_minerals = described_minerals
             i = 0
             while i <= len(minerals):
                 mineral_saturation_states.append(0)
                 minerals_initial_moles.append(0)
                 i += 1
 
-            possible_saturation_states = input('''- Do any minerals possess a non-zero saturation index? < y > or < n > __ ''')
+            possible_saturation_states = input('''- Do any minerals possess a non-zero saturation index? < y > or < n > 
+    Default = < n >  __ ''') or 'n'
             while possible_saturation_states not in possible_answers:
                 print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
-                possible_saturation_states = input('''- Do any minerals possess a non-zero saturation index? < y > or < n > __ ''')
+                possible_saturation_states = input('''- Do any minerals possess a non-zero saturation index? < y > or < n > 
+    Default = 'n'  __ ''') or 'n'
             if possible_saturation_states == 'y':
                 print('\nYour selected minerals:')
                 for mineral in minerals:
@@ -1062,7 +1090,8 @@ def make_equilibrium_phases():
                 pass
 
 
-            preexisting_minerals = input('''- Do any minerals currently exist in the module? < y > or < n > __ ''')
+            preexisting_minerals = input('''- Do any minerals currently exist in the module? 
+    Default = 'n'  ; < y > or < n > __ ''')
             if preexisting_minerals == 'y':
                 print('\nYour selected minerals:')
                 for mineral in selected_minerals:
@@ -1097,7 +1126,7 @@ def make_equilibrium_phases():
         elif mineral_selection == 'All but a few':
             mineral_saturation_states = []
             minerals_initial_moles = []
-            selected_minerals = sorted_minerals
+            selected_minerals = described_minerals
             i = 0
             while i <= len(selected_minerals):
                 mineral_saturation_states.append(0)
@@ -1188,13 +1217,13 @@ def make_equilibrium_phases():
         selected_minerals = []
         
         print('''Mineral options for the < %s > database: \n< mineral >\t\tcompound''' %(database_selection))
-        for possible_mineral in sorted_minerals:
+        for possible_mineral in described_minerals:
             if possible_mineral in long_mineral_names or possible_mineral == 'Ca-Montmorillonite':
-                print('< %s >' %(possible_mineral), '\t', mineral_formulas[sorted_minerals.index(possible_mineral)])
+                print('< %s >' %(possible_mineral), '\t', mineral_formulas[described_minerals.index(possible_mineral)])
             elif possible_mineral in short_mineral_names:
-                print('< %s >' %(possible_mineral), '\t\t', sorted_mineral_formulas[sorted_minerals.index(possible_mineral)])  
+                print('< %s >' %(possible_mineral), '\t\t', sorted_mineral_formulas[described_minerals.index(possible_mineral)])  
             else:
-                print('< %s >' %(possible_mineral), '\t\t', sorted_mineral_formulas[sorted_minerals.index(possible_mineral)])
+                print('< %s >' %(possible_mineral), '\t\t', sorted_mineral_formulas[described_minerals.index(possible_mineral)])
 
 
         mineral = input('''- What mineral will you simulate?
@@ -1247,9 +1276,20 @@ def make_selected_output():
     announcement = '\nParameterize the output file:'
     print(announcement, '\n', '='*len(announcement))
     first_line = '\nSELECTED_OUTPUT'
+    print('''The inclusion of "Scaling" or "Brine" and "phreeqc" or "pitzer" in the selected output file name facilitates data processing. 
+Exclude the extension of the file name.''')
+    count = 0
+    proposed_selected_output_file_name = '{}_{}, {}, {}_{}'.format(datetime.date.today(), water_selection, database_selection, time_or_distance, count) 
+    while os.path.exists('{}.txt'.format(proposed_selected_output_file_name)):
+        count += 1
+        proposed_selected_output_file_name = '{}_{}, {}, {}_{}'.format(datetime.date.today(), water_selection, database_selection, time_or_distance, count) 
+        
     selected_output_file_name = input('''- What is the name for your output file? 
-    A suffix of ", Scaling" or ", Brine" will be added to the end of the file name to facilitate future processing of the data, and for explicit organization.  __''')
-    selected_output_file_name += ', {}'.format(time_or_distance)
+    Default = {}  __'''.format(proposed_selected_output_file_name)) or proposed_selected_output_file_name
+    
+    if not re.search('scaling|brine', selected_output_file_name, flags=re.IGNORECASE):
+        selected_output_file_name += ', {}'.format(time_or_distance)
+        
     selected_output_file_name += '.txt'
     file_name_line = '-file\t\t\t%s' %(selected_output_file_name)
 
@@ -1358,44 +1398,78 @@ def execute():
         if input_selection == 'y':
             if os.path.exists(selected_output_file_name):
                 print('The execution is complete.')
-        
             else:
                 print('ERROR: The SELECTED_OUTPUT file is missing. The simulation failed to simulate.')
-    
         else:
             print('The execution is complete.')
-            
     else:
         print('\nERROR: The simulation failed to execute.')
     
     
-def output_processing():
+def process_selected_output():
     """
-    Interpreting the PHREEQC SELECTED_OUTPUT file  
+    Interpreting the PHREEQC SELECTED_OUTPUT file and conducting the plotting functions
     """
     global selected_output_file_name
+    global simulation_perspective
+    global time_or_distance
+    global graphical_selection
     global simulation_cf
-    global csv_data
+    global csv_data   
+    global database
+
     
     announcement = '\nProcess the selected_output file:'
     print(announcement, '\n', '='*len(announcement))
-    
-    if input_selection == 'n' and execution_selection == 'y':
+       
+    # determining the appropriate variables
+    if input_selection == 'y':
+        selected_output_file = selected_output_file_name
+        simulation_perspective = time_or_distance
+        database = database_selection 
+        
+    elif input_selection == 'n' and execute_selection == 'y':
         input_file = open(input_file_name, 'r')
         for line in input_file:
             if re.search('(-file\s+)', line):
                 selected_output_file_name = re.sub('(-file\s+)', '', line)
-    
-    elif input_selection == 'n' and execution_selection == 'n':
-        # import the SELECTED_OUTPUT file   
-        selected_output_file_name = input('''- What is the name and\or path of the SELECTED_OUTPUT file?
+                
+        time_or_distance = ''
+        
+    elif input_selection == execute_selection == 'n':  
+        selected_output_file = input('''- What is the name and\or path of the simulation file?
         Include the extension, like < .txt > __ ''')
-        while not os.path.exists(selected_output_file_name):
-            print('ERROR: The SELECTED_OUTPUT file is missing from the current directory.')  
-            selected_output_file_name = input('What is the name and\or path of the SELECTED_OUTPUT file?')  
+        selected_output_file_name = re.sub('(?<=\.)(.+)', '', selected_output_file)
+        while not os.path.exists(selected_output_file):
+            print('ERROR: The simulation file is missing from the current directory.')  
+            selected_output_file_name = input('What is the name and\or path of the simulation file?')  
+
+        #determining the scope of the simulation data
+        if re.search('(Scaling)', selected_output_file_name, flags=re.IGNORECASE):
+            simulation_perspective = 'Scaling'
+
+        elif re.search('(Brine)', selected_output_file_name, flags=re.IGNORECASE):
+            simulation_perspective = 'Brine'
+
+        else:     
+            simulation_perspective = input('''- Is the output file representative of a simulation for scaling or brine?
+            < Scaling > or < Brine >''')
+            while simulation_perspective != 'Brine' and simulation_perspective != 'Scaling':
+                print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
+                simulation_perspective = input('- Is the output file representative of a simulation for scaling or brine?')
+        
+        time_or_distance = ''
+        
+    graphical_selection = input('''- Would you like to view the effluent brine or the module scaling from your {} simulation?
+    < Brine > or < Scaling >'''.format(time_or_distance))
+    while graphical_selection != 'Brine' and graphical_selection != 'Scaling':
+        print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
+        graphical_selection = input('''- Would you like to view brine over time in the module < Brine > , 
+        or would your like to view scaling over distance in the module < Scaling > ? __ ''')
         
     # preparing the SELECTED_OUTPUT file into a dataframe
-    original_data = pandas.read_table(selected_output_file_name, sep = '\t')
+    selected_output = open(selected_output_file, 'r')
+    original_data = pandas.read_table(selected_output, sep = '\t')
     csv_data = pandas.DataFrame(original_data)
     for column in csv_data.columns:
         new_column = column.strip()
@@ -1405,13 +1479,23 @@ def output_processing():
     final_solution_mass = csv_data['mass_H2O'].iloc[-1]
     simulation_cf = initial_solution_mass / final_solution_mass
 
+    # conducting the appropriate visualization function
+    if graphical_selection == 'Brine':
+        make_brine_plot()
+    elif graphical_selection == 'Scaling':
+        make_scaling_plot()
+    else:
+        print('''ERROR: Reconfigure the SELECTED_OUTPUT simulation file name and\or the above visualizaiton parameters.''')
+    
         
 def make_brine_plot():
     """
     Generate plots of the elemental concentrations from effluent brine in the PHREEQC SELECTED_OUTPUT file  
     """
+    global export_name
+    global plot_title 
     global figure
-    global plot_title
+
     
     elements = []
     for column in csv_data.columns:
@@ -1496,7 +1580,7 @@ def make_brine_plot():
                         average_concentration = sum(time_serie) / len(time_serie)
                     except:
                         average_concentration = 0
-                    table_view['Time (s): %s' %(average_iteration * quantity_of_steps_index)] = average_concentration
+                    table_view['Time (s): %s' %(round(average_iteration * quantity_of_steps_index), 1)] = average_concentration
                     average_iteration += 1
                     #print('end-End')  
                     index_elements.append(element)
@@ -1532,6 +1616,7 @@ def make_brine_plot():
     # export the output graphic
     export_option = input('''- Would you like to export the figure? < y > or < n > __ ''')
     if export_option == 'y':
+        export_name = '{}, {}'.format(selected_output_file_name, simulation_perspective)
         export_plot()
     elif export_option == 'n':
         final_message = 'The data processing is complete.'
@@ -1546,20 +1631,16 @@ def make_scaling_plot():
     Generate plots of scaling along the module distance in the PHREEQC SELECTED_OUTPUT file  
     """
     global individual_plots
-    global mineral
-    global figure
+    global mineral_formulas
     global plot_title
+    global mineral
+    global minerals
+    global figure
     
     if input_selection == 'n':
-        if database == 'pitzer':
-            minerals = ['Akermanite', 'Anhydrite', 'Anthophyllite', 'Antigorite', 'Aragonite', 'Arcanite', 'Artinite', 'Barite', 'Bischofite', 'Bloedite', 'Borax', 'Boric_acid,s', 'Brucite', 'Burkeite', 'Calcite', 'Carnallite', 'Celestite', 'Chalcedony', 'Chrysotile', 'Diopside', 'Dolomite', 'Enstatite', 'Epsomite', 'Forsterite', 'Gaylussite', 'Glaserite', 'Glauberite', 'Goergeyite', 'Gypsum', 'Halite', 'Hexahydrite', 'Huntite', 'K2B4O7:4H2O', 'KB5O8:4H2O', 'Kainite', 'Kalicinite', 'Kieserite', 'Labile_S', 'Leonhardite', 'Leonite', 'Magnesite', 'MgCl2_2H2O', 'MgCl2_4H2O', 'Mirabilite', 'Misenite', 'NaB5O8:5H2O', 'NaBO2:4H2O', 'Nahcolite', 'Natron', 'Nesquehonite', 'Pentahydrite', 'Pirssonite', 'Polyhalite', 'Portlandite', 'Quartz', 'Schoenite', 'Sepiolite', 'Sepiolite(d)', 'SiO2(a)', 'Sylvite', 'Syngenite', 'Talc', 'Teepleite', 'Thenardite', 'Trona']
-            
-            mineral_formulas = ['Ca2Mg[Si2O7]', 'CaSO4', '☐Mg2Mg5Si8O22(OH)2', 'Mg48Si34O85(OH)62', 'CaCO3', 'K2SO4', 'Mg2(CO3)(OH)2·3H2O', 'BaSO4', 'MgCl2·6H2O', 'Na2Mg(SO4)2·4H2O', 'Na2B4O5(OH)4•8(H2O)', 'B(OH)3', 'Mg(OH)2', 'Na6(CO3)(SO4)2', 'CaCO3', 'KMgCl3•6(H2O)', 'SrSO4', 'SiO2', 'Mg3Si2O5(OH)4', 'CaMgSi2O6', 'CaMg(CO3)2', 'MgSiO3', 'MgSO4•7(H2O)', 'Mg2SiO4', 'Na2Ca(CO3)2•5(H2O)', 'NaK3(SO4)2', 'Na2Ca(SO4)2', 'K2Ca5(SO4)6•(H2O)', 'CaSO4•2(H2O)', 'NaCl', 'MgSO4•6(H2O)', 'CaMg3(CO3)4', 'K2B4O7•4H2O', 'KB5O8•4H2O', 'MgSO4•KCl•3(H2O)', 'KHCO3', 'MgSO4•(H2O)', 'Na4Ca(SO4)3•2H2O', 'MgSO4•4(H2O)', 'K2Mg(SO4)2•4(H2O)', 'MgCO3', 'MgCl2:2H2O', 'MgCl2•4H2O', 'Na2SO4•10(H2O)', 'K8H6(SO4)7', 'NaB5O8•5H2O', 'NaBO2•4H2O', 'NaHCO3', 'Na2CO3•10(H2O)', 'Mg(HCO3)(OH)•2(H2O)', 'MgSO4•5(H2O)', 'Na2Ca(CO3)2•2(H2O)', 'K2Ca2Mg(SO4)4•2(H2O)', 'Ca(OH)2', 'SiO2', 'K2Mg(SO4)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'SiO2', 'KCl', 'K2Ca(SO4)2•(H2O)', 'Mg3Si4O10(OH)2', 'Na2B(OH)4Cl', 'Na2SO4', 'Na3(CO3)(HCO3)•2(H2O)']     
+        minerals = ['Akermanite', 'Al(OH)3(a)', 'Albite', 'Anhydrite', 'Anorthite', 'Anthophyllite', 'Antigorite', 'Aragonite', 'Arcanite', 'Artinite', 'Barite', 'Bischofite', 'Bloedite', 'Borax', 'Boric_acid,s', 'Brucite', 'Burkeite', 'Ca-Montmorillonite', 'Calcite', 'Carnallite', 'Celestite', 'Chalcedony', 'Chlorite(14A)', 'Chrysotile', 'Diopside', 'Dolomite', 'Enstatite', 'Epsomite', 'Fe(OH)3(a)', 'FeS(ppt)', 'Fluorite', 'Forsterite', 'Gaylussite', 'Gibbsite', 'Glaserite', 'Glauberite', 'Goergeyite', 'Goethite', 'Gypsum', 'Halite', 'Hausmannite', 'Hematite', 'Hexahydrite', 'Huntite', 'Hydroxyapatite', 'Illite', 'K-feldspar', 'K-mica', 'K2B4O7:4H2O', 'KB5O8:4H2O', 'Kainite', 'Kalicinite', 'Kaolinite', 'Kieserite', 'Labile_S', 'Leonhardite', 'Leonite', 'Mackinawite', 'Magnesite', 'Manganite', 'MgCl2_2H2O', 'MgCl2_4H2O', 'Mirabilite', 'Misenite', 'NaB5O8:5H2O', 'NaBO2:4H2O', 'Nahcolite', 'Natron', 'Nesquehonite', 'Pentahydrite', 'Pirssonite', 'Polyhalite', 'Portlandite', 'Pyrite', 'Pyrochroite', 'Pyrolusite', 'Quartz', 'Rhodochrosite', 'Schoenite', 'Sepiolite', 'Sepiolite(d)', 'SiO2(a)', 'Siderite', 'Strontianite', 'Sulfur', 'Sylvite', 'Syngenite', 'Talc', 'Teepleite', 'Thenardite', 'Trona', 'Vivianite', 'Witherite']
 
-        if database == 'phreeqc':
-            minerals = ['Al(OH)3(a)', 'Albite', 'Anhydrite', 'Anorthite', 'Aragonite', 'Barite', 'Ca-Montmorillonite', 'Calcite', 'Celestite', 'Chalcedony', 'Chlorite(14A)', 'Chrysotile', 'Dolomite', 'Fe(OH)3(a)', 'FeS(ppt)', 'Fluorite', 'Gibbsite', 'Goethite', 'Gypsum', 'Halite', 'Hausmannite', 'Hematite', 'Hydroxyapatite', 'Illite', 'K-feldspar', 'K-mica', 'Kaolinite', 'Mackinawite', 'Manganite', 'Pyrite', 'Pyrochroite', 'Pyrolusite', 'Quartz', 'Rhodochrosite', 'Sepiolite', 'Sepiolite(d)', 'SiO2(a)', 'Siderite', 'Strontianite', 'Sulfur', 'Sylvite', 'Talc', 'Vivianite', 'Witherite']
-            
-            mineral_formulas = ['Al(OH)3', 'NaAlSi3O8', 'CaSO4', 'CaAl2Si2O8', 'CaCO3', 'BaSO4', 'Ca0.165Al2.33Si3.67O10(OH)2', 'CaCO3', 'SrSO4', 'SiO2', 'Mg5Al2Si3O10(OH)8', 'Mg3Si2O5(OH)4', 'CaMg(CO3)2', 'Fe(OH)3', 'FeS', 'CaF2', 'Al(OH)3', 'FeO(OH)', 'CaSO4•2(H2O)', 'NaCl', 'Mn(II)Mn(III)2O4', 'Fe2O3', 'Ca5(PO4)3(OH)', 'K0.6Mg0.25Al2.3Si3.5O10(OH)2', 'KAlSi3O8', 'KAl3Si3O10(OH)2', 'Al2Si2O5(OH)4', 'FeS', 'MnO(OH)', 'FeS2', 'Mn(OH)2', 'MnO2', 'SiO2', 'MnCO3', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'SiO2', 'FeCO3', 'SrCO3', 'S8', 'KCl', 'Mg3Si4O10(OH)2', 'Fe3(PO4)2•8(H2O)', 'BaCO3']    
+        mineral_formulas = ['Ca2Mg[Si2O7]', 'Al(OH)3', 'NaAlSi3O8', 'CaSO4', 'CaAl2Si2O8', '☐Mg2Mg5Si8O22(OH)2', 'Mg48Si34O85(OH)62', 'CaCO3', 'K2SO4', 'Mg2(CO3)(OH)2·3H2O', 'BaSO4', 'MgCl2·6H2O', 'Na2Mg(SO4)2·4H2O', 'Na2B4O5(OH)4•8(H2O)', 'B(OH)3', 'Mg(OH)2', 'Na6(CO3)(SO4)2', 'Ca0.165Al2.33Si3.67O10(OH)2', 'CaCO3', 'KMgCl3•6(H2O)', 'SrSO4', 'SiO2', 'Mg5Al2Si3O10(OH)8', 'Mg3Si2O5(OH)4', 'CaMgSi2O6', 'CaMg(CO3)2', 'MgSiO3', 'MgSO4•7(H2O)', 'Fe(OH)3', 'FeS', 'CaF2', 'Mg2SiO4', 'Na2Ca(CO3)2•5(H2O)', 'Al(OH)3', 'NaK3(SO4)2', 'Na2Ca(SO4)2', 'K2Ca5(SO4)6•(H2O)', 'FeO(OH)', 'CaSO4•2(H2O)', 'NaCl', 'Mn(II)Mn(III)2O4', 'Fe2O3', 'MgSO4•6(H2O)', 'CaMg3(CO3)4', 'Ca5(PO4)3(OH)', 'K0.6Mg0.25Al2.3Si3.5O10(OH)2', 'KAlSi3O8', 'KAl3Si3O10(OH)2', 'K2B4O7•4H2O', 'KB5O8•4H2O', 'MgSO4•KCl•3(H2O)', 'KHCO3', 'Al2Si2O5(OH)4', 'MgSO4•(H2O)', 'Na4Ca(SO4)3•2H2O', 'MgSO4•4(H2O)', 'K2Mg(SO4)2•4(H2O)', 'FeS', 'MgCO3', 'MnO(OH)', 'MgCl2:2H2O', 'MgCl2•4H2O', 'Na2SO4•10(H2O)', 'K8H6(SO4)7', 'NaB5O8•5H2O', 'NaBO2•4H2O', 'NaHCO3', 'Na2CO3•10(H2O)', 'Mg(HCO3)(OH)•2(H2O)', 'MgSO4•5(H2O)', 'Na2Ca(CO3)2•2(H2O)', 'K2Ca2Mg(SO4)4•2(H2O)', 'Ca(OH)2', 'FeS2', 'Mn(OH)2', 'MnO2', 'SiO2', 'MnCO3', 'K2Mg(SO4)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'Mg4Si6O15(OH)2•6(H2O)', 'SiO2', 'FeCO3', 'SrCO3', 'S8', 'KCl', 'K2Ca(SO4)2•(H2O)', 'Mg3Si4O10(OH)2', 'Na2B(OH)4Cl', 'Na2SO4', 'Na3(CO3)(HCO3)•2(H2O)', 'Fe3(PO4)2•8(H2O)', 'BaCO3']      
     
     # the complete list of all minerals is created
     csv_minerals = []
@@ -1636,15 +1717,14 @@ def make_scaling_plot():
         print('Quantity of precipitated minerals: %s' %(quantity_nonzero_minerals))
         #print('Number of timesteps per mineral: %s')
         individual_plots = input('''- Would you like to plot each mineral on a separate figure?
-        The default = < %s >
-        < y > or < n >'''  %(individual_plots)) or individual_plots
+    Suggestion = < %s >  ;  < y > or < n >  __ '''  %(individual_plots)) or individual_plots
         while individual_plots not in possible_answers:
             print('ERROR: The entered value is not accepted.')  
             individual_plots = input('- Would you like to plot each mineral on a separate figure?')
         
         if individual_plots == 'y':
             exporting_plots = input('''How many mineral figures would you like to export?
-            < All >, < A few >, or < None >''')
+    < All >, < A few >, or < None >''')
             while exporting_plots != 'All' and exporting_plots != 'A few' and exporting_plots != 'None':
                 print('ERROR: The entered value is not accepted.')  
                 exporting_plots = input('- How many mineral figures would you like to export?')
@@ -1654,7 +1734,7 @@ def make_scaling_plot():
                 for mineral in non_zero_minerals:
                     print('< %s >' %(mineral))
                 exporting_mineral = input('''- Which minerals will you export?
-                Type < done > when you are finished.''')
+    Type < done > when you are finished.''')
                 while exporting_mineral not in non_zero_minerals:
                     print('ERROR: The entered mineral is not among the options.')  
                     exporting_mineral = input('- Which minerals will you export?')
@@ -1687,7 +1767,7 @@ def make_scaling_plot():
                         experimental_loop.append('%s [%s] ; time (s): %s' 
                                                  %(mineral, 
                                                     mineral_formulas[minerals.index(mineral)], 
-                                                    time))
+                                                    round(time, 2)))
                         pyplot.plot(distance_serie,time_serie)
                         distance_serie = []
                         time_serie = []
@@ -1699,7 +1779,7 @@ def make_scaling_plot():
                         experimental_loop.append('%s [%s] ; time (s): %s' 
                                                  %(mineral, 
                                                     mineral_formulas[minerals.index(mineral)], 
-                                                    time))
+                                                    round(time, 2)))
                         pyplot.plot(distance_serie,time_serie)
 
                     else:
@@ -1747,7 +1827,7 @@ def make_scaling_plot():
                         experimental_loop.append('%s [%s] ; time (s): %s' 
                                                  %(mineral, 
                                                     mineral_formulas[minerals.index(mineral)], 
-                                                    time))
+                                                    round(time, 2)))
                         pyplot.plot(distance_serie,time_serie)
                         distance_serie = []
                         time_serie = []
@@ -1759,7 +1839,7 @@ def make_scaling_plot():
                         experimental_loop.append('%s [%s] ; time (s): %s' 
                                                  %(mineral, 
                                                     mineral_formulas[minerals.index(mineral)], 
-                                                    time))
+                                                    round(time, 2)))
                         pyplot.plot(distance_serie,time_serie)
 
                     else:
@@ -1776,6 +1856,7 @@ def make_scaling_plot():
             pyplot.show()
             export_option = input('''Would you like to export the figure? < y > or < n > __ ''')
             if export_option == 'y':
+                export_name = '{}, {}'.format(selected_output_file_name, simulation_perspective)
                 export_plot()
             elif export_option == 'n':
                 final_message = 'The data processing is complete.'
@@ -1791,19 +1872,19 @@ def export_plot():
     Export the plots to the current working directory  
     """
     if graphical_selection == 'Brine' or (graphical_selection == 'Scaling' and individual_plots == 'n'):
-        export_name = input('''- What is the name of your export figure?
+        export_file_name = input('''- What is the name of your export figure?
         Omit < . > and < \ > in the name.
-        Default = %s''' %(plot_title)) or basic_file_name
-        while re.search('(\.)',export_name):
+        Default = %s''' %(export_name)) or export_name
+        while re.search('(\.|\\))', export_name):
             print('''ERROR: Remove < . > and < \ > from the figure name.''')  
-            export_name = input('- What will be the name of your export figure?') 
+            export_file_name = input('- What will be the name of your export figure?') 
     else:
-        export_name = input('''- What is the name of your export figure?
+        export_file_name = input('''- What is the name of your export figure?
         Omit < . > and < \ > in the name.
-        Default = %s, %s''' %(plot_title, mineral)) or '%s, %s' %(plot_title, mineral)
-        while re.search('(\.|\\)',export_name):
+        Default = %s, %s''' %(export_name, mineral)) or '%s, %s' %(export_name, mineral)
+        while re.search('(\.|\\))',export_name):
             print('''ERROR: Remove < . > and < \ > from the figure name.''')  
-            export_name = input('- What will be the name of your export figure?')
+            export_file_name = input('- What will be the name of your export figure?')
              
     available_formats = ['jpg', 'png', 'svg']
     export_format = input('''- What will be the format of your export figure?
@@ -1814,69 +1895,13 @@ def export_plot():
         export_format = input('- What will be the format of your export figure?')       
 
     file_number = 0
-    if not os.path.exists('%s.%s' %(export_name, export_format)):
-        figure.savefig('%s.%s' %(export_name, export_format))
-    elif os.path.exists('%s.%s' %(export_name, export_format)):
-        while os.path.exists('%s_%s.%s' %(export_name, file_number, export_format)):
+    if not os.path.exists('%s.%s' %(export_file_name, export_format)):
+        figure.savefig('%s.%s' %(export_file_name, export_format))
+    elif os.path.exists('%s.%s' %(export_file_name, export_format)):
+        while os.path.exists('%s_%s.%s' %(export_file_name, file_number, export_format)):
             file_number += 1
-        figure.savefig('%s_%s.%s' %(export_name, file_number, export_format))
+        figure.savefig('%s_%s.%s' %(export_file_name, file_number, export_format))
         
-    final_message = '\n\nThe data processing is complete.'
-    print('%s\n%s' %(final_message, '='*len(final_message)))
-    
-
-def process_selected_output():
-    """
-    Conduct the proper plotting function for the SELECTED_OUTPUT data from the PHREEQC simulation  
-    """
-    global database
-    global simulation_perspective
-    global graphical_selection
-    
-    if input_selection == 'n':
-        # determining the employed database in the simulation
-        if re.search('(pitzer)', file_name, flags=re.IGNORECASE):
-            database = 'pitzer'
-        elif re.search('(phreeqc)', file_name, flags=re.IGNORECASE):
-            database = 'phreeqc'
-        else:
-            database = input('''- Which database is employed in the simulation data?
-            < pitzer > or < phreeqc >''')
-            while database != 'pitzer' and database != 'phreeqc':
-                print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
-                database = input('- Which database is employed in the simulation data?')
-
-        #determining the scope of the simulation data
-        if re.search('(Scaling)', file_name, flags=re.IGNORECASE):
-            simulation_perspective = 'Scaling'
-
-        elif re.search('(Brine)', file_name, flags=re.IGNORECASE):
-            simulation_perspective = 'Brine'
-
-        else:     
-            simulation_perspective = input('''- Is the output file representative of a simulation for scaling or brine?
-            < Scaling > or < Brine >''')
-            while simulation_perspective != 'Brine' and simulation_perspective != 'Scaling':
-                print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
-                simulation_perspective = input('- Is the output file representative of a simulation for scaling or brine?')
-
-    elif input_selection == 'y':
-        simulation_perspective = time_or_distance
-        database = database_selection 
-        
-    graphical_selection = input('''- Would you like to view the effluent brine or the module scaling from your {}simulation?
-    < Brine > or < Scaling >''').format(time_or_distance)
-    while graphical_selection != 'Brine' and graphical_selection != 'Scaling':
-        print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
-        graphical_selection = input('''- Would you like to view brine over time in the module < Brine > , 
-        or would your like to view scaling over distance in the module < Scaling > ? __ ''')
-
-    if graphical_selection == 'Brine':
-        make_brine_plot()
-    elif graphical_selection == 'Scaling':
-        make_scaling_plot()
-    else:
-        print('''ERROR: Reconfigure the SELECTED_OUTPUT simulation file name and\or the above visualizaiton parameters.''')
 
         
 def choose_your_path():
@@ -1930,13 +1955,11 @@ def choose_your_path():
         make_selected_output()
         export()
         execute()
-        output_processing()
         process_selected_output()
         
     elif execute_selection == visualize_selection == 'y' and input_selection == 'n':
         print('\nSimulation and visualization\n', '+'*len('Simulation and visualization'))
         execute()
-        output_processing()
         process_selected_output()
         
     elif input_selection == execute_selection == 'y' and visualize_selection == 'n':
@@ -1948,7 +1971,7 @@ def choose_your_path():
         make_selected_output()
         export()
         execute()
-        output_processing()
+        process_selected_output()
         
     elif visualize_selection == 'y' and input_selection == execute_selection == 'n':
         print('\nVisualize\n', '+'*len('Visualize'))
@@ -1966,6 +1989,9 @@ def choose_your_path():
     elif execute_selection == 'y' and input_selection == visualize_selection == 'n':
         print('\nSimulation\n', '+'*len('Simulation'))
         execute()
+        
+    final_message = '\n\nThe data processing is complete.'
+    print('%s\n%s' %(final_message, '='*len(final_message)))
         
         
 choose_your_path()
