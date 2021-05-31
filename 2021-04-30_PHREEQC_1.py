@@ -36,6 +36,30 @@ timesteps_over_cell = 1
 possible_answers = ['y', 'n']
 
 
+def welcome(indent = 1):
+    '''
+    Print the software introductory box
+    '''
+    
+    message = ('''* ROSS 1.1.1 *
+    Reverse Osmosis Scaling Simulation
+    by Andrew Philip Freiburger, Ethan Chan, and Heather Louise Buckley
+    Summer 2021
+    Green Safe Water Lab, University of Victoria''')
+
+    lines = message.split('\n')
+    space = " " * indent
+    width = max(map(len, lines))
+    
+    upper = f'╔{"═" * (width + indent * 2)}╗\n'
+    middles = ''.join([f'║{space}{line:<{width}}{space}║\n' for line in lines])
+    lower = f'╚{"═" * (width + indent * 2)}╝' 
+
+    box = chain(upper, middles, lower)
+    box_print = ''.join(box)
+    print(box_print)
+    
+
 def make_general_conditions():
     """
     Specify general information of the simulation
@@ -77,7 +101,7 @@ def make_general_conditions():
         print('< %s >\t' %(database))
         
     database_selection = input('''- What database do you select?
-    Default = < pitzer >  __ ''') or 'pitzer
+    Default = < pitzer >  __ ''') or 'pitzer'
         
     while database_selection not in described_databases:
         print('''The database is not current defined in this interface.
@@ -1063,7 +1087,7 @@ mineral\t\t\tcompound''' %(database_selection, water_selection))
             while possible_saturation_states not in possible_answers:
                 print('''ERROR: The entry is beyond the accepted values. Please provide an accepted value''')
                 possible_saturation_states = input('''- Do any minerals possess a non-zero saturation index? < y > or < n > 
-    Default = 'n'  __ ''') or 'n'
+    Default = < n >  __ ''') or 'n'
             if possible_saturation_states == 'y':
                 print('\nYour selected minerals:')
                 for mineral in minerals:
@@ -1378,14 +1402,15 @@ def execute():
             input_path = os.path.join(working_directory, input_file_name)
             
         output_file_name = re.sub('(?<=\.)(.+)' , 'pqo', input_file_name)
+        database_path = ''
  
     else:
         input_path = os.path.join(working_directory, input_file_name)
         output_file_name = re.sub('pqi', 'pqo', input_file_name)
-    
+        database_path = os.path.join(phreeqc_path, 'database\\%s.dat' %(database_selection))        
+
     output_path = os.path.join(working_directory, output_file_name)
     bat_path = os.path.join(phreeqc_path, 'bin\\phreeqc.bat')
-    database_path = os.path.join(phreeqc_path, 'database\\%s.dat' %(database_selection))        
     print('\ninput file path: {}'.format(input_path))
        
     proc = subprocess.Popen('cmd.exe', stdin=subprocess.PIPE)
@@ -1433,8 +1458,13 @@ def process_selected_output():
         for line in input_file:
             if re.search('(-file\s+)', line):
                 selected_output_file_name = re.sub('(-file\s+)', '', line)
+                selected_output_file_name = re.sub('(\n)', '', selected_output_file_name)
                 
         time_or_distance = ''
+        if re.search('(Scaling)', selected_output_file_name, flags=re.IGNORECASE):
+            simulation_perspective = 'Scaling'
+        elif re.search('(Brine)', selected_output_file_name, flags=re.IGNORECASE):
+            simulation_perspective = 'Brine'
         
     elif input_selection == execute_selection == 'n':  
         selected_output_file = input('''- What is the name and\or path of the simulation file?
@@ -1468,7 +1498,7 @@ def process_selected_output():
         or would your like to view scaling over distance in the module < Scaling > ? __ ''')
         
     # preparing the SELECTED_OUTPUT file into a dataframe
-    selected_output = open(selected_output_file, 'r')
+    selected_output = open(selected_output_file_name, 'r')
     original_data = pandas.read_table(selected_output, sep = '\t')
     csv_data = pandas.DataFrame(original_data)
     for column in csv_data.columns:
@@ -1533,8 +1563,7 @@ def make_brine_plot():
     The effluent concentrations of each existing element in the brine. Brine plots from brine data rapidly reach a steady state elemental concentration. Brine plots from scaling data consist of vertical concentrations that represent the concentrations at each distance throughout the RO module at the specified time, where the low end represents the influent concentration while the high end represents the effluent concentration.''' %('='*len('Brine Figure'))
 
     pyplot.legend(elements, loc='best', title = 'non-zero elements', fontsize = 'x-large')
-    pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(simulation_cf), wrap=True, 
-                   horizontalalignment='left', fontsize=12)
+    pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(simulation_cf), wrap=True, horizontalalignment='left', fontsize=12)
     pyplot.yscale('log')
     figure = pyplot.gcf()
     pyplot.show()
@@ -1614,9 +1643,14 @@ def make_brine_plot():
     print(average_concentrations_table)
         
     # export the output graphic
+    export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file_name)
+    if not re.search('(scaling|brine)', export_filename_progenitor, flags=re.IGNORECASE):
+        export_name = '{}, {}'.format(export_filename_progenitor, simulation_perspective)
+    else:
+        export_name = export_filename_progenitor
+    
     export_option = input('''- Would you like to export the figure? < y > or < n > __ ''')
     if export_option == 'y':
-        export_name = '{}, {}'.format(selected_output_file_name, simulation_perspective)
         export_plot()
     elif export_option == 'n':
         final_message = 'The data processing is complete.'
@@ -1632,6 +1666,7 @@ def make_scaling_plot():
     """
     global individual_plots
     global mineral_formulas
+    global export_name
     global plot_title
     global mineral
     global minerals
@@ -1697,6 +1732,12 @@ def make_scaling_plot():
         figure = pyplot.gcf()
         pyplot.show()
         
+        export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file_name)
+        if not re.search('(scaling|brine)', export_filename_progenitor, flags=re.IGNORECASE):
+            export_name = '{}, {}'.format(export_filename_progenitor, simulation_perspective)
+        else:
+            export_name = export_filename_progenitor
+        
         export_option = input('''- Would you like to export the figure? < y > or < n > __ ''')
         if export_option == 'y':
             export_plot()
@@ -1714,7 +1755,7 @@ def make_scaling_plot():
             individual_plots = 'n'
         elif quantity_nonzero_minerals >= 2:
             individual_plots = 'y'
-        print('Quantity of precipitated minerals: %s' %(quantity_nonzero_minerals))
+        print('\nQuantity of precipitated minerals: %s' %(quantity_nonzero_minerals))
         #print('Number of timesteps per mineral: %s')
         individual_plots = input('''- Would you like to plot each mineral on a separate figure?
     Suggestion = < %s >  ;  < y > or < n >  __ '''  %(individual_plots)) or individual_plots
@@ -1790,16 +1831,20 @@ def make_scaling_plot():
 
                 pyplot.legend(experimental_loop, loc='best', fontsize = 'x-large')
                 pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(simulation_cf), wrap=True, horizontalalignment='left', fontsize=12)
-
+                figure = pyplot.gcf()
+                pyplot.show()
+                
                 # export the direct figures
+                export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file_name)
+                if not re.search('(scaling|brine)', export_filename_progenitor, flags=re.IGNORECASE):
+                    export_name = '{}, {}'.format(export_filename_progenitor, simulation_perspective)
+                else:
+                    export_name = export_filename_progenitor
+                    
                 if exporting_plots == 'All':
-                    figure = pyplot.gcf()
-                    pyplot.show()
                     export_plot()
                 elif exporting_plots == 'A few':
                     if mineral in exporting_minerals:
-                        figure = pyplot.gcf()
-                        pyplot.show()
                         export_plot()
                 elif exporting_plots == 'None':
                     final_message = 'The data processing is complete.'
@@ -1850,13 +1895,18 @@ def make_scaling_plot():
             pyplot.legend(experimental_loop, loc='best', fontsize = 'x-large')
             pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(simulation_cf), 
                            wrap=True, horizontalalignment='left', fontsize=12)
-
-            # export the output graphic
             figure = pyplot.gcf()
             pyplot.show()
+            
+            # export the output graphic
+            export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file_name)
+            if not re.search('(scaling|brine)', export_filename_progenitor, flags=re.IGNORECASE):
+                export_name = '{}, {}'.format(export_filename_progenitor, simulation_perspective)
+            else:
+                export_name = export_filename_progenitor
+            
             export_option = input('''Would you like to export the figure? < y > or < n > __ ''')
             if export_option == 'y':
-                export_name = '{}, {}'.format(selected_output_file_name, simulation_perspective)
                 export_plot()
             elif export_option == 'n':
                 final_message = 'The data processing is complete.'
@@ -1871,6 +1921,7 @@ def export_plot():
     """
     Export the plots to the current working directory  
     """
+    
     if graphical_selection == 'Brine' or (graphical_selection == 'Scaling' and individual_plots == 'n'):
         export_file_name = input('''- What is the name of your export figure?
         Omit < . > and < \ > in the name.
@@ -1901,7 +1952,6 @@ def export_plot():
         while os.path.exists('%s_%s.%s' %(export_file_name, file_number, export_format)):
             file_number += 1
         figure.savefig('%s_%s.%s' %(export_file_name, file_number, export_format))
-        
 
         
 def choose_your_path():
@@ -1911,6 +1961,8 @@ def choose_your_path():
     global visualize_selection
     global input_selection
     global execute_selection
+    
+    welcome()
         
     input_selection = input('''- Will you create an input file? < y > or < n > ___ ''')
     while input_selection not in possible_answers:
