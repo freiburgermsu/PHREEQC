@@ -1477,8 +1477,10 @@ def process_selected_output():
     global selected_output_file_name
     global evaporation_or_transport
     global simulation_perspective
-    global time_or_distance
+    global initial_solution_mass
+    global selected_output_file
     global graphical_selection
+    global time_or_distance
     global simulation_cf
     global csv_data   
     global database
@@ -1498,8 +1500,8 @@ def process_selected_output():
             input_file = open(input_file_name, 'r')
             for line in input_file:
                 if re.search('(-file\s+)', line):
-                    selected_output_file_name = re.sub('(-file\s+)', '', line)
-                    selected_output_file_name = re.sub('(\n)', '', selected_output_file_name)
+                    selected_output_file = re.sub('(-file\s+)', '', line)
+                    selected_output_file = re.sub('(\n)', '', selected_output_file)
                 
                 if re.search('(TRANSPORT)', line):
                     evaporation_or_transport = 'transport'
@@ -1512,7 +1514,7 @@ def process_selected_output():
             selected_output_file_name = re.sub('(?<=\.)(.+)', '', selected_output_file)
             while not os.path.exists(selected_output_file):
                 print('ERROR: The simulation file is missing from the current directory.')  
-                selected_output_file_name = input('What is the name and\or path of the simulation file?')  
+                selected_output_file = input('What is the name and\or path of the simulation file?')  
             
             for line in selected_output_file:
                 if re.search('(TRANSPORT)', line):
@@ -1521,10 +1523,10 @@ def process_selected_output():
                     evaporation_or_transport = 'evaporation'
 
         #determining the scope of the simulation data
-        if re.search('(Scaling)', selected_output_file_name, flags=re.IGNORECASE):
+        if re.search('(Scaling)', selected_output_file, flags=re.IGNORECASE):
             simulation_perspective = 'Scaling'
 
-        elif re.search('(Brine)', selected_output_file_name, flags=re.IGNORECASE):
+        elif re.search('(Brine)', selected_output_file, flags=re.IGNORECASE):
             simulation_perspective = 'Brine'
 
         else:     
@@ -1544,7 +1546,7 @@ def process_selected_output():
         or would your like to view scaling over distance in the module < Scaling > ? __ ''')
         
     # preparing the SELECTED_OUTPUT file into a dataframe
-    selected_output = open(selected_output_file_name, 'r')
+    selected_output = open(selected_output_file, 'r')
     original_data = pandas.read_table(selected_output, sep = '\t')
     csv_data = pandas.DataFrame(original_data)
     for column in csv_data.columns:
@@ -1706,6 +1708,7 @@ def make_scaling_plot():
     """
     Generate plots of scaling along the module distance in the PHREEQC SELECTED_OUTPUT file  
     """
+    global initial_solution_mass
     global individual_plots
     global mineral_formulas
     global export_name
@@ -1725,10 +1728,14 @@ def make_scaling_plot():
         if re.search('([A-Z].{3,})', column) and not re.search('(\(|\_|\:)', column):
             csv_minerals.append(column)
 
-    csv_data.drop(csv_data.index[:3], inplace=True)
+    if evaporation_or_transport == 'transport':
+        csv_data.drop(csv_data.index[:3], inplace=True)
+        
     plot_title = (input('''- What is the title of the plot? 
-    Default = Scaling throughout the RO module  ___ ''')) or 'Scaling throughout the RO module'
-    
+        Default = Scaling throughout the RO module  ___ ''')) or 'Scaling throughout the RO module'
+
+        
+        
     # all of the non-zero minerals are identified and the chemical formulas are sorted into a list
     non_zero_minerals = []
     for mineral in csv_minerals:
@@ -1876,36 +1883,25 @@ def make_scaling_plot():
                         pyplot.ylabel('Quantity (%s)' %(unit), fontsize = 'x-large')  
 
                         experimental_loop = []
-                        iteration = 0
-                        mass_series = []
+                        cf_series = []
                         concentration_series = []
-                        quantity_of_steps_index = 0  
-                        initial_solution_mass = csv_data.at[0, 'mass_H2O']
+                        data_length = len(csv_data['mass_H2O'])
                         for index, row in csv_data.iterrows():
-                            try:
-                                if csv_data.at[index+1, 'mass_H2O']:
-                                    if csv_data.at[index, 'step'] >= 1:
-                                        concentration_series.append(csv_data.at[index, mineral]) 
-                                        solution_mass = csv_data.at[index, 'mass_H2O']
-                                        mass_series.append(initial_solution_mass / solution_mass)   
+                            if index < data_length:
+                                if csv_data.at[index, 'step'] >= 1:
+                                    concentration_series.append(csv_data.at[index, mineral]) 
+                                    solution_mass = csv_data.at[index, 'mass_H2O']
+                                    cf_series.append(initial_solution_mass / solution_mass)  
 
-                                    else:
-                                        print('ERROR: The SELECTED_OUTPUT file possesses an unexcepted data structure.')
+                                elif index > 1:
+                                    print('ERROR: The SELECTED_OUTPUT file possesses an unexcepted data structure.')
 
-                             
-                            except:
-                                concentration_series.append(csv_data.at[index, mineral]) 
-                                solution_mass = csv_data.at[index, 'mass_H2O']
-                                mass_series.append(initial_solution_mass / solution_mass)  
-                                
-                                experimental_loop.append('%s [%s]' %(mineral, mineral_formulas[minerals.index(mineral)]))
-                                pyplot.plot(mass_series,concentration_series)
+                        concentration_series.append(csv_data.at[index, mineral]) 
+                        solution_mass = csv_data.at[index, 'mass_H2O']
+                        cf_series.append(initial_solution_mass / solution_mass)  
 
-                                mass_series = []
-                                concentration_series = []
-                                concentration_series.append(csv_data.at[index, mineral]) 
-                                solution_mass = csv_data.at[index, 'mass_H2O']
-                                mass_series.append(initial_solution_mass / solution_mass)                        
+                        experimental_loop.append('%s [%s]' %(mineral, mineral_formulas[minerals.index(mineral)]))
+                        pyplot.plot(cf_series,concentration_series)                    
 
                         
                     pyplot.legend(experimental_loop, loc='best', fontsize = 'x-large')
@@ -1914,7 +1910,7 @@ def make_scaling_plot():
                     pyplot.show()
 
                     # export the direct figures
-                    export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file_name)
+                    export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file)
                     if not re.search('(scaling|brine)', export_filename_progenitor, flags=re.IGNORECASE):
                         export_name = '{}, {}'.format(export_filename_progenitor, simulation_perspective)
                     else:
@@ -2004,7 +2000,7 @@ def make_scaling_plot():
             pyplot.show()
             
             # export the output graphic
-            export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file_name)
+            export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file)
             if not re.search('(scaling|brine)', export_filename_progenitor, flags=re.IGNORECASE):
                 export_name = '{}, {}'.format(export_filename_progenitor, simulation_perspective)
             else:
