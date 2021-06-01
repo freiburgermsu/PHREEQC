@@ -43,9 +43,8 @@ def welcome(indent = 1):
     
     message = ('''* ROSS 1.1.1 *
     Reverse Osmosis Scaling Simulation
-    by Andrew Philip Freiburger, Ethan Chan, and Heather Louise Buckley
-    Summer 2021
-    Green Safe Water Lab, University of Victoria''')
+    by Andrew P. Freiburger, Ethan S. Chan, and Heather L. Buckley
+    Summer 2021, Green Safe Water Lab, University of Victoria''')
 
     lines = message.split('\n')
     space = " " * indent
@@ -64,6 +63,7 @@ def make_general_conditions():
     """
     Specify general information of the simulation
     """
+    global evaporation_or_transport
     global database_selection
     global general_conditions
     global windows_or_mac
@@ -108,6 +108,14 @@ def make_general_conditions():
         Only < pitzer > and < phreeqc > are defined for Windows and < pitzer > is defined for Macintosh. __ ''')    
         database_selection = input('- What database do you select?')
 
+    options_list = ['evaporation', 'transport']
+    evaporation_or_transport = input('''- Will you simulate evaporation or transport?
+    Default = < {} >  __ '''.format(options_list[1])) or options_list[1]
+    while module_selection not in options_list:
+        print('''The module selection is not supported by this simulation. Select one of the options.''')  
+        evaporation_or_transport = input('''- Will you simulate evaporation or transport?
+        Default = < {} >  __ '''.format(options_list[1])) or options_list[1]
+        
     simulation_title = input('- What is the title of your simulation?   __ ')   
     title_line = 'TITLE\t %s' %(simulation_title)
     if windows_or_mac == 'Windows':
@@ -139,208 +147,256 @@ def make_reactive_transport():
     print(announcement, '\n', '='*len(announcement))
     for module in possible_ro_modules:
         print('< %s >' %(module))
-    module_selection = input('''- What RO module will you simuate?
-    Default = BW30-400   __ ''') or 'BW30-400'
-    while module_selection not in possible_ro_modules:
-        print('''The module selection is not supported by this simulation. Select one of the options.''')  
-        module_selection = input('- What RO module will you simuate?   __ ')
-                                 
-    if module_selection == 'BW30-400':
-        module_diameter =  201                   #mm
-        permeate_tube_diameter =  29             #mm
-        module_length =  1.016                   #m
-        permeate_flow = 40                       #cubic meters / day
-        max_feed_flow = 15.9                     #cubic meters / hour
-        membrane_thickness = 250 / nm_over_mm    #nm
-        feed_thickness = 0.7112                  #mm
-        permeate_thickness = 0.3                 #mm
-        polysulfonic_layer_thickness = 0.05      #mm 
-        support_layer_thickness = 0.15           #mm
-        repeated_membrane_thickness = 2 * membrane_thickness + feed_thickness + permeate_thickness + 2 * polysulfonic_layer_thickness + 2 * support_layer_thickness      #mm
-        print('\nMembrane thickness:', '%s (mm)' %(repeated_membrane_thickness))
-
-    elif module_selection == 'Custom':
-        module_diameter = input('- What is the module diameter? (mm)  __ ')
-        while True:
-            try:
-                module_diameter = float(module_diameter)  
-                break
-            except:
-                print('''Provide a numerical parameter.''')  
-                module_diameter = input('What is the module diameter? (mm)  __ ')
         
-        permeate_tube_diameter = input('- What is the module permeate tube diameter? (mm)  __ ')
+    if evaporation_or_transport == 'transport':
+        module_selection = input('''- What RO module will you simuate?
+        Default = < BW30-400 >   __ ''') or possible_ro_modules[0]
+        while module_selection not in possible_ro_modules:
+            print('''The module selection is not supported by this simulation. Select one of the options.''')  
+            module_selection = input('- What RO module will you simuate?   __ ')
+
+        if module_selection == 'BW30-400':
+            module_diameter =  201                   #mm
+            permeate_tube_diameter =  29             #mm
+            module_length =  1.016                   #m
+            permeate_flow = 40                       #cubic meters / day
+            max_feed_flow = 15.9                     #cubic meters / hour
+            membrane_thickness = 250 / nm_over_mm    #nm
+            feed_thickness = 0.7112                  #mm
+            permeate_thickness = 0.3                 #mm
+            polysulfonic_layer_thickness = 0.05      #mm 
+            support_layer_thickness = 0.15           #mm
+            repeated_membrane_thickness = 2 * membrane_thickness + feed_thickness + permeate_thickness + 2 * polysulfonic_layer_thickness + 2 * support_layer_thickness      #mm
+            print('\nMembrane thickness:', '%s (mm)' %(repeated_membrane_thickness))
+
+        elif module_selection == 'Custom':
+            module_diameter = input('- What is the module diameter? (mm)  __ ')
+            while True:
+                try:
+                    module_diameter = float(module_diameter)  
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    module_diameter = input('What is the module diameter? (mm)  __ ')
+
+            permeate_tube_diameter = input('- What is the module permeate tube diameter? (mm)  __ ')
+            while True:
+                try:
+                    permeate_tube_diameter = float(permeate_tube_diameter)     
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    permeate_tube_diameter = input('What is the module permeate tube diameter? (mm)  __ ')
+
+            module_length = input('- What is the module length? (m)  __ ')
+            while True:
+                try:
+                    module_length = float(module_length)    
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    module_length = input('What is the module length? (m)  __ ')
+
+            permeate_flow = input('- What is the permeate flow rate? (m^3 / day)  __ ')
+            while True:
+                try:
+                    permeate_flow = float(permeate_flow)   
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    permeate_flow = input('- What is the permeate flow rate? (m^3 / day) __ ')
+
+            max_feed_flow = input('- What is the maximum feed flow rate? (m^3 / hour) __ ')
+            while True:
+                try:
+                    max_feed_flow = float(max_feed_flow) 
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    max_feed_flow = input('- What is the maximum feed flow rate? (m^3 / hour) __ ')
+
+            membrane_thickness = input('- What is the filtration membrane thickness? (nm)  __ ')
+            while True:
+                try:
+                    membrane_thickness = float(membrane_thickness) 
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    membrane_thickness = input('What is the filtration membrane thickness? (nm)  __ ')
+            membrane_thickness = float(membrane_thickness)  / nm_over_mm
+
+            feed_thickness = input('- What is the feed spacer thickness? (mm) __ ')
+            while True:
+                try:
+                    feed_thickness = float(feed_thickness)
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    feed_thickness = input('- What is the feed spacer thickness? (mm)  __ ')
+
+            permeate_thickness = input('- What is the permeate spacer thickness? (mm) __ ')
+            while True:
+                try:
+                    permeate_thickness = float(permeate_thickness)
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    permeate_thickness = input('- What is the permeate spacer thickness? (mm) __ ')
+
+            polysulfonic_layer_thickness = int(input('- What is the polysulfonic layer thickness? (mm) __ '))
+            while True:
+                try:
+                    polysulfonic_layer_thickness = float(polysulfonic_layer_thickness)
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    polysulfonic_layer_thickness = input('What is the polysulfonic layer thickness (mm)  ')
+
+            support_layer_thickness = input('- What is the support layer thickness? (mm) __ ') 
+            while True:
+                try:
+                    support_layer_thickness = float(support_layer_thickness)
+                    break
+                except:
+                    print('''Provide a numerical parameter.''')  
+                    support_layer_thickness = input('- What is the support layer thickness? (mm) __ ')
+
+            repeated_membrane_thickness = 2 * membrane_thickness + feed_thickness + permeate_thickness + 2 * polysulfonic_layer_thickness + 2 * support_layer_thickness
+            print('Thickness of the repeated membrane unit (mm): %s' %(repeated_membrane_thickness))
+
+        #================================================================
+        # parameterize and calculate simulation characteristics
+        print('\nParameterize the RO system:')
         while True:
+            quantity_of_modules = input('''- How many RO modules will be simulated?
+        Multiple modules are aligned in-series, tip-to-tail. 
+        Default = 1   __ ''')
             try:
-                permeate_tube_diameter = float(permeate_tube_diameter)     
+                quantity_of_modules = int(quantity_of_modules)
                 break
             except:
-                print('''Provide a numerical parameter.''')  
-                permeate_tube_diameter = input('What is the module permeate tube diameter? (mm)  __ ')
-            
-        module_length = input('- What is the module length? (m)  __ ')
+                if quantity_of_modules == '':
+                    quantity_of_modules = 1
+                    break
+                else:
+                    print('''Provide a numerical parameter.''')  
+                    quantity_of_modules = input('''How many in-series RO modules will be simulated?''')
+
         while True:
+            cells_per_module = input('''- Into how many cells will your module be discretized?
+        Default = 12  __ ''')
             try:
-                module_length = float(module_length)    
+                cells_per_module = int(cells_per_module)
                 break
             except:
-                print('''Provide a numerical parameter.''')  
-                module_length = input('What is the module length? (m)  __ ')
-                
-        permeate_flow = input('- What is the permeate flow rate? (m^3 / day)  __ ')
-        while True:
+                if cells_per_module == '':
+                    cells_per_module = 12
+                    break
+                else:
+                    print('''Provide a numerical parameter.''')  
+                    cells_per_module = input('''Into how many cells will your module be discretized?''')
+
+        while True: 
+            simulation_shifts = input('''- How many simulation shifts will you parameterize?        
+        Default = %s __ ''' %(2*cells_per_module*quantity_of_modules))
+            print('''A simulation shift describes the migration of every cell to one greater cell number. Shifts = 24, for example, would simulate two complete cycles through an RO module with 12 module cells.''')
             try:
-                permeate_flow = float(permeate_flow)   
+                simulation_shifts = int(simulation_shifts)
                 break
             except:
-                print('''Provide a numerical parameter.''')  
-                permeate_flow = input('- What is the permeate flow rate? (m^3 / day) __ ')
-                
-        max_feed_flow = input('- What is the maximum feed flow rate? (m^3 / hour) __ ')
+                if simulation_shifts == '':
+                    simulation_shifts = (2*cells_per_module*quantity_of_modules)
+                    break
+                else:
+                    print('''Provide a numerical parameter.''')  
+                    simulation_shifts = input('''How many simulation shifts will you parameterize?''')
+
         while True:
+            max_feed_flow = input('''- What is the maximum feed flow rate of your RO module?
+        Default = 15.9 (m^3 / hour) __ ''')
             try:
                 max_feed_flow = float(max_feed_flow) 
                 break
             except:
-                print('''Provide a numerical parameter.''')  
-                max_feed_flow = input('- What is the maximum feed flow rate? (m^3 / hour) __ ')
-        
-        membrane_thickness = input('- What is the filtration membrane thickness? (nm)  __ ')
-        while True:
-            try:
-                membrane_thickness = float(membrane_thickness) 
-                break
-            except:
-                print('''Provide a numerical parameter.''')  
-                membrane_thickness = input('What is the filtration membrane thickness? (nm)  __ ')
-        membrane_thickness = float(membrane_thickness)  / nm_over_mm
-        
-        feed_thickness = input('- What is the feed spacer thickness? (mm) __ ')
-        while True:
-            try:
-                feed_thickness = float(feed_thickness)
-                break
-            except:
-                print('''Provide a numerical parameter.''')  
-                feed_thickness = input('- What is the feed spacer thickness? (mm)  __ ')
+                if max_feed_flow == '':
+                    max_feed_flow = 15.9
+                    break
+                else:
+                    print('''Provide a numerical parameter.''')  
+                    max_feed_flow = input('''- What is the maximum feed flow rate of your RO module?''')
 
-        permeate_thickness = input('- What is the permeate spacer thickness? (mm) __ ')
-        while True:
-            try:
-                permeate_thickness = float(permeate_thickness)
-                break
-            except:
-                print('''Provide a numerical parameter.''')  
-                permeate_thickness = input('- What is the permeate spacer thickness? (mm) __ ')
-        
-        polysulfonic_layer_thickness = int(input('- What is the polysulfonic layer thickness? (mm) __ '))
-        while True:
-            try:
-                polysulfonic_layer_thickness = float(polysulfonic_layer_thickness)
-                break
-            except:
-                print('''Provide a numerical parameter.''')  
-                polysulfonic_layer_thickness = input('What is the polysulfonic layer thickness (mm)  ')
-                
-        support_layer_thickness = input('- What is the support layer thickness? (mm) __ ') 
-        while True:
-            try:
-                support_layer_thickness = float(support_layer_thickness)
-                break
-            except:
-                print('''Provide a numerical parameter.''')  
-                support_layer_thickness = input('- What is the support layer thickness? (mm) __ ')
-                
-        repeated_membrane_thickness = 2 * membrane_thickness + feed_thickness + permeate_thickness + 2 * polysulfonic_layer_thickness + 2 * support_layer_thickness
-        print('Thickness of the repeated membrane unit (mm): %s' %(repeated_membrane_thickness))
-            
-    #================================================================
-    # parameterize and calculate simulation characteristics
-    print('\nParameterize the RO system:')
-    while True:
-        quantity_of_modules = input('''- How many RO modules will be simulated?
-    Multiple modules are aligned in-series, tip-to-tail. 
-    Default = 1   __ ''')
-        try:
-            quantity_of_modules = int(quantity_of_modules)
-            break
-        except:
-            if quantity_of_modules == '':
-                quantity_of_modules = 1
-                break
-            else:
-                print('''Provide a numerical parameter.''')  
-                quantity_of_modules = input('''How many in-series RO modules will be simulated?''')
+        # calculate module properties
+        module_cross_sectional_area = module_diameter**2 * math.pi / 4        #squared millimeters
+        permeate_tube_cross_sectional_area = permeate_tube_diameter**2 * math.pi / 4     #squared millimeters
+        filtering_layer_thicknes = (module_diameter - permeate_thickness) / 2         #millimeters
+        filtration_cross_sectional_area = module_cross_sectional_area - permeate_tube_cross_sectional_area        #squared millimeters
+        module_windings = filtering_layer_thicknes / repeated_membrane_thickness        #complete revolutions
+        cell_length = module_length / cells_per_module     #meters
 
-    while True:
-        cells_per_module = input('''- Into how many cells will your module be discretized?
-    Default = 12  __ ''')
-        try:
-            cells_per_module = int(cells_per_module)
-            break
-        except:
-            if cells_per_module == '':
-                cells_per_module = 12
-                break
-            else:
-                print('''Provide a numerical parameter.''')  
-                cells_per_module = input('''Into how many cells will your module be discretized?''')
+        # calculate feed layer characteristics
+        feed_cross_sectional_area = (feed_thickness / repeated_membrane_thickness) * filtration_cross_sectional_area     #squared millimeters
+        feed_volume = feed_cross_sectional_area * module_length / mm_over_m**2   #cubic meters
+        feed_mass = feed_volume * grams_over_liters_h2o * liters_over_cubic_meter / grams_over_kilograms    #kilograms, which assumes pure water for mass
+        feed_moles = feed_mass * grams_over_kilograms / grams_over_moles_h2o 
 
-    while True: 
-        simulation_shifts = input('''- How many simulation shifts will you parameterize?        
-    Default = %s __ ''' %(2*cells_per_module*quantity_of_modules))
-        print('''A simulation shift describes the migration of every cell to one greater cell number. Shifts = 24, for example, would simulate two complete cycles through an RO module with 12 module cells.''')
-        try:
-            simulation_shifts = int(simulation_shifts)
-            break
-        except:
-            if simulation_shifts == '':
-                simulation_shifts = (2*cells_per_module*quantity_of_modules)
-                break
-            else:
-                print('''Provide a numerical parameter.''')  
-                simulation_shifts = input('''How many simulation shifts will you parameterize?''')
+        # calculate fluid flow characteristics
+        feed_velocity = max_feed_flow / (feed_cross_sectional_area / mm_over_m**2) / minutes_over_hour / seconds_over_minute     #meters / second
+        reynolds_number = feed_velocity * module_length / kinematic_flow_velocity
 
-    while True:
-        max_feed_flow = input('''- What is the maximum feed flow rate of your RO module?
-    Default = 15.9 (m^3 / hour) __ ''')
-        try:
-            max_feed_flow = float(max_feed_flow) 
-            break
-        except:
-            if max_feed_flow == '':
-                max_feed_flow = 15.9
-                break
-            else:
-                print('''Provide a numerical parameter.''')  
-                max_feed_flow = input('''- What is the maximum feed flow rate of your RO module?''')
+        # calculate module cell characteristics
+        feed_mass_cell = feed_mass / cells_per_module      #kg
+        feed_moles_cell = feed_moles / cells_per_module    #moles
 
-    # calculate module properties
-    module_cross_sectional_area = module_diameter**2 * math.pi / 4        #squared millimeters
-    permeate_tube_cross_sectional_area = permeate_tube_diameter**2 * math.pi / 4     #squared millimeters
-    filtering_layer_thicknes = (module_diameter - permeate_thickness) / 2         #millimeters
-    filtration_cross_sectional_area = module_cross_sectional_area - permeate_tube_cross_sectional_area        #squared millimeters
-    module_windings = filtering_layer_thicknes / repeated_membrane_thickness        #complete revolutions
-    cell_length = module_length / cells_per_module     #meters
+        # calculate simulation parameters that will populate the PHREEQC simulation 
+        maximal_timestep = cell_length / feed_velocity * timesteps_over_cell         #seconds, from the Courant condition
+        permeate_removal_per_cell = maximal_timestep * permeate_flow / (seconds_over_day) * liters_over_cubic_meter * grams_over_liters_h2o / grams_over_moles_h2o / cells_per_module      #moles / cell
 
-    # calculate feed layer characteristics
-    feed_cross_sectional_area = (feed_thickness / repeated_membrane_thickness) * filtration_cross_sectional_area     #squared millimeters
-    feed_volume = feed_cross_sectional_area * module_length / mm_over_m**2   #cubic meters
-    feed_mass = feed_volume * grams_over_liters_h2o * liters_over_cubic_meter / grams_over_kilograms    #kilograms, which assumes pure water for mass
-    feed_moles = feed_mass * grams_over_kilograms / grams_over_moles_h2o 
+        #============================================================
+        # the TRANSPORT block is parameterized
+        transport_block = []
+        transport_line = '\nTRANSPORT'
+        cells_line = '-cells\t\t\t%s' %(cells_per_module)
+        shifts_line = '-shifts\t\t\t%s' %(simulation_shifts)
+        lengths_line = '-lengths\t\t%s' %(cell_length)
+        timestep_line = '-time_step\t\t%s\t# the Courant condition is satisfied with the cell_length of %s m and the feed velocity of %s m/s' %(maximal_timestep, cell_length, feed_velocity)
+        initial_time_line = '-initial_time\t\t0'    
+        boundary_conditions_line = '-boundary_conditions\tconstant\tconstant \t # Dirichlet boundary condition'
+        print('The single domain aggregates the concentration polarization and the bulk solution into a single simulated solution. The dual domain separates the concentration polarization and the bulk solution into distinct simulated solutions.')
+        single_or_dual_domain = input('''- Will the single or dual domain be simulated?
+        Default = < dual >  ;  < single > or < dual > __ ''') or 'dual'
+        while single_or_dual_domain not in ['single', 'dual']:
+            print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
+            single_or_dual_domain = input('''- Will the single or dual domain be simulated?
+            Default = < dual >  ;  < single > or < dual > __ ''') or 'dual'
 
-    # calculate fluid flow characteristics
-    feed_velocity = max_feed_flow / (feed_cross_sectional_area / mm_over_m**2) / minutes_over_hour / seconds_over_minute     #meters / second
-    reynolds_number = feed_velocity * module_length / kinematic_flow_velocity
+        if single_or_dual_domain == 'single':
+            domain_line = '-stagnant\t\t0\t0\t0\t0 \t # single domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
 
-    # calculate module cell characteristics
-    feed_mass_cell = feed_mass / cells_per_module      #kg
-    feed_moles_cell = feed_moles / cells_per_module    #moles
+        elif single_or_dual_domain == 'dual':
+            domain_line = '-stagnant\t\t1\t1\t0.1\t0.9 \t # dual domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
 
-    # calculate simulation parameters that will populate the PHREEQC simulation 
-    maximal_timestep = cell_length / feed_velocity * timesteps_over_cell         #seconds, from the Courant condition
-    permeate_removal_per_cell = maximal_timestep * permeate_flow / (seconds_over_day) * liters_over_cubic_meter * grams_over_liters_h2o / grams_over_moles_h2o / cells_per_module      #moles / cell
+        time_or_distance = input('''- Would you like to examine scaling over module distance,
+        or would you like to examine effluent brine over time?
+        Default = < Scaling >  ;  < Scaling > or < Brine > __ ''') or 'Scaling'
+        while time_or_distance != 'Scaling' and time_or_distance != 'Brine':
+            print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
+            time_or_distance = input('''- Would you like to examine scaling or effluent brine?
+            Default = < Scaling >  ;  < Scaling > or < Brine > __ ''') or 'Scaling'
 
+        if time_or_distance == 'Scaling':
+            punch_cells_line = '-punch_cells\t\t1-%s' %(cells_per_module)
+            punch_frequency_line = '-punch_frequency\t%s' %(cells_per_module)
+
+        elif time_or_distance == 'Brine':
+            punch_cells_line = '-punch_cells\t\t%s' %(cells_per_module)
+            punch_frequency_line = '-punch_frequency\t1'       
+
+        transport_block.extend((transport_line, cells_line, shifts_line, lengths_line, timestep_line, initial_time_line, boundary_conditions_line, domain_line, punch_cells_line, punch_frequency_line))
+    
+    elif evaporation_or_transport == 'evaporation':
+        transport_block = ''
+
+    
     # REACTION calculations 
     permeate_options = ['Linear permeate', 'Linear CF']
     permeate_approach = input('''\n- What approach of permeate removal will you simulate?
@@ -454,19 +510,33 @@ def make_reactive_transport():
             cumulative_cf *= cf
             initial_moles_cell = feed_moles_cell - moles_to_be_removed   # moles_to_be_removed = the final quantity of moles is calculated with naming from the linear permeate flux method to be consistent  
 
-        # print(reaction_parameters)
-        for cell in range(1, cells_per_module+1):
-            cell_number = cell + cells_per_module * module
-            reaction_line = 'REACTION %s' %(cell_number)
-            if cell < cells_per_module:
-                reaction_line += '\n\tH2O -1; %s' %(reaction_parameters[cell_number-1]) 
+        if evaporation_or_transport == 'transport':
+            reaction_line.append('\n')
+            for cell in range(1, cells_per_module+1):
+                cell_number = cell + cells_per_module * module
+                reaction_line = 'REACTION %s' %(cell_number)
+                if cell < cells_per_module:
+                    reaction_line += '\n\tH2O -1; %s' %(reaction_parameters[cell_number-1]) 
 
-            elif cell == cells_per_module:
-                reaction_line += '''\n\tH2O -1; %s
+                elif cell == cells_per_module:
+                    reaction_line += '''\n\tH2O -1; %s
+    INCREMENTAL_REACTIONS \ttrue''' %(reaction_parameters[cell_number-1], module + 1)     
 
-                # end module %s\n''' %(reaction_parameters[cell_number-1], module + 1)     
-
-            reaction_block.append(reaction_line) 
+                reaction_block.append(reaction_line)
+                
+        elif evaporation_or_transport == 'evaporation':
+            parameter_quantity = 15
+            recursive_assymtote_multiplier = 1.335449219
+            total_moles_removed = sum(reaction_parameters)
+            initial_evaporation_parameter = total_moles_removed / recursive_assymptote_multiplier
+            evaporation_reaction_parameters = ['0', initial_evaporation_parameter]
+            for parameter in range(1, parameter_quantity):
+                evaporation_reaction_parameter = evaporation_reaction_parameters[parameter] * 1/4
+                evaporation_reaction_parameters.append(evaporation_reaction_parameter)
+                
+            reaction_line = 'REACTION 1'
+            reaction_line += '\n\tH2O -1; '
+            reaction_line += ' '.join(evaporation_reaction_parameters) 
 
         # the calculated reaction parameters will be added and printed to a generated PHREEQC input file
         final_solution_mass = initial_moles_cell * grams_over_moles_h2o / grams_over_kilograms  #kg water mass
@@ -482,48 +552,6 @@ def make_reactive_transport():
             reaction_block.append('''    #Effluent module %s:
     #Estimated CF: %s
     #Estimated solution mass: %s\n\n''' %(module + 1, cumulative_cf, final_solution_mass))
-        
-    #============================================================
-    # the TRANSPORT block is parameterized
-    transport_block = []
-    transport_line = '\nTRANSPORT'
-    cells_line = '-cells\t\t\t%s' %(cells_per_module)
-    shifts_line = '-shifts\t\t\t%s' %(simulation_shifts)
-    lengths_line = '-lengths\t\t%s' %(cell_length)
-    timestep_line = '-time_step\t\t%s\t# the Courant condition is satisfied with the cell_length of %s m and the feed velocity of %s m/s' %(maximal_timestep, cell_length, feed_velocity)
-    initial_time_line = '-initial_time\t\t0'    
-    boundary_conditions_line = '-boundary_conditions\tconstant\tconstant \t # Dirichlet boundary condition'
-    print('The single domain aggregates the concentration polarization and the bulk solution into a single simulated solution. The dual domain separates the concentration polarization and the bulk solution into distinct simulated solutions.')
-    single_or_dual_domain = input('''- Will the single or dual domain be simulated?
-    Default = < dual >  ;  < single > or < dual > __ ''') or 'dual'
-    while single_or_dual_domain not in ['single', 'dual']:
-        print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
-        single_or_dual_domain = input('''- Will the single or dual domain be simulated?
-        Default = < dual >  ;  < single > or < dual > __ ''') or 'dual'
-        
-    if single_or_dual_domain == 'single':
-        domain_line = '-stagnant\t\t0\t0\t0\t0 \t # single domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
-        
-    elif single_or_dual_domain == 'dual':
-        domain_line = '-stagnant\t\t1\t1\t0.1\t0.9 \t # dual domain\n#^stagnant cells\t^exchange factor\t^CP volume\t^bulk volume'
-    
-    time_or_distance = input('''- Would you like to examine scaling over module distance,
-    or would you like to examine effluent brine over time?
-    Default = < Scaling >  ;  < Scaling > or < Brine > __ ''') or 'Scaling'
-    while time_or_distance != 'Scaling' and time_or_distance != 'Brine':
-        print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
-        time_or_distance = input('''- Would you like to examine scaling or effluent brine?
-        Default = < Scaling >  ;  < Scaling > or < Brine > __ ''') or 'Scaling'
-        
-    if time_or_distance == 'Scaling':
-        punch_cells_line = '-punch_cells\t\t1-%s' %(cells_per_module)
-        punch_frequency_line = '-punch_frequency\t%s' %(cells_per_module)
-        
-    elif time_or_distance == 'Brine':
-        punch_cells_line = '-punch_cells\t\t%s' %(cells_per_module)
-        punch_frequency_line = '-punch_frequency\t1'       
-    
-    transport_block.extend((transport_line, cells_line, shifts_line, lengths_line, timestep_line, initial_time_line, boundary_conditions_line, domain_line, punch_cells_line, punch_frequency_line))
         
         
 def make_solutions():
@@ -552,7 +580,11 @@ def make_solutions():
     print(announcement, '\n', '='*len(announcement))
     solution_description = input('''- What is a description of your feed solution? __ 
     Default is none\t''')
-    initial_solution_line = '\nSOLUTION 0\t%s' % (solution_description)
+    
+    if evaporation_or_transport == 'transport':
+        initial_solution_line = '\nSOLUTION 0\t%s' % (solution_description)
+    elif evaporation_or_transport == 'evaporation':
+        initial_solution_line = '\nSOLUTION 1\t%s' % (solution_description)
     solution_block.append(initial_solution_line)
     
     #=============================================================================
@@ -963,18 +995,19 @@ def make_solutions():
     #=========================================================================================  
 
     #parameterize the initial module solution
-    feed_solution_line = '\nSOLUTION 1-%s\tInitial solution in the RO module' %(cells_per_module * quantity_of_modules) 
-    solution_block.extend([feed_solution_line,
-                          'temp \t 25',
-                          'units \t ppm'])
-        
-    for element in elements:
-        element_concentration = 0
-        element_line = '%s\t%s'  %(element, element_concentration)    
-        solution_block.append(element_line)
+    if evaporation_or_transport == 'transport':
+        feed_solution_line = '\nSOLUTION 1-%s\tInitial solution in the RO module' %(cells_per_module * quantity_of_modules) 
+        solution_block.extend([feed_solution_line,
+                              'temp \t 25',
+                              'units \t ppm'])
 
-    water_line = '-water \t %s' %(feed_mass_cell)
-    solution_block.append(water_line)
+        for element in elements:
+            element_concentration = 0
+            element_line = '%s\t%s'  %(element, element_concentration)    
+            solution_block.append(element_line)
+
+        water_line = '-water \t %s' %(feed_mass_cell)
+        solution_block.append(water_line)
     
     
 def make_equilibrium_phases():
@@ -1040,10 +1073,16 @@ def make_equilibrium_phases():
     equilibrium_phases_block = []
     announcement = '\nParameterize the scaling minerals:'
     print(announcement, '\n', '='*len(announcement))
-    equilibrium_phases_number = input('''- Over what cell(s) will scaling occur? < # > or < #-# > 
-    Default of all = 1 - %s\t''' %(cells_per_module*quantity_of_modules)) or '1-{}'.format(cells_per_module*quantity_of_modules)
+    
+    if evaporation_or_transport == 'transport':
+        equilibrium_phases_number = input('''- Over what cell(s) will scaling occur? < # > or < #-# > 
+        Default of all = 1 - %s\t''' %(cells_per_module*quantity_of_modules)) or '1-{}'.format(cells_per_module*quantity_of_modules)
+    elif evaporation_or_transport == 'evaporation':
+        equilibrium_phases_number = '1'
+        
     equilibrium_phases_description = input('''- Do the scaling conditions have a special description?
     Default is none\t''')
+    
     equilibrium_phases_line = '\nEQUILIBRIUM_PHASES %s\t%s' % (equilibrium_phases_number, 
                                                                equilibrium_phases_description)
     equilibrium_phases_block.append(equilibrium_phases_line)
@@ -1303,10 +1342,10 @@ def make_selected_output():
     print('''The inclusion of "Scaling" or "Brine" and "phreeqc" or "pitzer" in the selected output file name facilitates data processing. 
 Exclude the extension of the file name.''')
     count = 0
-    proposed_selected_output_file_name = '{}_{}, {}, {}_{}'.format(datetime.date.today(), water_selection, database_selection, time_or_distance, count) 
+    proposed_selected_output_file_name = '{}_{}, {}, {}, {}_{}'.format(datetime.date.today(), water_selection, evaporation_or_transport, database_selection, time_or_distance, count) 
     while os.path.exists('{}.txt'.format(proposed_selected_output_file_name)):
         count += 1
-        proposed_selected_output_file_name = '{}_{}, {}, {}_{}'.format(datetime.date.today(), water_selection, database_selection, time_or_distance, count) 
+        proposed_selected_output_file_name = '{}_{}, {}, {}_{}'.format(datetime.date.today(), water_selection, evaporation_or_transport, database_selection, time_or_distance, count) 
         
     selected_output_file_name = input('''- What is the name for your output file? 
     Default = {}  __'''.format(proposed_selected_output_file_name)) or proposed_selected_output_file_name
@@ -1361,9 +1400,9 @@ def export():
         input_file_name = proposed_file_name
         
     elif os.path.exists(proposed_file_name):
-        while os.path.exists('%s_PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, time_or_distance, file_number)):
+        while os.path.exists('%s_PHREEQC input file, %s, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, evaporation_or_transport, time_or_distance, file_number)):
             file_number += 1
-            input_file_name = '%s_PHREEQC input file, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, time_or_distance, file_number)
+            input_file_name = '%s_PHREEQC input file, %s, %s, %s_%s.pqi' %(datetime.date.today(), water_selection, evaporation_or_transport, time_or_distance, file_number)
         
     # printing and exporting the input file
     printing_block = input('''- Would you like to view your input file? < y > or < n > __ ''')
@@ -1436,6 +1475,7 @@ def process_selected_output():
     Interpreting the PHREEQC SELECTED_OUTPUT file and conducting the plotting functions
     """
     global selected_output_file_name
+    global evaporation_or_transport
     global simulation_perspective
     global time_or_distance
     global graphical_selection
@@ -1453,26 +1493,32 @@ def process_selected_output():
         simulation_perspective = time_or_distance
         database = database_selection 
         
-    elif input_selection == 'n' and execute_selection == 'y':
-        input_file = open(input_file_name, 'r')
-        for line in input_file:
-            if re.search('(-file\s+)', line):
-                selected_output_file_name = re.sub('(-file\s+)', '', line)
-                selected_output_file_name = re.sub('(\n)', '', selected_output_file_name)
+    else:       
+        if execute_selection == 'y':
+            input_file = open(input_file_name, 'r')
+            for line in input_file:
+                if re.search('(-file\s+)', line):
+                    selected_output_file_name = re.sub('(-file\s+)', '', line)
+                    selected_output_file_name = re.sub('(\n)', '', selected_output_file_name)
                 
-        time_or_distance = ''
-        if re.search('(Scaling)', selected_output_file_name, flags=re.IGNORECASE):
-            simulation_perspective = 'Scaling'
-        elif re.search('(Brine)', selected_output_file_name, flags=re.IGNORECASE):
-            simulation_perspective = 'Brine'
-        
-    elif input_selection == execute_selection == 'n':  
-        selected_output_file = input('''- What is the name and\or path of the simulation file?
-        Include the extension, like < .txt > __ ''')
-        selected_output_file_name = re.sub('(?<=\.)(.+)', '', selected_output_file)
-        while not os.path.exists(selected_output_file):
-            print('ERROR: The simulation file is missing from the current directory.')  
-            selected_output_file_name = input('What is the name and\or path of the simulation file?')  
+                if re.search('(TRANSPORT)', line):
+                    evaporation_or_transport = 'transport'
+                else:
+                    evaporation_or_transport = 'evaporation'
+                        
+        else:  
+            selected_output_file = input('''- What is the name and\or path of the simulation file?
+            Include the extension, like < .txt > __ ''')
+            selected_output_file_name = re.sub('(?<=\.)(.+)', '', selected_output_file)
+            while not os.path.exists(selected_output_file):
+                print('ERROR: The simulation file is missing from the current directory.')  
+                selected_output_file_name = input('What is the name and\or path of the simulation file?')  
+            
+            for line in selected_output_file:
+                if re.search('(TRANSPORT)', line):
+                    evaporation_or_transport = 'transport'
+                else:
+                    evaporation_or_transport = 'evaporation'
 
         #determining the scope of the simulation data
         if re.search('(Scaling)', selected_output_file_name, flags=re.IGNORECASE):
@@ -1487,7 +1533,7 @@ def process_selected_output():
             while simulation_perspective != 'Brine' and simulation_perspective != 'Scaling':
                 print('''ERROR: The value is not one of the options. Select one of the choices to proceed.''')  
                 simulation_perspective = input('- Is the output file representative of a simulation for scaling or brine?')
-        
+
         time_or_distance = ''
         
     graphical_selection = input('''- Would you like to view the effluent brine or the module scaling from your {} simulation?
@@ -1525,7 +1571,6 @@ def make_brine_plot():
     global export_name
     global plot_title 
     global figure
-
     
     elements = []
     for column in csv_data.columns:
@@ -1652,9 +1697,6 @@ def make_brine_plot():
     export_option = input('''- Would you like to export the figure? < y > or < n > __ ''')
     if export_option == 'y':
         export_plot()
-    elif export_option == 'n':
-        final_message = 'The data processing is complete.'
-        print('%s\n%s' %(final_message, '='*len(final_message)))
     while export_option not in possible_answers:
         print('''ERROR: The value is not one of the options.''')  
         export_option = input('''- Would you like to export the figure?
@@ -1715,9 +1757,7 @@ def make_scaling_plot():
         for mineral in non_zero_minerals:
             mineral_serie = []
             time_serie = []
-            #print(mineral)
             for index, row in csv_data.iterrows():
-                #print('yes')
                 mineral_serie.append(csv_data.at[index, mineral]) 
                 time = csv_data.at[index, 'time']
                 time_serie.append(time)
@@ -1739,16 +1779,12 @@ def make_scaling_plot():
             export_name = export_filename_progenitor
         
         export_option = input('''- Would you like to export the figure? < y > or < n > __ ''')
+        while export_option not in possible_options:
+            print('''ERROR: The value is not one of the options.''')  
+            export_option = input('''Would you like to export the figure? < y > or < n > __ ''')  
+            
         if export_option == 'y':
             export_plot()
-        elif export_option == 'n':
-            final_message = 'The data processing is complete.'
-            print('%s\n%s' %(final_message, '='*len(final_message)))
-        else:
-            while export_option != 'y' and export_option != 'n':
-                print('''ERROR: The value is not one of the options.''')  
-                export_option = input('''Would you like to export the figure? < y > or < n > __ ''')   
-            
             
     elif simulation_perspective == 'Scaling':
         if quantity_nonzero_minerals < 2:
@@ -1770,86 +1806,123 @@ def make_scaling_plot():
                 print('ERROR: The entered value is not accepted.')  
                 exporting_plots = input('- How many mineral figures would you like to export?')
 
-            exporting_minerals = []
-            if exporting_plots == 'A few':
-                for mineral in non_zero_minerals:
-                    print('< %s >' %(mineral))
-                exporting_mineral = input('''- Which minerals will you export?
-    Type < done > when you are finished.''')
-                while exporting_mineral not in non_zero_minerals:
-                    print('ERROR: The entered mineral is not among the options.')  
-                    exporting_mineral = input('- Which minerals will you export?')
-                while exporting_mineral != 'done':
-                    exporting_minerals.append(exporting_mineral)
-                    exporting_mineral = input('- Which minerals will you export?')
+            if exporting_plots == ('All' or 'A few'):
+                exporting_minerals = []
+                if exporting_plots == 'All':
+                    exporting_minerals = non_zero_minerals
+                
+                elif exporting_plots == 'A few':
+                    for mineral in non_zero_minerals:
+                        print('< %s >' %(mineral))
+
+                    exporting_mineral = input('''- Which minerals will you export?
+        Type < done > when you are finished.''')
                     while exporting_mineral not in non_zero_minerals:
                         print('ERROR: The entered mineral is not among the options.')  
                         exporting_mineral = input('- Which minerals will you export?')
+                    while exporting_mineral != 'done':
+                        exporting_minerals.append(exporting_mineral)
+                        exporting_mineral = input('- Which minerals will you export?')
+                        while exporting_mineral not in non_zero_minerals:
+                            print('ERROR: The entered mineral is not among the options.')  
+                            exporting_mineral = input('- Which minerals will you export?')
 
-            for mineral in non_zero_minerals:
-                pyplot.figure(figsize = (17,10))
-                pyplot.title(plot_title, fontsize = 'xx-large')
-                pyplot.xlabel('Midpoint module distance (m)', fontsize = 'x-large')
-                pyplot.ylabel('Quantity (%s)' %(unit), fontsize = 'x-large')  
-                experimental_loop = []
+                for mineral in exporting_minerals:
+                    pyplot.figure(figsize = (17,10))
+                    pyplot.title(plot_title, fontsize = 'xx-large')
+                    
+                    if evaporation_or_transport == 'transport':
+                        pyplot.xlabel('Midpoint module distance (m)', fontsize = 'x-large')
+                        pyplot.ylabel('Quantity (%s)' %(unit), fontsize = 'x-large')  
+                        experimental_loop = []
 
-                iteration = 0
-                distance_serie = []
-                time_serie = []
-                quantity_of_steps_index = 0   
-                for index, row in csv_data.iterrows():
-                    if csv_data.at[index, 'time'] == 0:
-                        time_serie.append(csv_data.at[index, mineral]) 
-                        distance_serie.append(csv_data.at[index, 'dist_x'])
-                        quantity_of_steps_index += 1   
-                        time = 0
-
-                    elif csv_data.at[index-1, 'soln'] == quantity_of_steps_index:
-                        experimental_loop.append('%s [%s] ; time (s): %s' 
-                                                 %(mineral, 
-                                                    mineral_formulas[minerals.index(mineral)], 
-                                                    round(time, 2)))
-                        pyplot.plot(distance_serie,time_serie)
+                        iteration = 0
                         distance_serie = []
                         time_serie = []
-                        time_serie.append(csv_data.at[index, mineral])
-                        distance_serie.append(csv_data.at[index, 'dist_x'])
-                        time = csv_data.at[index, 'time']
+                        quantity_of_steps_index = 0   
+                        for index, row in csv_data.iterrows():
+                            if csv_data.at[index, 'time'] == 0:
+                                time_serie.append(csv_data.at[index, mineral]) 
+                                distance_serie.append(csv_data.at[index, 'dist_x'])
+                                quantity_of_steps_index += 1   
+                                time = 0
 
-                    elif index == len(csv_data[mineral]) + 2:   
-                        experimental_loop.append('%s [%s] ; time (s): %s' 
-                                                 %(mineral, 
-                                                    mineral_formulas[minerals.index(mineral)], 
-                                                    round(time, 2)))
-                        pyplot.plot(distance_serie,time_serie)
+                            elif csv_data.at[index-1, 'soln'] == quantity_of_steps_index:
+                                experimental_loop.append('%s [%s] ; time (s): %s' 
+                                                         %(mineral, 
+                                                            mineral_formulas[minerals.index(mineral)], 
+                                                            round(time, 2)))
+                                pyplot.plot(distance_serie,time_serie)
+                                distance_serie = []
+                                time_serie = []
+                                time_serie.append(csv_data.at[index, mineral])
+                                distance_serie.append(csv_data.at[index, 'dist_x'])
+                                time = csv_data.at[index, 'time']
 
-                    else:
-                        time_serie.append(csv_data.at[index, mineral])
-                        distance_serie.append(csv_data.at[index, 'dist_x'])
-                        iteration += 1
+                            elif index == len(csv_data[mineral]) + 2:   
+                                experimental_loop.append('%s [%s] ; time (s): %s' 
+                                                         %(mineral, 
+                                                            mineral_formulas[minerals.index(mineral)], 
+                                                            round(time, 2)))
+                                pyplot.plot(distance_serie,time_serie)
 
+                            else:
+                                time_serie.append(csv_data.at[index, mineral])
+                                distance_serie.append(csv_data.at[index, 'dist_x'])
+                                iteration += 1
 
-                pyplot.legend(experimental_loop, loc='best', fontsize = 'x-large')
-                pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(simulation_cf), wrap=True, horizontalalignment='left', fontsize=12)
-                figure = pyplot.gcf()
-                pyplot.show()
-                
-                # export the direct figures
-                export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file_name)
-                if not re.search('(scaling|brine)', export_filename_progenitor, flags=re.IGNORECASE):
-                    export_name = '{}, {}'.format(export_filename_progenitor, simulation_perspective)
-                else:
-                    export_name = export_filename_progenitor
-                    
-                if exporting_plots == 'All':
-                    export_plot()
-                elif exporting_plots == 'A few':
-                    if mineral in exporting_minerals:
-                        export_plot()
-                elif exporting_plots == 'None':
-                    final_message = 'The data processing is complete.'
-                    print('%s\n%s' %(final_message, '='*len(final_message)))
+                    elif evaporation_or_transport == 'evaporation':
+                        pyplot.xlabel('Concentration Factor (CF)', fontsize = 'x-large')
+                        pyplot.ylabel('Quantity (%s)' %(unit), fontsize = 'x-large')  
+
+                        experimental_loop = []
+                        iteration = 0
+                        mass_series = []
+                        concentration_series = []
+                        quantity_of_steps_index = 0  
+                        initial_solution_mass = csv_data.at[0, 'mass_H2O']
+                        for index, row in csv_data.iterrows():
+                            try:
+                                if csv_data.at[index+1, 'mass_H2O']:
+                                    if csv_data.at[index, 'step'] >= 1:
+                                        concentration_series.append(csv_data.at[index, mineral]) 
+                                        solution_mass = csv_data.at[index, 'mass_H2O']
+                                        mass_series.append(initial_solution_mass / solution_mass)   
+
+                                    else:
+                                        print('ERROR: The SELECTED_OUTPUT file possesses an unexcepted data structure.')
+
+                             
+                            except:
+                                concentration_series.append(csv_data.at[index, mineral]) 
+                                solution_mass = csv_data.at[index, 'mass_H2O']
+                                mass_series.append(initial_solution_mass / solution_mass)  
+                                
+                                experimental_loop.append('%s [%s]' %(mineral, mineral_formulas[minerals.index(mineral)]))
+                                pyplot.plot(mass_series,concentration_series)
+
+                                mass_series = []
+                                concentration_series = []
+                                concentration_series.append(csv_data.at[index, mineral]) 
+                                solution_mass = csv_data.at[index, 'mass_H2O']
+                                mass_series.append(initial_solution_mass / solution_mass)                        
+
                         
+                    pyplot.legend(experimental_loop, loc='best', fontsize = 'x-large')
+                    pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(simulation_cf), wrap=True, horizontalalignment='left', fontsize=12)
+                    figure = pyplot.gcf()
+                    pyplot.show()
+
+                    # export the direct figures
+                    export_filename_progenitor = re.sub('(\.\w+)', '', selected_output_file_name)
+                    if not re.search('(scaling|brine)', export_filename_progenitor, flags=re.IGNORECASE):
+                        export_name = '{}, {}'.format(export_filename_progenitor, simulation_perspective)
+                    else:
+                        export_name = export_filename_progenitor
+                        
+                    export_plot()
+
+                    
         elif individual_plots == 'n':
             pyplot.figure(figsize = (17,10))
             pyplot.title(plot_title, fontsize = 'xx-large')
@@ -1857,44 +1930,76 @@ def make_scaling_plot():
             pyplot.ylabel('Quantity (%s)' %(unit), fontsize = 'x-large')  
             experimental_loop = []
             for mineral in non_zero_minerals:
-                iteration = 0
-                distance_serie = []
-                time_serie = []
-                quantity_of_steps_index = 0   
-                for index, row in csv_data.iterrows():
-                    if csv_data.at[index, 'time'] == 0:
-                        time_serie.append(csv_data.at[index, mineral]) 
-                        distance_serie.append(csv_data.at[index, 'dist_x'])
-                        quantity_of_steps_index += 1   
-                        time = 0
+                if evaporation_or_transport == 'transport':
+                    iteration = 0
+                    distance_serie = []
+                    time_serie = []
+                    quantity_of_steps_index = 0   
+                    for index, row in csv_data.iterrows():
+                        if csv_data.at[index, 'time'] == 0:
+                            time_serie.append(csv_data.at[index, mineral]) 
+                            distance_serie.append(csv_data.at[index, 'dist_x'])
+                            quantity_of_steps_index += 1   
+                            time = 0
 
-                    elif csv_data.at[index-1, 'soln'] == quantity_of_steps_index:
-                        experimental_loop.append('%s [%s] ; time (s): %s' 
-                                                 %(mineral, 
-                                                    mineral_formulas[minerals.index(mineral)], 
-                                                    round(time, 2)))
-                        pyplot.plot(distance_serie,time_serie)
-                        distance_serie = []
-                        time_serie = []
-                        time_serie.append(csv_data.at[index, mineral])
-                        distance_serie.append(csv_data.at[index, 'dist_x'])
-                        time = csv_data.at[index, 'time']
+                        elif csv_data.at[index-1, 'soln'] == quantity_of_steps_index:
+                            experimental_loop.append('%s [%s] ; time (s): %s' %(mineral,                                                       mineral_formulas[minerals.index(mineral)], round(time, 2)))
+                            pyplot.plot(distance_serie,time_serie)
+                            distance_serie = []
+                            time_serie = []
+                            time_serie.append(csv_data.at[index, mineral])
+                            distance_serie.append(csv_data.at[index, 'dist_x'])
+                            time = csv_data.at[index, 'time']
 
-                    elif index == len(csv_data[mineral]) + 2:   
-                        experimental_loop.append('%s [%s] ; time (s): %s' 
-                                                 %(mineral, 
-                                                    mineral_formulas[minerals.index(mineral)], 
-                                                    round(time, 2)))
-                        pyplot.plot(distance_serie,time_serie)
+                        elif index == len(csv_data[mineral]) + 2:   
+                            experimental_loop.append('%s [%s] ; time (s): %s' %(mineral, mineral_formulas[minerals.index(mineral)], round(time, 2)))
+                            pyplot.plot(distance_serie,time_serie)
 
-                    else:
-                        time_serie.append(csv_data.at[index, mineral])
-                        distance_serie.append(csv_data.at[index, 'dist_x'])
-                        iteration += 1
+                        else:
+                            time_serie.append(csv_data.at[index, mineral])
+                            distance_serie.append(csv_data.at[index, 'dist_x'])
+                            iteration += 1
+                                                         
+
+                elif evaporation_or_transport == 'evaporation':
+                    pyplot.xlabel('Concentration Factor (CF)', fontsize = 'x-large')
+                    pyplot.ylabel('Quantity (%s)' %(unit), fontsize = 'x-large')  
+
+                    experimental_loop = []
+                    iteration = 0
+                    mass_series = []
+                    concentration_series = []
+                    quantity_of_steps_index = 0  
+                    initial_solution_mass = csv_data.at[0, 'mass_H2O']
+                    for index, row in csv_data.iterrows():
+                        try:
+                            if csv_data.at[index+1, 'mass_H2O']:
+                                if csv_data.at[index, 'step'] >= 1:
+                                    concentration_series.append(csv_data.at[index, mineral]) 
+                                    solution_mass = csv_data.at[index, 'mass_H2O']
+                                    mass_series.append(initial_solution_mass / solution_mass)   
+
+                                else:
+                                    print('ERROR: The SELECTED_OUTPUT file possesses an unexcepted data structure.')
+
+
+                        except:
+                            concentration_series.append(csv_data.at[index, mineral]) 
+                            solution_mass = csv_data.at[index, 'mass_H2O']
+                            mass_series.append(initial_solution_mass / solution_mass)  
+
+                            experimental_loop.append('%s [%s]' %(mineral, mineral_formulas[minerals.index(mineral)]))
+                            pyplot.plot(mass_series,concentration_series)
+
+                            mass_series = []
+                            concentration_series = []
+                            concentration_series.append(csv_data.at[index, mineral]) 
+                            solution_mass = csv_data.at[index, 'mass_H2O']
+                            mass_series.append(initial_solution_mass / solution_mass)         
+                                                         
 
             pyplot.legend(experimental_loop, loc='best', fontsize = 'x-large')
-            pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(simulation_cf), 
-                           wrap=True, horizontalalignment='left', fontsize=12)
+            pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(simulation_cf), wrap=True, horizontalalignment='left', fontsize=12)
             figure = pyplot.gcf()
             pyplot.show()
             
@@ -1906,15 +2011,12 @@ def make_scaling_plot():
                 export_name = export_filename_progenitor
             
             export_option = input('''Would you like to export the figure? < y > or < n > __ ''')
+            while export_option not in possible_answers:
+                print('''ERROR: The value is not one of the options.''')  
+                export_option = input('''Would you like to export the figure? < y > or < n > __ ''')       
+
             if export_option == 'y':
                 export_plot()
-            elif export_option == 'n':
-                final_message = 'The data processing is complete.'
-                print('%s\n%s' %(final_message, '='*len(final_message)))
-            else:
-                while export_option != 'y' and export_option != 'n':
-                    print('''ERROR: The value is not one of the options.''')  
-                    export_option = input('''Would you like to export the figure? < y > or < n > __ ''')       
             
             
 def export_plot():
@@ -2042,7 +2144,7 @@ def choose_your_path():
         print('\nSimulation\n', '+'*len('Simulation'))
         execute()
         
-    final_message = '\n\nThe data processing is complete.'
+    final_message = '\n\nThe simulation is complete.'
     print('%s\n%s' %(final_message, '='*len(final_message)))
         
         
