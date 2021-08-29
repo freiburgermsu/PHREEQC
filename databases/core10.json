@@ -1,0 +1,689 @@
+{
+    "elements": {
+        "Al": {
+            "charge_specie": "0",
+            "gfw_formula": "Al",
+            "element_gfw": "26.9815"
+        },
+        "Alkalinity": {
+            "charge_specie": "1",
+            "gfw_formula": "Ca0.5(CO3)0.5",
+            "element_gfw": "50.05"
+        },
+        "B": {
+            "charge_specie": "0",
+            "gfw_formula": "B",
+            "element_gfw": "10.811"
+        },
+        "B(3)": {
+            "charge_specie": "0",
+            "gfw_formula": "B",
+            "element_gfw": "-36.44179"
+        },
+        "C(-4)": {
+            "charge_specie": "0",
+            "gfw_formula": "CH4",
+            "element_gfw": "-33.31051"
+        },
+        "C(-3)": {
+            "charge_specie": "0",
+            "gfw_formula": "C2H6",
+            "element_gfw": "-30.54674"
+        },
+        "C(-2)": {
+            "charge_specie": "0",
+            "gfw_formula": "C2H4",
+            "element_gfw": "-28.08539"
+        },
+        "C": {
+            "charge_specie": "1",
+            "gfw_formula": "HCO3",
+            "element_gfw": "12.011"
+        },
+        "C(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "C",
+            "element_gfw": "-23.87691"
+        },
+        "C(+4)": {
+            "charge_specie": "1",
+            "gfw_formula": "HCO3",
+            "element_gfw": "-22.05727"
+        },
+        "Ca": {
+            "charge_specie": "0",
+            "gfw_formula": "Ca",
+            "element_gfw": "40.078"
+        },
+        "Cl": {
+            "charge_specie": "0",
+            "gfw_formula": "Cl",
+            "element_gfw": "35.4527"
+        },
+        "Cl(-1)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cl",
+            "element_gfw": "-17.43358"
+        },
+        "Cl(1)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cl",
+            "element_gfw": "-16.11094"
+        },
+        "Cl(3)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cl",
+            "element_gfw": "-14.87484"
+        },
+        "Cl(5)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cl",
+            "element_gfw": "-13.71476"
+        },
+        "Cl(7)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cl",
+            "element_gfw": null
+        },
+        "Co": {
+            "charge_specie": "0",
+            "gfw_formula": "Co",
+            "element_gfw": "58.9332"
+        },
+        "Co(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "Co",
+            "element_gfw": null
+        },
+        "Co(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "Co",
+            "element_gfw": null
+        },
+        "Cr": {
+            "charge_specie": "0",
+            "gfw_formula": "CrO4-2",
+            "element_gfw": "51.9961"
+        },
+        "Cr(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cr",
+            "element_gfw": null
+        },
+        "Cr(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cr",
+            "element_gfw": null
+        },
+        "Cr(+6)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cr",
+            "element_gfw": null
+        },
+        "Cu": {
+            "charge_specie": "0",
+            "gfw_formula": "Cu",
+            "element_gfw": "63.546"
+        },
+        "Cu(+1)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cu",
+            "element_gfw": null
+        },
+        "Cu(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "Cu",
+            "element_gfw": null
+        },
+        "E": {
+            "charge_specie": "0",
+            "gfw_formula": "0",
+            "element_gfw": "0"
+        },
+        "Eu": {
+            "charge_specie": "0",
+            "gfw_formula": "Eu",
+            "element_gfw": "151.965"
+        },
+        "Eu(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "Eu",
+            "element_gfw": null
+        },
+        "Eu(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "Eu",
+            "element_gfw": null
+        },
+        "Fe": {
+            "charge_specie": "0",
+            "gfw_formula": "Fe",
+            "element_gfw": "55.847"
+        },
+        "Fe(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "Fe",
+            "element_gfw": null
+        },
+        "Fe(+3)": {
+            "charge_specie": "-2",
+            "gfw_formula": "Fe",
+            "element_gfw": null
+        },
+        "Gd": {
+            "charge_specie": "0",
+            "gfw_formula": "Gd",
+            "element_gfw": "157.25"
+        },
+        "Gd(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "Gd",
+            "element_gfw": null
+        },
+        "H": {
+            "charge_specie": "-1",
+            "gfw_formula": "H",
+            "element_gfw": "1.0079"
+        },
+        "H(0)": {
+            "charge_specie": "0",
+            "gfw_formula": "H",
+            "element_gfw": null
+        },
+        "H(+1)": {
+            "charge_specie": "-1",
+            "gfw_formula": "0",
+            "element_gfw": null
+        },
+        "K": {
+            "charge_specie": "0",
+            "gfw_formula": "K",
+            "element_gfw": "39.0983"
+        },
+        "Li": {
+            "charge_specie": "0",
+            "gfw_formula": "Li",
+            "element_gfw": "6.941"
+        },
+        "Mg": {
+            "charge_specie": "0",
+            "gfw_formula": "Mg",
+            "element_gfw": "24.305"
+        },
+        "Mn": {
+            "charge_specie": "0",
+            "gfw_formula": "Mn",
+            "element_gfw": "54.938"
+        },
+        "Mn(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "Mn",
+            "element_gfw": null
+        },
+        "Mn(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "Mn",
+            "element_gfw": null
+        },
+        "Mn(+6)": {
+            "charge_specie": "0",
+            "gfw_formula": "Mn",
+            "element_gfw": null
+        },
+        "Mn(+7)": {
+            "charge_specie": "0",
+            "gfw_formula": "Mn",
+            "element_gfw": null
+        },
+        "Mo": {
+            "charge_specie": "0",
+            "gfw_formula": "Mo",
+            "element_gfw": "95.94"
+        },
+        "N": {
+            "charge_specie": "1",
+            "gfw_formula": "N",
+            "element_gfw": "14.0067"
+        },
+        "N(-3)": {
+            "charge_specie": "1",
+            "gfw_formula": "N",
+            "element_gfw": null
+        },
+        "N(0)": {
+            "charge_specie": "0",
+            "gfw_formula": "N",
+            "element_gfw": null
+        },
+        "N(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "N",
+            "element_gfw": null
+        },
+        "N(+5)": {
+            "charge_specie": "0",
+            "gfw_formula": "N",
+            "element_gfw": null
+        },
+        "Na": {
+            "charge_specie": "0",
+            "gfw_formula": "Na",
+            "element_gfw": "22.9898"
+        },
+        "Ni": {
+            "charge_specie": "0",
+            "gfw_formula": "Ni",
+            "element_gfw": "58.69"
+        },
+        "O": {
+            "charge_specie": "0",
+            "gfw_formula": "O",
+            "element_gfw": "15.994"
+        },
+        "O(-2)": {
+            "charge_specie": "0",
+            "gfw_formula": "0",
+            "element_gfw": null
+        },
+        "O(0)": {
+            "charge_specie": "0",
+            "gfw_formula": "O",
+            "element_gfw": null
+        },
+        "P": {
+            "charge_specie": "2",
+            "gfw_formula": "P",
+            "element_gfw": "30.9738"
+        },
+        "P(5)": {
+            "charge_specie": "2",
+            "gfw_formula": "P",
+            "element_gfw": null
+        },
+        "S": {
+            "charge_specie": "0",
+            "gfw_formula": "SO4",
+            "element_gfw": "32.066"
+        },
+        "S(-2)": {
+            "charge_specie": "1",
+            "gfw_formula": "S",
+            "element_gfw": null
+        },
+        "S(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "S",
+            "element_gfw": null
+        },
+        "S(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "S",
+            "element_gfw": null
+        },
+        "S(+4)": {
+            "charge_specie": "0",
+            "gfw_formula": "S",
+            "element_gfw": null
+        },
+        "S(+5)": {
+            "charge_specie": "0",
+            "gfw_formula": "S",
+            "element_gfw": null
+        },
+        "S(+6)": {
+            "charge_specie": "0",
+            "gfw_formula": "SO4",
+            "element_gfw": null
+        },
+        "S(+7)": {
+            "charge_specie": "0",
+            "gfw_formula": "S",
+            "element_gfw": null
+        },
+        "S(+8)": {
+            "charge_specie": "0",
+            "gfw_formula": "S",
+            "element_gfw": null
+        },
+        "Sc": {
+            "charge_specie": "0",
+            "gfw_formula": "Sc",
+            "element_gfw": "44.9559"
+        },
+        "Si": {
+            "charge_specie": "0",
+            "gfw_formula": "SiO2",
+            "element_gfw": "28.0855"
+        },
+        "Sm": {
+            "charge_specie": "0",
+            "gfw_formula": "Sm",
+            "element_gfw": "150.36"
+        },
+        "Sm(+2)": {
+            "charge_specie": "0",
+            "gfw_formula": "Sm",
+            "element_gfw": null
+        },
+        "Sm(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "Sm",
+            "element_gfw": null
+        },
+        "Th": {
+            "charge_specie": "0",
+            "gfw_formula": "Th",
+            "element_gfw": "232.0381"
+        },
+        "Ti": {
+            "charge_specie": "0",
+            "gfw_formula": "Ti",
+            "element_gfw": "47.88"
+        },
+        "U": {
+            "charge_specie": "0",
+            "gfw_formula": "U",
+            "element_gfw": "238.0289"
+        },
+        "U(+3)": {
+            "charge_specie": "0",
+            "gfw_formula": "U",
+            "element_gfw": null
+        },
+        "U(+4)": {
+            "charge_specie": "0",
+            "gfw_formula": "U",
+            "element_gfw": null
+        },
+        "U(+5)": {
+            "charge_specie": "0",
+            "gfw_formula": "U",
+            "element_gfw": null
+        },
+        "U(+6)": {
+            "charge_specie": "0",
+            "gfw_formula": "U",
+            "element_gfw": null
+        },
+        "Zn": {
+            "charge_specie": "0",
+            "gfw_formula": "Zn",
+            "element_gfw": "65.39"
+        }
+    },
+    "minerals": {
+        "Afwillite": "Ca3Si2O4(OH)6",
+        "Akermanite": "Ca2MgSi2O7",
+        "Al": "Al",
+        "Alabandite": "MnS",
+        "Albite": "NaAlSi3O8",
+        "Albite_high": "NaAlSi3O8",
+        "Albite_low": "NaAlSi3O8",
+        "Alunite": "KAl3(OH)6(SO4)2",
+        "Analcime": "Na.96Al.96Si2.04O6:H2O",
+        "Andalusite": "Al2SiO5",
+        "Andradite": "Ca3Fe2(SiO4)3",
+        "Anhydrite": "CaSO4",
+        "Annite": "KFe3AlSi3O10(OH)2",
+        "Anorthite": "CaAl2(SiO4)2",
+        "Anthophyllite": "Mg7Si8O22(OH)2",
+        "Antigorite": "Mg48Si34O85(OH)62",
+        "Aragonite": "CaCO3",
+        "Arcanite": "K2SO4",
+        "Artinite": "Mg2CO3(OH)2:3H2O",
+        "Atacamite": "Cu4Cl2(OH)6",
+        "Azurite": "Cu3(CO3)2(OH)2",
+        "B": "B",
+        "BO": "B2O3",
+        "Bassanite": "CaSO4:0.5H2O",
+        "Bassetite": "Fe(UO2)2(PO4)2",
+        "Berlinite": "AlPO4",
+        "Bieberite": "CoSO4:7H2O",
+        "Bixbyite": "Mn2O3",
+        "Boehmite": "AlO2H",
+        "Borax": "Na2(B4O5(OH)4):8H2O",
+        "Boric_acid": "B(OH)3",
+        "Bornite": "Cu5FeS4",
+        "Brezinaite": "Cr3S4",
+        "Brochantite": "Cu4(SO4)(OH)6",
+        "Brucite": "Mg(OH)2",
+        "Bunsenite": "NiO",
+        "C": "C",
+        "Ca": "Ca  +2 H+",
+        "CaAlO": "CaAl4O7",
+        "CaAlFeO": "Ca4Al2Fe2O10",
+        "CaUO": "CaUO4",
+        "Calcite": "CaCO3",
+        "Cattierite": "CoS2",
+        "Celadonite": "KMgAlSi4O10(OH)2",
+        "Chalcanthite": "CuSO4:5H2O",
+        "Chalcedony": "SiO2",
+        "Chalcocite": "Cu2S",
+        "Chalcocyanite": "CuSO4",
+        "Chalcopyrite": "CuFeS2",
+        "Chamosite": "Fe5Al2Si3O10(OH)8",
+        "Chloromagnesite": "MgCl2",
+        "Chromite": "FeCr2O4",
+        "Chrysotile": "Mg3Si2O5(OH)4",
+        "Clinozoisite": "Ca2Al3Si3O12(OH)",
+        "Co": "Co",
+        "CoSiO": "Co2SiO4",
+        "CoCl": "CoCl2",
+        "CoFeO": "CoFe2O4",
+        "CoO": "CoO",
+        "CoS": "CoS",
+        "CoSO": "CoSO4",
+        "Coesite": "SiO2",
+        "Coffinite": "USiO4",
+        "Cordierite_anhyd": "Mg2Al4Si5O18",
+        "Cordierite_hydr": "Mg2Al4Si5O18:H2O",
+        "Corundum": "Al2O3",
+        "Covellite": "CuS",
+        "Cr": "Cr",
+        "CrCl": "CrCl3",
+        "CrO": "CrO3",
+        "CrS": "CrS",
+        "Cu": "Cu",
+        "CuCl": "CuCl2",
+        "CuCrO": "CuCr2O4",
+        "Cuprite": "Cu2O",
+        "Dawsonite": "NaAlCO3(OH)2",
+        "Delafossite": "CuFeO2",
+        "Diaspore": "AlHO2",
+        "Dicalcium_silicate": "Ca2SiO4",
+        "Diopside": "CaMgSi2O6",
+        "Dioptase": "CuSiO2(OH)2",
+        "Dolomite": "CaMg(CO3)2",
+        "Enstatite": "MgSiO3",
+        "Epidote": "Ca2FeAl2Si3O12OH",
+        "Eskolaite": "Cr2O3",
+        "Ettringite": "Ca6Al2(SO4)3(OH)12:26H2O",
+        "Eu": "Eu",
+        "EuO": "Eu3O4",
+        "EuCl": "EuCl3",
+        "EuOCl": "EuOCl",
+        "EuS": "EuS",
+        "EuSO": "EuSO4",
+        "Eucryptite": "LiAlSiO4",
+        "Fayalite": "Fe2SiO4",
+        "Fe": "Fe",
+        "FeO": "FeO",
+        "FeSO": "FeSO4",
+        "Ferrosilite": "FeSiO3",
+        "Forsterite": "Mg2SiO4",
+        "Foshagite": "Ca4Si3O9(OH)2:0.5H2O",
+        "Gd": "Gd",
+        "Gehlenite": "Ca2Al2SiO7",
+        "Gibbsite": "Al(OH)3",
+        "Goethite": "FeOOH",
+        "Greenalite": "Fe3Si2O5(OH)4",
+        "Grossular": "Ca3Al2(SiO4)3",
+        "Gypsum": "CaSO4:2H2O",
+        "Gyrolite": "Ca2Si3O7(OH)2:1.5H2O",
+        "Halite": "NaCl",
+        "Hatrurite": "Ca3SiO5",
+        "Hausmannite": "Mn3O4",
+        "Heazlewoodite": "Ni3S2",
+        "Hedenbergite": "CaFe(SiO3)2",
+        "Hematite": "Fe2O3",
+        "Hercynite": "FeAl2O4",
+        "Hillebrandite": "Ca2SiO3(OH)2:0.17H2O",
+        "Huntite": "CaMg3(CO3)4",
+        "Hydromagnesite": "Mg5(CO3)4(OH)2:4H2O",
+        "Hydrophilite": "CaCl2",
+        "Hydroxyapatite": "Ca5(OH)(PO4)3",
+        "Ice": "H2O",
+        "Ilmenite": "FeTiO3",
+        "Jadeite": "NaAl(SiO3)2",
+        "Jarosite": "KFe3(SO4)2(OH)6",
+        "K": "K",
+        "KO": "K2O",
+        "Kalsilite": "KAlSiO4",
+        "Kaolinite": "Al2Si2O5(OH)4",
+        "KerogenC": "C515H596O72",
+        "Kyanite": "Al2SiO5",
+        "Larnite": "Ca2SiO4",
+        "Laumontite": "CaAl2Si4O12:4H2O",
+        "Lawrencite": "FeCl2",
+        "Lawsonite": "CaAl2Si2O7(OH)2:H2O",
+        "Li": "Li",
+        "Lime": "CaO",
+        "Linnaeite": "Co3S4",
+        "Lizardite": "Mg3Si2O5(OH)4",
+        "Lopezite": "K2Cr2O7",
+        "Magnesiochromite": "MgCr2O4",
+        "Magnesite": "MgCO3",
+        "Magnetite": "Fe3O4",
+        "Malachite": "Cu2CO3(OH)2",
+        "Manganosite": "MnO",
+        "Margarite": "CaAl4Si2O10(OH)2",
+        "Maximum_Microcline": "KAlSi3O8",
+        "Mayenite": "Ca12Al14O33",
+        "Melanterite": "FeSO4:7H2O",
+        "Merwinite": "MgCa3(SiO4)2",
+        "Mesolite": "Na.676Ca.657Al1.99Si3.01O10:2.647H2O",
+        "Mg": "Mg",
+        "MgOHCl": "MgOHCl",
+        "MgSO": "MgSO4",
+        "Millerite": "NiS",
+        "Minnesotaite": "Fe3Si4O10(OH)2",
+        "Mirabilite": "Na2SO4:10H2O",
+        "Mn": "Mn",
+        "MnSO": "MnSO4",
+        "Mo": "Mo",
+        "Molysite": "FeCl3",
+        "Monohydrocalcite": "CaCO3:H2O",
+        "Monticellite": "CaMgSiO4",
+        "Mordenite": "Ca.2895Na.361Al.94Si5.06O12:3.468H2O",
+        "Morenosite": "NiSO4:7H2O",
+        "Muscovite": "KAl3Si3O10(OH)2",
+        "Na": "Na",
+        "NaCO": "Na2CO3",
+        "NaCrO": "Na2CrO4",
+        "NaO": "Na2O",
+        "NaSiO": "Na2SiO3",
+        "NaUO": "NaUO3",
+        "NaFeO": "NaFeO2",
+        "Nahcolite": "NaHCO3",
+        "Nantokite": "CuCl",
+        "Natrolite": "Na2Al2Si3O10:2H2O",
+        "Natron": "Na2CO3:10H2O",
+        "Natrosilite": "Na2Si2O5",
+        "Nepheline": "NaAlSiO4",
+        "Nesquehonite": "MgCO3:3H2O",
+        "NHCl": "NH4Cl",
+        "NHHCO": "NH4HCO3",
+        "Ni": "Ni",
+        "NiSiO": "Ni2SiO4",
+        "NiCl": "NiCl2",
+        "NiSO": "NiSO4",
+        "Nickelbischofite": "NiCl2:6H2O",
+        "Ningyoite": "CaUP2O8:2H2O",
+        "Niter": "KNO3",
+        "Okenite": "CaSi2O4(OH)2:H2O",
+        "P": "P",
+        "Paragonite": "NaAl3Si3O10(OH)2",
+        "Pargasite": "NaCa2Al3Mg4Si6O22(OH)2",
+        "Periclase": "MgO",
+        "Petalite": "LiAlSi4O10",
+        "Phlogopite": "KAlMg3Si3O10(OH)2",
+        "Polydymite": "Ni3S4",
+        "Portlandite": "Ca(OH)2",
+        "Prehnite": "Ca2Al2Si3O10(OH)2",
+        "Pseudowollastonite": "CaSiO3",
+        "Pyridine": "C5H5N",
+        "Pyrite": "FeS2",
+        "Pyrolusite": "MnO2",
+        "Pyrophyllite": "Al2Si4O10(OH)2",
+        "Pyrrhotite": "FeS",
+        "Quartz": "SiO2",
+        "Rankinite": "Ca3Si2O7",
+        "Rhodochrosite": "MnCO3",
+        "Rhodonite": "MnSiO3",
+        "Ripidolite": "Mg3Fe2Al2Si3O10(OH)8",
+        "Rutherfordine": "UO2CO3",
+        "Rutile": "TiO2",
+        "S": "S",
+        "Saleeite": "Mg(UO2)2(PO4)2",
+        "Sanidine_high": "KAlSi3O8",
+        "Sc": "Sc",
+        "Scacchite": "MnCl2",
+        "Schoepite": "UO3:2H2O",
+        "Scolecite": "CaAl2Si3O10:3H2O",
+        "Sepiolite": "Mg4Si6O15(OH)2:6H2O",
+        "Si": "Si",
+        "Siderite": "FeCO3",
+        "Sillimanite": "Al2SiO5",
+        "Sm": "Sm",
+        "Smithsonite": "ZnCO3",
+        "Sphaerocobaltite": "CoCO3",
+        "Sphalerite": "ZnS",
+        "Spinel": "Al2MgO4",
+        "Spodumene": "LiAlSi2O6",
+        "Stilbite": "Ca1.019Na.136K.006Al2.18Si6.82O18:7.33H2O",
+        "Strengite": "FePO4:2H2O",
+        "Sylvite": "KCl",
+        "Talc": "Mg3Si4O10(OH)2",
+        "Tarapacaite": "K2CrO4",
+        "Tenorite": "CuO",
+        "Tephroite": "Mn2SiO4",
+        "Th": "Th",
+        "ThS": "ThS2",
+        "ThCl": "ThCl4",
+        "Thenardite": "Na2SO4",
+        "Thermonatrite": "Na2CO3:H2O",
+        "Thorianite": "ThO2",
+        "Ti": "Ti",
+        "TiO": "Ti3O5",
+        "TiB": "TiB2",
+        "TiC": "TiC",
+        "TiCl": "TiCl3",
+        "TiN": "TiN",
+        "Titanite": "CaTiSiO5",
+        "Tremolite": "Ca2Mg5Si8O22(OH)2",
+        "Trevorite": "NiFe2O4",
+        "Tridymite": "SiO2",
+        "Troilite": "FeS",
+        "U": "U",
+        "UOCl": "U2O2Cl5",
+        "US": "U3S5",
+        "UC": "UC",
+        "UCl": "UCl6",
+        "UN": "UN",
+        "UOSO": "UO2SO4",
+        "Uraninite": "UO2",
+        "Vaesite": "NiS2",
+        "Wairakite": "CaAl2Si4O10(OH)4",
+        "Wollastonite": "CaSiO3",
+        "Wurtzite": "ZnS",
+        "Wustite": "Fe.947O",
+        "Xonotlite": "Ca6Si6O17(OH)2",
+        "Zincite": "ZnO",
+        "Zn": "Zn",
+        "ZnSiO": "Zn2SiO4",
+        "ZnCl": "ZnCl2",
+        "ZnCrO": "ZnCr2O4",
+        "ZnSO": "ZnSO4",
+        "Zoisite": "Ca2Al3(SiO4)3OH"
+    }
+}

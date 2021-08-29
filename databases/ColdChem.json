@@ -1,0 +1,95 @@
+{
+    "elements": {
+        "H": {
+            "charge_specie": "-1",
+            "gfw_formula": "H",
+            "element_gfw": "1.008"
+        },
+        "H(1)": {
+            "charge_specie": "-1",
+            "gfw_formula": "0",
+            "element_gfw": null
+        },
+        "E": {
+            "charge_specie": "0",
+            "gfw_formula": "0",
+            "element_gfw": "0"
+        },
+        "O": {
+            "charge_specie": "0",
+            "gfw_formula": "O",
+            "element_gfw": "15.999"
+        },
+        "O(-2)": {
+            "charge_specie": "0",
+            "gfw_formula": "0",
+            "element_gfw": null
+        },
+        "Ca": {
+            "charge_specie": "0",
+            "gfw_formula": "Ca",
+            "element_gfw": "40.08"
+        },
+        "Mg": {
+            "charge_specie": "0",
+            "gfw_formula": "Mg",
+            "element_gfw": "24.31"
+        },
+        "Na": {
+            "charge_specie": "0",
+            "gfw_formula": "Na",
+            "element_gfw": "22.99"
+        },
+        "K": {
+            "charge_specie": "0",
+            "gfw_formula": "K",
+            "element_gfw": "39.1"
+        },
+        "Cl": {
+            "charge_specie": "0",
+            "gfw_formula": "Cl",
+            "element_gfw": "35.45"
+        },
+        "S": {
+            "charge_specie": "0",
+            "gfw_formula": "SO4",
+            "element_gfw": "32.064"
+        },
+        "S(6)": {
+            "charge_specie": "0",
+            "gfw_formula": "SO4",
+            "element_gfw": null
+        }
+    },
+    "minerals": {
+        "Halite": "NaCl",
+        "Hydrohalite": "NaCl:2H2O",
+        "Sylvite": "KCl",
+        "Bischofite": "MgCl2:6H2O",
+        "Antarcticite": "CaCl2:6H2O",
+        "Tachyhydrite": "CaCl2:(MgCl2)2:12H2O",
+        "Carnallite": "KCl:MgCl2:6H2O",
+        "Thenardite": "Na2SO4",
+        "Mirabilite": "Na2SO4:10H2O",
+        "Arcanite": "K2SO4",
+        "Kieserite": "MgSO4:H2O",
+        "Starkeyite": "MgSO4:4H2O",
+        "Pentahydrite": "MgSO4:5H2O",
+        "Hexahydrite": "MgSO4:6H2O",
+        "Epsomite": "MgSO4:7H2O",
+        "Meridianiite": "MgSO4:11H2O",
+        "Anhydrite": "CaSO4",
+        "Bassanite": "CaSO4:0.5H2O",
+        "Gypsum": "CaSO4:2H2O",
+        "Glaserite": "Na2SO4:3K2SO4",
+        "Bloedite": "Na2SO4:MgSO4:4H2O",
+        "Glauberite": "Na2SO4:CaSO4",
+        "Labile_Salt": "Na4(SO4)2:CaSO4:2H2O",
+        "Leonite": "K2SO4:MgSO4:4H2O",
+        "Picromerite": "K2SO4:MgSO4:6H2O",
+        "Langbeinite": "K2SO4:2MgSO4",
+        "Syngenite": "K2SO4:CaSO4:H2O",
+        "Kainite": "KCl:MgSO4:2.75H2O",
+        "Polyhalite": "K2SO4:MgSO4:Ca2(SO4)2:2H2O"
+    }
+}
