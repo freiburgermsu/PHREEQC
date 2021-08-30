@@ -1,0 +1,197 @@
+   Input file: C:\Users\Andrew Freiburger\Dropbox\My PC (DESKTOP-M302P50)\Documents\UVic Civil Engineering\PHREEQC\PHREEQC\2021-08-29_ROSS_red_sea_transport_scaling_3.pqi
+  Output file: C:\Users\Andrew Freiburger\Dropbox\My PC (DESKTOP-M302P50)\Documents\UVic Civil Engineering\PHREEQC\PHREEQC\2021-08-29_ROSS_red_sea_transport_scaling_3.pqo
+Database file: C:\Program Files\USGS\phreeqc-3.6.2-15100-x64\database\pitzer.dat
+
+------------------
+Reading data base.
+------------------
+
+	SOLUTION_MASTER_SPECIES
+	SOLUTION_SPECIES
+	PHASES
+	PITZER
+	EXCHANGE_MASTER_SPECIES
+	EXCHANGE_SPECIES
+	SURFACE_MASTER_SPECIES
+	SURFACE_SPECIES
+	END
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	TITLE	 test
+	SOLUTION 0	None
+	temp 	 24.5 	 #average of Al-Taani et al., 2014 and Longinelli and Craig, 1967..
+	pH 		 8.22 charge #None
+	pe 		 0.2679 	   #Al-Taani et al., 2014 // 4.00 is the default (?) // 4.00 is the default (?)
+	Alkalinity 	 2 #Sabine et al., 2002 as reported for the Indian Ocean
+	units 	 ppm
+	Mn	0.000306	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
+	Fe	0.006281	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
+	B	1.344	#Al-Taani et al., 2014
+	Cl	24756	#https://www.lenntech.com/composition-seawater.htm in the Red Sea, and Longinelli and Craig, 1967
+	Na	16417.2	#https://www.lenntech.com/composition-seawater.htm in the Red Sea, and Longinelli and Craig, 1967 describes [Na]=15834
+	S(6)	9500	#Longinelli and Craig, 1967 and Llyod, 1967
+	Ca		774	#Abdel-Aal et al., 2015
+	K		301	#Abdel-Aal et al., 2015
+	Mg	1646	#Abdel-Aal et al., 2015
+	Sr		8.3	#Bernat, Church, and Allegre, 1972 from the Mediterranean
+	Ba	0.011	#Bernat, Church, and Allegre, 1972 from the Mediterranean
+	Li	0.228	#Stoffyn-Egli and Mackenzie, 1984 for the Mediterranean Sea
+	water 	3730.748809916442
+	SOLUTION 1-12	Initial solution in the RO module
+	temp 	 25
+	units 	 ppm
+	Alkalinity	0
+	B	0
+	Ba	0
+	Br	0
+	C	0
+	C(4)	0
+	Ca	0
+	Cl	0
+	E	0
+	Fe	0
+	H	0
+	H(1)	0
+	K	0
+	Li	0
+	Mg	0
+	Mn	0
+	Na	0
+	O	0
+	O(-2)	0
+	S	0
+	S(6)	0
+	Si	0
+	Sr	0
+	Sg	0
+	water 	 3730.748809916442
+	EQUILIBRIUM_PHASES 1-12	None
+	REACTION 1
+		H2O -1
+	 0.046665415808972856
+	REACTION 2
+		H2O -1
+	 0.046123739125723026
+	REACTION 3
+		H2O -1
+	 0.045582062442473203
+	REACTION 4
+		H2O -1
+	 0.045040385759223374
+	REACTION 5
+		H2O -1
+	 0.044498709075973544
+	REACTION 6
+		H2O -1
+	 0.04395703239272372
+	REACTION 7
+		H2O -1
+	 0.04341535570947389
+	REACTION 8
+		H2O -1
+	 0.04287367902622406
+	REACTION 9
+		H2O -1
+	 0.04233200234297424
+	REACTION 10
+		H2O -1
+	 0.04179032565972441
+	REACTION 11
+		H2O -1
+	 0.04124864897647458
+	REACTION 12
+		H2O -1
+	 0.04070697229322476
+	        INCREMENTAL_REACTIONS 	true
+	SELECTED_OUTPUT
+	file			2021-08-29_red_sea_transport_pitzer_scaling_0.txt
+	reaction		true
+	temperature		true
+	totals			 Alkalinity B Ba Br C C(4) Ca Cl E Fe H H(1) K Li Mg Mn Na O O(-2) S S(6) Si Sr Sg
+	saturation_indices	 Alkalinity B Ba Br C C(4) Ca Cl E Fe H H(1) K Li Mg Mn Na O O(-2) S S(6) Si Sr Sg
+	equilibrium_phases	 Alkalinity B Ba Br C C(4) Ca Cl E Fe H H(1) K Li Mg Mn Na O O(-2) S S(6) Si Sr Sg
+	ph			true
+	time			true
+	distance		true
+	simulation		true
+	high_precision	true
+	solution
+	step
+	water
+	TRANSPORT
+	cells			12
+	shifts			24
+	lengths		0.08466666666666667
+	time_step		20332.790539927733	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 4.164045584417238e-06 m/s
+	initial_time		0
+	boundary_conditions	constant	constant 	 # Dirichlet boundary condition
+	stagnant		1	1	0.1	0.9 	 # dual domain
+	punch_cells		1-12
+	punch_frequency	12
+WARNING: Cell-lengths were read for 1 cells. Last value is used till cell 12.
+WARNING: No dispersivities were read; disp = 0 assumed.
+-----
+TITLE
+-----
+
+	 test
+
+WARNING: Did not find phase, Alkalinity.
+WARNING: Did not find phase, B.
+WARNING: Did not find phase, Ba.
+WARNING: Did not find phase, Br.
+WARNING: Did not find phase, C.
+WARNING: Did not find phase, C(4).
+WARNING: Did not find phase, Ca.
+WARNING: Did not find phase, Cl.
+WARNING: Did not find phase, E.
+WARNING: Did not find phase, Fe.
+WARNING: Did not find phase, H.
+WARNING: Did not find phase, H(1).
+WARNING: Did not find phase, K.
+WARNING: Did not find phase, Li.
+WARNING: Did not find phase, Mg.
+WARNING: Did not find phase, Mn.
+WARNING: Did not find phase, Na.
+WARNING: Did not find phase, O.
+WARNING: Did not find phase, O(-2).
+WARNING: Did not find phase, S.
+WARNING: Did not find phase, S(6).
+WARNING: Did not find phase, Si.
+WARNING: Did not find phase, Sr.
+WARNING: Did not find phase, Sg.
+WARNING: Did not find phase, Alkalinity.
+WARNING: Did not find phase, B.
+WARNING: Did not find phase, Ba.
+WARNING: Did not find phase, Br.
+WARNING: Did not find phase, C.
+WARNING: Did not find phase, C(4).
+WARNING: Did not find phase, Ca.
+WARNING: Did not find phase, Cl.
+WARNING: Did not find phase, E.
+WARNING: Did not find phase, Fe.
+WARNING: Did not find phase, H.
+WARNING: Did not find phase, H(1).
+WARNING: Did not find phase, K.
+WARNING: Did not find phase, Li.
+WARNING: Did not find phase, Mg.
+WARNING: Did not find phase, Mn.
+WARNING: Did not find phase, Na.
+WARNING: Did not find phase, O.
+WARNING: Did not find phase, O(-2).
+WARNING: Did not find phase, S.
+WARNING: Did not find phase, S(6).
+WARNING: Did not find phase, Si.
+WARNING: Did not find phase, Sr.
+WARNING: Did not find phase, Sg.
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 0.	None
+
+ERROR: pH adustment cannot attain charge balance when alkalinity is fixed.
+ERROR: Program terminating due to input errors.
+Stopping.
