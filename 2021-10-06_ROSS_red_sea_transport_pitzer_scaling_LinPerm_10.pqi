@@ -4,7 +4,7 @@ SOLUTION 0
 temp 	 24.5 	 #average of Al-Taani et al., 2014 and Longinelli and Craig, 1967..
 pH 		 8.22 charge #None
 pe 		 0.2679 	   #Al-Taani et al., 2014 // 4.00 is the default (?) // 4.00 is the default (?)
-Alkalinity 	 2 #Sabine et al., 2002 as reported for the Indian Ocean
+
 units 	 ppm
 Mn	0.000306	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
 Fe	0.006281	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
@@ -111,42 +111,42 @@ Teepleite		0	0
 
 
 REACTION 0
-	H2O -1; 16528092.34989068
+	H2O -1; 0.00011475408581359121
 REACTION 1
-	H2O -1; 16336239.73078653
+	H2O -1; 0.00011342205841138558
 REACTION 2
-	H2O -1; 16144387.11168238
+	H2O -1; 0.00011209003100917993
 REACTION 3
-	H2O -1; 15952534.49257823
+	H2O -1; 0.00011075800360697428
 REACTION 4
-	H2O -1; 15760681.873474082
+	H2O -1; 0.00010942597620476865
 REACTION 5
-	H2O -1; 15568829.254369931
+	H2O -1; 0.00010809394880256302
 REACTION 6
-	H2O -1; 15376976.635265782
+	H2O -1; 0.00010676192140035737
 REACTION 7
-	H2O -1; 15185124.016161634
+	H2O -1; 0.00010542989399815172
 REACTION 8
-	H2O -1; 14993271.397057483
+	H2O -1; 0.00010409786659594609
 REACTION 9
-	H2O -1; 14801418.777953334
+	H2O -1; 0.00010276583919374045
 REACTION 10
-	H2O -1; 14609566.158849185
+	H2O -1; 0.00010143381179153481
 REACTION 11
-	H2O -1; 14417713.539745037
+	H2O -1; 0.00010010178438932916
         INCREMENTAL_REACTIONS 	true
 #linear permeate
 
         #Permeate efficiency parameter: 1
         #Head loss parameter: -0.15
     #Effluent module 1:
-        #Estimated CF: 1.0000025314235341
-        #Estimated solution mass: 1321364091650.0142
+        #Estimated CF: 1.0
+        #Estimated solution mass: 1321367436582.173
 
 
 
 SELECTED_OUTPUT
--file			2021-10-05_red_sea_transport_pitzer_scaling_0.txt
+-file			2021-10-06_red_sea_transport_pitzer_scaling_0.txt
 -reaction		true
 -temperature		true
 -totals			 Alkalinity B Ba Br C C(4) Ca Cl E Fe H H(1) K Li Mg Mn Na O O(-2) S S(6) Si Sr Sg
@@ -165,7 +165,7 @@ TRANSPORT
 -cells			12
 -shifts			24
 -lengths		0.08466666666666667
--time_step		7201526739857.975	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 1.1756766269861331e-14 m/s
+-time_step		50	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 1.1756766269861331e-14 m/s
 -initial_time		0
 -boundary_conditions	constant	constant 	 # Dirichlet boundary condition
 -stagnant		1	1	0.1	0.9 	 # dual domain

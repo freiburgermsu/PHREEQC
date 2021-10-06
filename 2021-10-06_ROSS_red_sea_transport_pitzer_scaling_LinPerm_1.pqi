@@ -4,7 +4,7 @@ SOLUTION 0
 temp 	 24.5 	 #average of Al-Taani et al., 2014 and Longinelli and Craig, 1967..
 pH 		 8.22 charge #None
 pe 		 0.2679 	   #Al-Taani et al., 2014 // 4.00 is the default (?) // 4.00 is the default (?)
-Alkalinity 	 2 #Sabine et al., 2002 as reported for the Indian Ocean
+
 units 	 ppm
 Mn	0.000306	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
 Fe	0.006281	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
