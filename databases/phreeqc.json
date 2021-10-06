@@ -270,11 +270,11 @@
         "Alunite": "KAl3(SO4)2(OH)6",
         "Smithsonite": "ZnCO3",
         "Sphalerite": "ZnS",
-        "Willemite": "Zn2SiO4",
-        "Otavite": "CdCO3",
-        "CdSiO": "CdSiO3",
-        "CdSO": "CdSO4",
-        "Cerussite": "PbCO3",
-        "Anglesite": "PbSO4"
+        "Willemite\t289": "Zn2SiO4",
+        "Otavite\t315": "CdCO3",
+        "CdSiO3\t328": "CdSiO3",
+        "CdSO4\t329": "CdSO4",
+        "Cerussite\t365": "PbCO3",
+        "Anglesite\t384": "PbSO4"
     }
 }

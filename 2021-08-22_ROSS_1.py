@@ -560,23 +560,25 @@ class ROSSPkg():
         # determining the appropriate variables
         if selected_output_path is not None:
             # define the simulation perspective
-            if re.search('(scaling)', selected_output_path, flags=re.IGNORECASE):
-                self.parameters['output_perspective'] = 'scaling'
-            elif re.search('(brine)', selected_output_path, flags=re.IGNORECASE):
+            self.parameters['output_perspective'] = 'scaling'
+            if re.search('(brine)', selected_output_path, flags=re.IGNORECASE):
                 self.parameters['output_perspective'] = 'brine'
                       
             # define the simulation type
+            self.parameters['simulation_type'] = 'transport'
             for line in selected_output_path:
-                if re.search('(transport)', line, re.IGNORECASE):
-                    self.parameters['simulation_type'] = 'transport'
-                else:
+                if re.search('(evaporation)', line, re.IGNORECASE):
                     self.parameters['simulation_type'] = 'evaporation'
             
             # define the database contents
+            self.parameters['database_selection'] = 'llnl'
             for database in databases:
-                if re.search(database, selected_output_path, re.IGNORECASE):
+                names = database.split('_')
+                print(names)
+                print(selected_output_path)
+                if all(re.search(name, selected_output_path, re.IGNORECASE) for name in names):
                     self.parameters['database_selection'] = database                   
-                    break
+                    break                    
                     
             database_json = json.load(open('./databases/{}.json'.format(self.parameters['database_selection'])))
             self.parameters['minerals'] = database_json['minerals']
@@ -584,7 +586,6 @@ class ROSSPkg():
             
             # define the simulation
             self.parameters['selected_output_file_name'] = re.search('(\w+)(?=\.)', selected_output_path).group()
-            
                     
         else:
             working_directory = os.getcwd()
@@ -627,7 +628,7 @@ class ROSSPkg():
             if plot_title == '':
                  plot_title = 'scaling throughout the RO module'
             pyplot.xlabel('Midpoint module distance (m)', fontsize = label_font)
-            pyplot.ylabel('Quantity (ppm)', fontsize = label_font)  
+            pyplot.ylabel('Quantity (moles)', fontsize = label_font)  
                                  
         return pyplot
                                  
@@ -788,7 +789,6 @@ class ROSSPkg():
             pyplot.legend(experimental_loop, loc='best', fontsize = 'x-large')
             pyplot.figtext(0.2, 0, 'Desalination CF: %s' %(self.variables['simulation_cf']), wrap=True, horizontalalignment='left', fontsize=12)
             figure = pyplot.gcf()
-            print('\nClose the figure to proceed.\n')
             pyplot.show()
                         
             return figure
@@ -846,6 +846,7 @@ class ROSSPkg():
 
             if individual_plots:
                 for mineral in non_zero_minerals:
+                    print(mineral)
                     mineral_formula = self.parameters['minerals'][mineral]
                                  
                     pyplot.figure(figsize = (17,10))

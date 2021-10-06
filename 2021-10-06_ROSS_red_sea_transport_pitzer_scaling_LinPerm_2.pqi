@@ -1,0 +1,174 @@
+TITLE	 test
+
+SOLUTION 0	
+temp 	 24.5 	 #average of Al-Taani et al., 2014 and Longinelli and Craig, 1967..
+pH 		 8.22 charge #None
+pe 		 0.2679 	   #Al-Taani et al., 2014 // 4.00 is the default (?) // 4.00 is the default (?)
+Alkalinity 	 2 #Sabine et al., 2002 as reported for the Indian Ocean
+units 	 ppm
+Mn	0.000306	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
+Fe	0.006281	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
+B	1.344	#Al-Taani et al., 2014
+Cl	24756	#https://www.lenntech.com/composition-seawater.htm in the Red Sea, and Longinelli and Craig, 1967
+Na	16417.2	#https://www.lenntech.com/composition-seawater.htm in the Red Sea, and Longinelli and Craig, 1967 describes [Na]=15834
+S(6)	9500	#Longinelli and Craig, 1967 and Llyod, 1967
+Ca		774	#Abdel-Aal et al., 2015
+K		301	#Abdel-Aal et al., 2015
+Mg	1646	#Abdel-Aal et al., 2015
+Sr		8.3	#Bernat, Church, and Allegre, 1972 from the Mediterranean
+Ba	0.011	#Bernat, Church, and Allegre, 1972 from the Mediterranean
+Li	0.228	#Stoffyn-Egli and Mackenzie, 1984 for the Mediterranean Sea
+-water 	1321367436582.173
+
+SOLUTION 1-12	Initial solution in the RO module
+temp 	 25
+units 	 ppm
+Alkalinity	0
+B	0
+Ba	0
+Br	0
+C	0
+C(4)	0
+Ca	0
+Cl	0
+E	0
+Fe	0
+H	0
+H(1)	0
+K	0
+Li	0
+Mg	0
+Mn	0
+Na	0
+O	0
+O(-2)	0
+S	0
+S(6)	0
+Si	0
+Sr	0
+Sg	0
+-water 	 1321367436582.173
+
+EQUILIBRIUM_PHASES 1-12	
+Akermanite		0	0
+Anhydrite		0	0
+Anthophyllite		0	0
+Antigorite		0	0
+Aragonite		0	0
+Arcanite		0	0
+Artinite		0	0
+Barite			0	0
+Bischofite		0	0
+Bloedite		0	0
+Brucite		0	0
+Burkeite		0	0
+Calcite		0	0
+Carnallite		0	0
+Celestite		0	0
+Chalcedony		0	0
+Chrysotile		0	0
+Diopside		0	0
+Dolomite		0	0
+Enstatite		0	0
+Epsomite		0	0
+Forsterite		0	0
+Gaylussite		0	0
+Glaserite		0	0
+Glauberite		0	0
+Goergeyite		0	0
+Gypsum			0	0
+Halite			0	0
+Hexahydrite		0	0
+Huntite		0	0
+Kainite		0	0
+Kalicinite		0	0
+Kieserite		0	0
+Labile_S		0	0
+Leonhardite		0	0
+Leonite		0	0
+Magnesite		0	0
+MgCl2_2H2O		0	0
+MgCl2_4H2O		0	0
+Mirabilite		0	0
+Misenite		0	0
+Nahcolite		0	0
+Natron			0	0
+Nesquehonite		0	0
+Pentahydrite		0	0
+Pirssonite		0	0
+Polyhalite		0	0
+Portlandite		0	0
+Quartz			0	0
+Schoenite		0	0
+Sepiolite		0	0
+Sylvite		0	0
+Syngenite		0	0
+Talc			0	0
+Thenardite		0	0
+Trona			0	0
+Borax			0	0
+Teepleite		0	0
+
+
+REACTION 0
+	H2O -1; 16528092.34989068
+REACTION 1
+	H2O -1; 16336239.73078653
+REACTION 2
+	H2O -1; 16144387.11168238
+REACTION 3
+	H2O -1; 15952534.49257823
+REACTION 4
+	H2O -1; 15760681.873474082
+REACTION 5
+	H2O -1; 15568829.254369931
+REACTION 6
+	H2O -1; 15376976.635265782
+REACTION 7
+	H2O -1; 15185124.016161634
+REACTION 8
+	H2O -1; 14993271.397057483
+REACTION 9
+	H2O -1; 14801418.777953334
+REACTION 10
+	H2O -1; 14609566.158849185
+REACTION 11
+	H2O -1; 14417713.539745037
+        INCREMENTAL_REACTIONS 	true
+#linear permeate
+
+        #Permeate efficiency parameter: 1
+        #Head loss parameter: -0.15
+    #Effluent module 1:
+        #Estimated CF: 1.0000025314235341
+        #Estimated solution mass: 1321364091650.0142
+
+
+
+SELECTED_OUTPUT
+-file			2021-10-06_red_sea_transport_pitzer_scaling_0.txt
+-reaction		true
+-temperature		true
+-totals			 Alkalinity B Ba Br C C(4) Ca Cl E Fe H H(1) K Li Mg Mn Na O O(-2) S S(6) Si Sr Sg
+-saturation_indices	 Akermanite Anhydrite Anthophyllite Antigorite Aragonite Arcanite Artinite Barite Bischofite Bloedite Brucite Burkeite Calcite Carnallite Celestite Chalcedony Chrysotile Diopside Dolomite Enstatite Epsomite Forsterite Gaylussite Glaserite Glauberite Goergeyite Gypsum Halite Hexahydrite Huntite Kainite Kalicinite Kieserite Labile_S Leonhardite Leonite Magnesite MgCl2_2H2O MgCl2_4H2O Mirabilite Misenite Nahcolite Natron Nesquehonite Pentahydrite Pirssonite Polyhalite Portlandite Quartz Schoenite Sepiolite Sylvite Syngenite Talc Thenardite Trona Borax Teepleite
+-equilibrium_phases	 Akermanite Anhydrite Anthophyllite Antigorite Aragonite Arcanite Artinite Barite Bischofite Bloedite Brucite Burkeite Calcite Carnallite Celestite Chalcedony Chrysotile Diopside Dolomite Enstatite Epsomite Forsterite Gaylussite Glaserite Glauberite Goergeyite Gypsum Halite Hexahydrite Huntite Kainite Kalicinite Kieserite Labile_S Leonhardite Leonite Magnesite MgCl2_2H2O MgCl2_4H2O Mirabilite Misenite Nahcolite Natron Nesquehonite Pentahydrite Pirssonite Polyhalite Portlandite Quartz Schoenite Sepiolite Sylvite Syngenite Talc Thenardite Trona Borax Teepleite
+-pH			true
+-time			true
+-distance		true
+-simulation		true
+-high_precision	true
+-solution
+-step
+-water
+
+TRANSPORT
+-cells			12
+-shifts			24
+-lengths		0.08466666666666667
+-time_step		7201526739857.975	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 1.1756766269861331e-14 m/s
+-initial_time		0
+-boundary_conditions	constant	constant 	 # Dirichlet boundary condition
+-stagnant		1	1	0.1	0.9 	 # dual domain
+#^stagnant cells	^exchange factor	^CP volume	^bulk volume
+-punch_cells		1-12
+-punch_frequency	12
