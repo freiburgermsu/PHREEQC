@@ -18,7 +18,7 @@ Mg	1646	#Abdel-Aal et al., 2015
 Sr		8.3	#Bernat, Church, and Allegre, 1972 from the Mediterranean
 Ba	0.011	#Bernat, Church, and Allegre, 1972 from the Mediterranean
 Li	0.228	#Stoffyn-Egli and Mackenzie, 1984 for the Mediterranean Sea
--water 	1321367436582.173
+-water 	15.856409238986078
 
 SOLUTION 1-12	Initial solution in the RO module
 temp 	 25
@@ -47,9 +47,9 @@ S(6)	0
 Si	0
 Sr	0
 Sg	0
--water 	 1321367436582.173
+-water 	 15.856409238986078
 
-EQUILIBRIUM_PHASES 1-28	
+EQUILIBRIUM_PHASES 1-56	
 Akermanite		0	0
 Anhydrite		0	0
 Anthophyllite		0	0
@@ -111,42 +111,39 @@ Teepleite		0	0
 
 
 REACTION 0
-	H2O -1; 1.6528092349890676e-05
+	H2O -1; 8.264046174945337
 REACTION 1
-	H2O -1; 1.6336239730786526e-05
+	H2O -1; 8.168119865393262
 REACTION 2
-	H2O -1; 1.6144387111682377e-05
+	H2O -1; 8.072193555841187
 REACTION 3
-	H2O -1; 1.5952534492578227e-05
+	H2O -1; 7.976267246289113
 REACTION 4
-	H2O -1; 1.5760681873474078e-05
+	H2O -1; 7.880340936737038
 REACTION 5
-	H2O -1; 1.556882925436993e-05
+	H2O -1; 7.7844146271849635
 REACTION 6
-	H2O -1; 1.537697663526578e-05
+	H2O -1; 7.688488317632888
 REACTION 7
-	H2O -1; 1.518512401616163e-05
+	H2O -1; 7.592562008080813
 REACTION 8
-	H2O -1; 1.499327139705748e-05
+	H2O -1; 7.496635698528739
 REACTION 9
-	H2O -1; 1.480141877795333e-05
+	H2O -1; 7.400709388976664
 REACTION 10
-	H2O -1; 1.4609566158849181e-05
+	H2O -1; 7.304783079424589
 REACTION 11
-	H2O -1; 1.4417713539745032e-05
+	H2O -1; 7.208856769872515
         INCREMENTAL_REACTIONS 	true
-#linear permeate
-
-        #Permeate efficiency parameter: 1
-        #Head loss parameter: -0.15
+#linear_permeate
     #Effluent module 1:
-        #Estimated CF: 1.0
-        #Estimated solution mass: 1321367436582.173
+        #Estimated CF: 1.117912632649256
+        #Estimated solution mass: 14.183943159680716
 
 
 
 SELECTED_OUTPUT
--file			2021-10-06_red_sea_transport_pitzer_scaling_0.txt
+-file			2021-10-07_red_sea_transport_pitzer_scaling_0.txt
 -reaction		true
 -temperature		true
 -totals			 Alkalinity B Ba Br C C(4) Ca Cl E Fe H H(1) K Li Mg Mn Na O O(-2) S S(6) Si Sr Sg
@@ -163,12 +160,12 @@ SELECTED_OUTPUT
 
 TRANSPORT
 -cells			12
--shifts			28
+-shifts			56
 -lengths		0.08466666666666667
--time_step		7.201526739857974	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 0.011756766269861331 m/s
+-time_step		3.6007633699289867	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 0.28216239047667196 m/s
 -initial_time		0
 -boundary_conditions	constant	constant 	 # Dirichlet boundary condition
--stagnant		1	1	0.1	0.9 	 # dual domain
-#^stagnant cells	^exchange factor	^CP volume	^bulk volume
+-stagnant		1		1		0.1	0.9 	 # dual domain
+#			^stagnant cells	^exchange factor	^CP volume	^bulk volume
 -punch_cells		1-12
--punch_frequency	12
+-punch_frequency	56

@@ -18,7 +18,7 @@ Mg	1646	#Abdel-Aal et al., 2015
 Sr		8.3	#Bernat, Church, and Allegre, 1972 from the Mediterranean
 Ba	0.011	#Bernat, Church, and Allegre, 1972 from the Mediterranean
 Li	0.228	#Stoffyn-Egli and Mackenzie, 1984 for the Mediterranean Sea
--water 	1321367436582.173
+-water 	1321367.4365821732
 
 SOLUTION 1-12	Initial solution in the RO module
 temp 	 25
@@ -47,9 +47,9 @@ S(6)	0
 Si	0
 Sr	0
 Sg	0
--water 	 1321367436582.173
+-water 	 1321367.4365821732
 
-EQUILIBRIUM_PHASES 1-12	
+EQUILIBRIUM_PHASES 1-28	
 Akermanite		0	0
 Anhydrite		0	0
 Anthophyllite		0	0
@@ -111,37 +111,34 @@ Teepleite		0	0
 
 
 REACTION 0
-	H2O -1; 16528092.34989068
+	H2O -1; 16.528092349890674
 REACTION 1
-	H2O -1; 16336239.73078653
+	H2O -1; 16.336239730786524
 REACTION 2
-	H2O -1; 16144387.11168238
+	H2O -1; 16.144387111682374
 REACTION 3
-	H2O -1; 15952534.49257823
+	H2O -1; 15.952534492578225
 REACTION 4
-	H2O -1; 15760681.873474082
+	H2O -1; 15.760681873474075
 REACTION 5
-	H2O -1; 15568829.254369931
+	H2O -1; 15.568829254369927
 REACTION 6
-	H2O -1; 15376976.635265782
+	H2O -1; 15.376976635265777
 REACTION 7
-	H2O -1; 15185124.016161634
+	H2O -1; 15.185124016161627
 REACTION 8
-	H2O -1; 14993271.397057483
+	H2O -1; 14.993271397057478
 REACTION 9
-	H2O -1; 14801418.777953334
+	H2O -1; 14.801418777953328
 REACTION 10
-	H2O -1; 14609566.158849185
+	H2O -1; 14.609566158849178
 REACTION 11
-	H2O -1; 14417713.539745037
+	H2O -1; 14.41771353974503
         INCREMENTAL_REACTIONS 	true
-#linear permeate
-
-        #Permeate efficiency parameter: 1
-        #Head loss parameter: -0.15
+#linear_permeate
     #Effluent module 1:
         #Estimated CF: 1.0000025314235341
-        #Estimated solution mass: 1321364091650.0142
+        #Estimated solution mass: 1321364.0916500145
 
 
 
@@ -163,12 +160,12 @@ SELECTED_OUTPUT
 
 TRANSPORT
 -cells			12
--shifts			24
+-shifts			28
 -lengths		0.08466666666666667
--time_step		7201526739857.975	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 1.1756766269861331e-14 m/s
+-time_step		7.201526739857974	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 0.011756766269861331 m/s
 -initial_time		0
 -boundary_conditions	constant	constant 	 # Dirichlet boundary condition
 -stagnant		1	1	0.1	0.9 	 # dual domain
 #^stagnant cells	^exchange factor	^CP volume	^bulk volume
 -punch_cells		1-12
--punch_frequency	12
+-punch_frequency	28
