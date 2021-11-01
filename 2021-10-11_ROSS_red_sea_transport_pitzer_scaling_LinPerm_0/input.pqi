@@ -1,5 +1,5 @@
 TITLE	 test
-# C:\Users\Andrew Freiburger\Dropbox\My PC (DESKTOP-M302P50)\Documents\UVic Civil Engineering\PHREEQC\PHREEQC\2021-10-11_ROSS_red_sea_transport_pitzer_scaling_LinPerm_2
+# C:\Users\Andrew Freiburger\Dropbox\My PC (DESKTOP-M302P50)\Documents\UVic Civil Engineering\PHREEQC\PHREEQC\2021-10-11_ROSS_red_sea_transport_pitzer_scaling_LinPerm_0
 
 SOLUTION 0	
 temp 	 24.5 	 #average of Al-Taani et al., 2014 and Longinelli and Craig, 1967..
@@ -19,7 +19,7 @@ Mg	1646	#Abdel-Aal et al., 2015
 Sr		8.3	#Bernat, Church, and Allegre, 1972 from the Mediterranean
 Ba	0.011	#Bernat, Church, and Allegre, 1972 from the Mediterranean
 Li	0.228	#Stoffyn-Egli and Mackenzie, 1984 for the Mediterranean Sea
--water 	15.856409238986078
+-water 	17.37815355638126
 
 SOLUTION 1-12	Initial solution in the RO module
 temp 	 25
@@ -48,9 +48,9 @@ S(6)	0
 Si	0
 Sr	0
 Sg	0
--water 	 15.856409238986078
+-water 	 17.37815355638126
 
-EQUILIBRIUM_PHASES 1-56	
+EQUILIBRIUM_PHASES 1-51	
 Akermanite		0	0
 Anhydrite		0	0
 Anthophyllite		0	0
@@ -112,34 +112,34 @@ Teepleite		0	0
 
 
 REACTION 0
-	H2O -1; 8.264046174945337
+	H2O -1; 9.057149147747937
 REACTION 1
-	H2O -1; 8.168119865393262
+	H2O -1; 8.952016761697115
 REACTION 2
-	H2O -1; 8.072193555841187
+	H2O -1; 8.846884375646292
 REACTION 3
-	H2O -1; 7.976267246289113
+	H2O -1; 8.74175198959547
 REACTION 4
-	H2O -1; 7.880340936737038
+	H2O -1; 8.636619603544647
 REACTION 5
-	H2O -1; 7.7844146271849635
+	H2O -1; 8.531487217493824
 REACTION 6
-	H2O -1; 7.688488317632888
+	H2O -1; 8.426354831443
 REACTION 7
-	H2O -1; 7.592562008080813
+	H2O -1; 8.321222445392177
 REACTION 8
-	H2O -1; 7.496635698528739
+	H2O -1; 8.216090059341354
 REACTION 9
-	H2O -1; 7.400709388976664
+	H2O -1; 8.110957673290532
 REACTION 10
-	H2O -1; 7.304783079424589
+	H2O -1; 8.005825287239709
 REACTION 11
-	H2O -1; 7.208856769872515
+	H2O -1; 7.9006929011888865
         INCREMENTAL_REACTIONS 	true
 #linear_permeate
     #Effluent module 1:
         #Estimated CF: 1.117912632649256
-        #Estimated solution mass: 14.183943159680716
+        #Estimated solution mass: 15.54518040931168
 
 
 
@@ -161,12 +161,12 @@ SELECTED_OUTPUT
 
 TRANSPORT
 -cells			12
--shifts			56
+-shifts			51
 -lengths		0.08466666666666667
--time_step		3.6007633699289867	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 0.28216239047667196 m/s
+-time_step		3.946329703005324	# the Courant condition is satisfied with the cell_length of 0.08466666666666667 m and the feed velocity of 0.25745441371162325 m/s
 -initial_time		0
 -boundary_conditions	constant	constant 	 # Dirichlet boundary condition
 -stagnant		1		1			0.1		0.9 	 # dual domain
 #			^stagnant cells	^exchange factor	^CP volume	^bulk volume
 -punch_cells		1-12
--punch_frequency	56
+-punch_frequency	51
