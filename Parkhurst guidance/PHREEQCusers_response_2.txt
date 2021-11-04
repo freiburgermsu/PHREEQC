@@ -1,0 +1,17 @@
+Dear David,
+
+1) 
+a) I reproduced the proper moles after converting (L of solution) -> (kg of solution) with the solution density from the output of your PQI. I also updated my ICE Table, which revealed a 1:1 ratio of concentration changes. Thank you for your detailed explanation! 
+
+b) The comparison of Figures 2 & 3 in the 1999 manual suggests that the inlet boundary condition has a minor influence upon the elemental concentrations. Could a steady stream of feed water through the RO module be conceptually equivalent to an infinite reservoir, since the feed supply is inexhaustible and is assumed to have a constant concentration? I concur with your assessment of flux at the outlet of an RO module.
+
+3) The SELECTED_OUTPUT can then, essentially, print the accumulation of precipitate within a single cell over all time, however, post-processing is required to calculate the accumulation of precipitate over all cells at a single time?
+
+Would the precipitation decrease in the final cells of this example figure(https://github.com/freiburgermsu/ROSSpy/blob/main/examples/scaling/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm/all_minerals.svg) be explained by the rate of precipitation exceeding the concentration rate, thus, the precipitate per cell begins to decrease as the [Ca] and [SO4] concentrations decrease? This interpretation, however, is unsupported by the SELECTED_OUTPUT for this simulation (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/scaling/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm/selected_output.pqo), where only the [Ca] decreases, while the [SO4] increases over these final cells of the transport column. What explains this diverging of the ionic concentrations?
+
+4) We -- and likely our reviewers -- certainly prefer simplicity. We will continue to troubleshoot the dual porosity calculations.
+
+My mentors and I are primarily Civil Engineers, thus geochemistry is slightly beyond our knowledge domain. Would you like to be a co-author in the publication of this software in 1-2 months? We would benefit from your geochemical expertise and perspective, particularly through understanding the fundamentals of PHREEQC and the geochemical reactive transport of RO desalination that may not be completely captured by my 4 inquiries. I can share the manuscript package with you in a few weeks, at your discretion.
+
+Thank you for your assistance :)
+  Andrew

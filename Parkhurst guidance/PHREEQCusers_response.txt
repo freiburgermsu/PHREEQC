@@ -1,0 +1,28 @@
+Dear Dr. Parkhurst,
+
+I reply to each of your suggestions, respectively, in the following sections.
+
+1) I just executed your PQI file in iPHREEQC and I see the mole quantities that you cite and the 1:1 ratio of ion exchange during the precipitation of Gypsum. I have a few subsequent questions.
+
+a)
+How are the 1.82 moles SO4 and 0.35453 moles Ca calculated? Here is my logic, with the liters of solution that is provided by the PHREEQC output file from your PQI file:
+SO4: 9500 (ppm SO4 = mg SO4/L solution) / [(96.04 g SO4/1 mole SO4) * (1000 mg / 1 g)] * (17.67 L solution) = 1.748 moles SO4
+Ca: 774 (ppm Ca = mg Ca/L solution) / [(40.08 g Ca/1 mole Ca) * (1000 mg / 1 g)] * (17.67 L solution) = 0.3412 moles Ca
+
+What is incorrect in this calculation?
+
+b)
+Why do you believe that "constant flux" or "flux flux" are more suitable for representing RO than "constant constant"? Leakage at the boundaries seems like it could undesirably compromise mass balance, although, the end of an RO module may indeed have some backflow. What is the significance of these boundary conditions upon the geochemical predictions? 
+
+2) I executed this PQI file as well, and I see the agreement between the Gypsum and d_Gypsum moles. Thank you for articulating the discrepancy and providing the educational PQI file.
+
+3) Does the data from the SELECTED_OUTPUT of my file depict the change in Gypsum moles at each distance instead of the net accumulation of Gypsum over all preceeding distances? We intend for the latter, where the mineral moles is ever-increasing, albeit at perhaps a diminishing rate. The Gypsum column from your SELECTED_OUTPUT in question (2) depicts an ever-increasing moles, which suggests that our TRANSPORT or SELECTED_OUTPUT blocks are incorrect. What should be changed in these blocks to depict the total accumulation of minerals over the distance?
+
+4) The Exchange Factor parameter is clearly and concisely defined in the 1999 manual, with a mathematical explanation.
+
+The Example 13 input files appear to use the MIX block instead of defining a set of mobile cells [1-12], a space cell [13], and then a set of immobile cells [14-25], which we implement in this example (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/sensitivity_analyses/single_vs_dual_domain/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm-2/input.pqi). Is the MIX method preferential, or more accurate, than our method of the sets of cells? 
+
+I greatly appreciate your detailed answers, suggestions, and context in the PHREEQC and BASIC calculations. I can elaborate anything at your request.
+
+Thank you :)
+  Andrew

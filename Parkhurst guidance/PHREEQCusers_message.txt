@@ -1,0 +1,38 @@
+Dear PHREEQCusers,
+
+I am developing ROSSpy (https://pypi.org/project/ROSSpy/) as an application of PHREEQC/py for simulating the geochemical reactive transport of reverse osmosis desalination. I have discovered a few inconsistent results from the PHREEQC calculations, however, which I am optimistic that some of you may be able to help clarify and resolve. I provide links to files in the ROSSpy GitHub repository of simulations and files to minimize the verbosity of this post. The PHREEQ input files for each of the referenced simulations are provided in the respective simulation folders on GitHub. The inconsistent results are detailed in the following sections.  
+
+
+
+1) Mass balance
+I created an ICE table (https://www.chem.purdue.edu/gchelp/howtosolveit/Equilibrium/Solubility_Products.htm) of Gypsum precipitation from a simple example of ROSSpy (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/other/ICE_table/scaling_ice_table.ipynb). The initial and final elemental concentrations, after converting into moles, are provided in the following JSON format. The values are peculiar for deviating -- where the 1:1 stoichiometry of calcium and sulphate should create identical changes -- and for a positive change in sulfate moles, which suggests that sulfate was somehow added during the transport system.
+
+{'Ca': {'change': -0.0006491063068378433,
+        'final_moles': 0.335957721232,
+        'initial_moles': 0.33660682753883786},
+ 'S': {'change': 0.07327891623898242,
+       'final_moles': 1.7969614040000002,
+       'initial_moles': 1.7236824877610177}}
+
+Is this inconsistent result the consequence of an error of the corresponding PHREEQ input file (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/scaling/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm/input.pqi), or are the PHREEQ calculations being used beyond its intentions? 
+
+
+2) Mineral moles
+The mineral and d_mineral -- e.g. Gypsum and d_Gypsum -- columns are inconsistent with each other. The d_mineral column, according to the PHREEQC version 3 documentation (https://pubs.usgs.gov/tm/06/a43/pdf/tm6-A43.pdf), represents the change in moles of the corresponding mineral during a timestep, however, the actual change in moles between timesteps in the mineral column are not equal to the d_mineral column. The Gypsum and d_Gypsum columns, for example, do not align in this simulation output (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/scaling/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm/selected_output.pqo). 
+
+
+3) Unexpected mineral precipitation trend
+Mineral precipitation via most databases, including the Pitzer database, perplexingly decreases while elemental concentrations increase in a transport process. The Gypsum precipitation of the following figure evinces this phenomenon, where the precipitation quantity decreases toward the end of the transport processes despite that the elemental concentrations increase (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/scaling/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm/all_minerals.svg). Here is another example of this phenomenon, where halite decreases over the entire reactive transport process instead of increasing with the elemental concentrations (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/sensitivity_analyses/database_selection/2021-10-27-ROSSpy-red_sea-transport-llnl-scaling-all_distance-LinPerm/all_minerals.svg). What causes this discrepancy between the ionic strength of the solution and mineral precipitation? and how can it be resolved?
+
+
+4) Stagnant layer
+We observe unexpected behavior when implementing a stagnant layer [https://github.com/freiburgermsu/ROSSpy/tree/main/examples/sensitivity_analyses/single_vs_dual_domain]. The mineral precipitation from a single domain (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/sensitivity_analyses/single_vs_dual_domain/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm/all_minerals.svg) is orders of magnitude greater than that of the stagnant layer of the dual domain (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/sensitivity_analyses/single_vs_dual_domain/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm-2/all_minerals.svg), despite that the stagnant layer should possess much larger concentration.
+
+We have a related uncertainty in how the value of the Exchange Factor (EF; 1/sec) parameter influences the mobile and immobile phases of a dual domain. Comparisons of the mobile and immobile phase after parameterizing EF=1e-10 vs EF=1e10 for otherwise the same simulation (https://github.com/freiburgermsu/ROSSpy/tree/main/examples/sensitivity_analyses/exchange_factor) suggests that the value of EF is inversely related to the solvent exchange between the mobile and immobile phases. Is this the proper interpretation of the EF parameter?
+
+
+
+I am optimistic that members of this community can clarify whether these inconsistencies originate from errors of the input files or instead manifest from limitations of the PHREEQC calculations. I appreciate any and all suggestions towards their resolution. I can arrange a video call to more efficiently communicate and share content with anyone, at your discretion.
+
+Thank you for your time and support :)
+  Andrew
