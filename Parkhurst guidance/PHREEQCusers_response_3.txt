@@ -1,0 +1,16 @@
+Dear David,
+
+1) 
+a) I updated the ICE table, and I noticed a slight discrepancy. The change between the [Ca] and [SO4] are identical, however, the moles of Gypsum precipitation deviates slightly from the changes in the ionic moles:
+
+{'change': {'Ca': -0.018565196026999964, 'Gypsum': 0.019614, 'S': -0.018567569229999803},
+ 'final': {'Ca': 0.335957721232, 'Gypsum': 0.019614, 'S': 1.7969614040000002},
+ 'initial': {'Ca': 0.354522917259, 'Gypsum': 0, 'S': 1.81552897323}}
+
+Is this ~7% deviation between d_[Ca] and d_[SO4] versus d_Gypsum within the error of the calculations, or is summing the d_Gypsum column in the SELECTED_OUTPUT file for this simulation (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/other/ICE_table/selected_output.pqo) not the appropriate approach for determining the moles of Gypsum that precipitate in a timestep of the simulation? I confirmed that the sum of d_Gypsum columns were identical for all timestep shifts after SOLUTION 0 completely passes through the column.
+
+3) Your explanation is very helpful. The approximation, to summarize, is that the least concentrated ion in a precipitation equilibrium is reduced in concentration with equal magnitude to all equilibrium ions collectively? Why is this approximation necessary relative to simultaneously reducing each equilibrium ion by its stoichiometric amount -- i.e. reduce [SO4] and [Ca] each by 1% instead of not reducing [SO4] and reducing [Ca] by 2%? I suppose that these mechanics are only important for intermediary predictions of concentrations, since all instances lead to the same final ionic concentrations.
+
+
+Thank you for your assistance :)
+  Andrew
