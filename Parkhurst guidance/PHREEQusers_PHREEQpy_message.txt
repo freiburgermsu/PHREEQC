@@ -1,0 +1,10 @@
+Dear PHREEQCusers,
+
+I am developing ROSSpy (https://pypi.org/project/ROSSpy/) as an application of PHREEQpy for simulating the geochemical reactive transport of reverse osmosis desalination. ROSSpy executes flawlessly in windows, however, the package yields an error that the database cannot load in unix systems (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/other/test_function/executing_rosspy_test.ipynb). This error occurs despite parameterizing DATABASE as the first line of the PQI file (https://github.com/freiburgermsu/ROSSpy/blob/main/examples/other/test_function/rosspy_test-2/input.pqi) and despite providing the database as an argument to the imported PHREEQpy object (https://github.com/freiburgermsu/ROSSpy/blob/main/rosspy/core.py#L719-L721). 
+
+The PHREEQpy object is also differentially defined based upon the operating system (https://github.com/freiburgermsu/ROSSpy/blob/main/rosspy/core.py#L47-L50), which suggests that the PHREEQpy object should behave identically in both operating sysytems. What could be the source of this error with different operating systems? How can it be resolved?
+
+I am optimistic that some of you may be able to help clarify and resolve the issue. I can elaborate any details of the error or the corresponding code at anyone's request. 
+
+Thank you for your support :)
+  Andrew

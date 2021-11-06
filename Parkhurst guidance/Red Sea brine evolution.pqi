@@ -1,0 +1,47 @@
+DATABASE C:\Program Files (x86)\USGS\Phreeqc Interactive 3.7.0-15749\database\phreeqc.dat
+SOLUTION 1	red_sea
+temp 	 24.5 	 #average of Al-Taani et al., 2014 and Longinelli and Craig, 1967..
+pH 		 8.22 charge #None
+pe 		 0.2679 	   #Al-Taani et al., 2014 // 4.00 is the default (?) // 4.00 is the default (?)
+units 	 ppm
+Mn	0.000306	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
+Fe	0.006281	#Al-Taani et al., 2014 for the Northern Gulf of Aqaba
+B	1.344	#Al-Taani et al., 2014
+Cl	24756	#https://www.lenntech.com/composition-seawater.htm in the Red Sea, and Longinelli and Craig, 1967
+Na	16417.2	#https://www.lenntech.com/composition-seawater.htm in the Red Sea, and Longinelli and Craig, 1967 describes [Na]=15834
+S(6)	9500	#Longinelli and Craig, 1967 and Llyod, 1967
+Ca	774	#Abdel-Aal et al., 2015
+K	301	#Abdel-Aal et al., 2015
+Mg	1646	#Abdel-Aal et al., 2015
+Sr	8.3	#Bernat, Church, and Allegre, 1972 from the Mediterranean
+Ba	0.011	#Bernat, Church, and Allegre, 1972 from the Mediterranean
+Li	0.228	#Stoffyn-Egli and Mackenzie, 1984 for the Mediterranean Sea
+END
+REACTION 1
+H2O -1
+48.5625 in 200 step
+END
+EQUILIBRIUM_PHASES 1	
+Gypsum			0	0
+END
+USER_GRAPH 1
+    -headings               factor Cl S Ca Gyp
+    -axis_titles            "Concentration factor" "Log molality" "Gypsum, moles"
+    -initial_solutions      false
+    -connect_simulations    true
+    -plot_concentration_vs  x
+  -start
+ 10 GRAPH_X (1 / TOT("water"))
+ 20 GRAPH_Y log10(TOT("Cl"))
+ 30 GRAPH_Y log10(TOT("S"))
+ 40 GRAPH_Y log10(TOT("Ca"))
+ 50 GRAPH_SY (EQUI("Gypsum"))
+100 END
+  -end
+    -active                 true
+END
+INCREMENTAL_REACTIONS
+USE solution 1
+USE equilibrium_phases 1
+USE reaction 1
+END

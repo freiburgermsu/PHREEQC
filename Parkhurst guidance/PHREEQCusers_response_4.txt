@@ -1,0 +1,12 @@
+Dear David,
+
+1) I did not consider the affects of diffusion fluxes. I appreciate your explanations and the PQI files that exemplify the mole balance in each system. These are very helpful for my understanding.
+
+3) I clearly see the trends in ionic concentrations and Gypsum moles that you described. I will trust the results from PHREEQ.
+
+I just posted an inquiry about the use of PHREEQpy in unix operating systems to this forum (https://phreeqcusers.org/index.php/topic,1864.0.html), although, I am not certain whether you are familiar with the mechanics of this  PHREEQ iteration. I will, nevertheless, contact you again as more questions emerge in the coming weeks. 
+
+Thank you for your assistance :)
+
+Take care,
+ Andrew
