@@ -1,0 +1,18 @@
+,parameter,value
+0,simulation_path,C:\Users\Andrew Freiburger\Dropbox\My PC (DESKTOP-M302P50)\Documents\UVic Civil Engineering\PHREEQC\PHREEQC\2021-11-07-ROSSpy--transport-pitzer-scaling-all_distance-LinPerm-3
+1,os,windows
+2,root_path,C:\Users\Andrew Freiburger\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\LocalCache\local-packages\Python38\site-packages\rosspy
+3,database_selection,pitzer
+4,simulation_type,transport
+5,permeate_approach,linear_permeate
+6,water_selection,
+7,simulation,scaling
+8,domain_phase,False
+9,cells_per_module,12.0
+10,timestep,3.6007633699289867
+11,simulation_time,201.64274871602325
+12,simulation_perspective,all_distance
+13,database_path,C:\Users\Andrew Freiburger\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\LocalCache\local-packages\Python38\site-packages\rosspy\databases\pitzer.dat
+14,input_path,C:\Users\Andrew Freiburger\Dropbox\My PC (DESKTOP-M302P50)\Documents\UVic Civil Engineering\PHREEQC\PHREEQC\2021-10-07_ROSS_red_sea_transport_pitzer_scaling_LinPerm_5.pqi
+15,output_file_name,selected_output.csv
+16,output_path,C:\Users\Andrew Freiburger\Dropbox\My PC (DESKTOP-M302P50)\Documents\UVic Civil Engineering\PHREEQC\PHREEQC\2021-11-07-ROSSpy--transport-pitzer-scaling-all_distance-LinPerm-3\selected_output.csv

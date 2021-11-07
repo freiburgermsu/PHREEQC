@@ -7,6 +7,4 @@ Dear David,
 I just posted an inquiry about the use of PHREEQpy in unix operating systems to this forum (https://phreeqcusers.org/index.php/topic,1864.0.html), although, I am not certain whether you are familiar with the mechanics of this  PHREEQ iteration. I will, nevertheless, contact you again as more questions emerge in the coming weeks. 
 
 Thank you for your assistance :)
-
-Take care,
  Andrew
