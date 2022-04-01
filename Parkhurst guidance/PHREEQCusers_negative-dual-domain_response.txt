@@ -1,0 +1,10 @@
+Dear David,
+
+Our idea with the stagnant zone would be to represent the Concentration Polarization (CP; https://en.wikipedia.org/wiki/Concentration_polarization). The CP is an adjacent layer to the RO membrane that becomes hyper-concentrated during desalination as a consequence of the no-slip boundary condition, where it does not readily mix with the bulk solution. This concept is analogous to capillary action, where fluid along the walls of a capillary behave differently than the bulk solution in the center of the capillary.
+
+I will contemplate your suggestion of the mixing fractions and investigate the pertinent sections the manual.
+
+Perhaps this resolution of RO fluid mechanisms is not necessary for our model; a validation of the scaling predictions will elucidate the significance of this perspective. 
+
+Thank you for your assistance :)
+    Andrew

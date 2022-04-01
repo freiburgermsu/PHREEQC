@@ -1,0 +1,8 @@
+Dear PHREEQCusers,
+
+I am verifying the precipitation calculations of PHREEQC for my Supporting Information. I created a theoretical ICE table of the attached images based upon a model system of precipitating Gypsum (https://github.com/freiburgermsu/ROSSpy/tree/main/examples/scaling/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm/input.pqi). The predicted precipitation of Gypsum, based upon the initial elemental concentrations is 0.020285 molal (0.352 moles), however, the PHREEQC prediction is 0.823 moles over all cells of the transport column(https://github.com/freiburgermsu/ROSSpy/tree/main/examples/scaling/2021-10-27-ROSSpy-red_sea-transport-pitzer-scaling-all_distance-LinPerm/selected_output.pqo). Did I incorrectly interpret the PHREEQC results, or must something else be considered?
+
+I appreciate any ideas or suggestions.
+
+Thank you :)
+  Andrew

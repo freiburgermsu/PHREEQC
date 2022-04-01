@@ -1,0 +1,8 @@
+Dear PHREEQCusers,
+
+I am implementing the "phreeqc-3.6.2-15100-x64" batch PHREEQC software in a terminal UI software (iROSSpy: https://github.com/freiburgermsu/ROSSpy/tree/main/rossui). The execution of the batch software, however, fails to generate the SELECTED_OUTPUT file that is prescribed in the PQI file (). Does the batch PHREEQC software generate only the PQO file, and not the SELECTED_OUTPUT file? or is our code (https://github.com/freiburgermsu/ROSSpy/blob/main/rossui/iROSSpy.py) erroneously conducting the batch software?
+
+I appreciate your perspectives and support.
+
+Thank you :)
+  Andrew

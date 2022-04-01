@@ -1,0 +1,8 @@
+Dear David,
+
+I did not realize that activity coefficients would deviate significantly far from 1 for divalent ions in a concentrated geochemical solution. The significance of other ionic interactions is curious as well. These myriad influences upon the geochemical system would certainly explain deviation from the theoretical and over-simplified ICE table.
+
+Why do the values in the "equi(gyp)" column deviate slightly from the "Gypsum" column of the SELECTED_OUTPUT file, since both column sum precipitation in a specific cell over all timesteps?
+
+Thank you for your support :)
+  Andrew
